@@ -19,7 +19,9 @@ public class Fonction {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "BNSP_DAILY_PROGRAM_id")
+    @JoinColumns({
+        @JoinColumn(name = "dailySheet_keys_date"), @JoinColumn(name = "dailySheet_keys_caserne")
+    })
     private DailyProgram dailySheet;
 
     @NonNull
