@@ -1,24 +1,25 @@
-package bf.bnsp.api.caserne.model;
+package bf.bnsp.api.account.model;
 
-import bf.bnsp.api.tools.dataType.ERule;
-import lombok.AllArgsConstructor;
+import bf.bnsp.api.tools.dataType.EEquipeType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "app_rule")
-public class Rule {
+@Table(name = "BNSP_TEAM_TYPE")
+public class EquipeType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Enumerated(EnumType.STRING)
     @NonNull
-    private ERule rule;
+    private EEquipeType equipeType;
 }

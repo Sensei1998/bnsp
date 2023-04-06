@@ -8,6 +8,7 @@ import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.model.Engin;
 import bf.bnsp.api.caserne.service.CaserneService;
 import bf.bnsp.api.caserne.service.EnginService;
+import bf.bnsp.api.tools.dataType.EEnginType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class EnginController {
     @PostMapping(value = "/create")
     public ResponseEntity<?> createEngin(@RequestBody EnginCreationForm enginForm){
         Optional<Engin> response;
-        if(enginForm.getEnginTypeId() < 1 || enginForm.getEnginTypeId() > 2) return ResponseEntity.notFound().build();
+        if(enginForm.getEnginTypeId() < 1 || enginForm.getEnginTypeId() > EEnginType.values().length) return ResponseEntity.notFound().build();
         else{
             Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(enginForm.getCaserneId());
             if(caserne.isEmpty()) return ResponseEntity.notFound().build();
@@ -47,7 +48,7 @@ public class EnginController {
     public ResponseEntity<?> updateEngin(@RequestBody EnginUpdateForm enginForm){
         Optional<Engin> targetedEngin = this.enginService.findActiveEnginById(enginForm.getEnginId());
         Optional<Engin> response;
-        if(targetedEngin.isEmpty() || enginForm.getEnginTypeId() < 1 || enginForm.getEnginTypeId() > 2) return ResponseEntity.notFound().build();
+        if(targetedEngin.isEmpty() || enginForm.getEnginTypeId() < 1 || enginForm.getEnginTypeId() > EEnginType.values().length) return ResponseEntity.notFound().build();
         else{
             Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(enginForm.getCaserneId());
             if(caserne.isEmpty()) return ResponseEntity.notFound().build();

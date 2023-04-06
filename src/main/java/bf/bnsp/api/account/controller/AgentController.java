@@ -43,34 +43,34 @@ public class AgentController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<?> updateUser(@RequestBody AgentUpdateForm agentForm){
+    public final ResponseEntity<?> updateUser(@RequestBody AgentUpdateForm agentForm){
         Optional<Agent> targetedAgent = this.agentService.findActiveAgentById(agentForm.getId());
         Optional<Agent> response;
-        if(targetedAgent.isEmpty() || agentForm.getGradeId() < 1 || agentForm.getGradeId() > 3) return ResponseEntity.notFound().build();
+        if(targetedAgent.isEmpty() || agentForm.getGradeId() < 1 || agentForm.getGradeId() > EGrade.values().length) return ResponseEntity.notFound().build();
         else{
             Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(agentForm.getCaserneId());
             if(caserne.isEmpty()) return ResponseEntity.notFound().build();
             else{
                 response = this.agentService.updateAgent(agentForm, caserne.get(), targetedAgent.get());
-                return new ResponseEntity<>(response.get(), HttpStatus.CREATED);
+                return new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED);
             }
         }
     }
 
     @GetMapping(value = {"/", ""})
-    public ResponseEntity<?> getAllActiveUsers(){
+    public final ResponseEntity<?> getAllActiveUsers(){
         List<Agent> response = this.agentService.findAllActiveAgent();
         return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getActiveUserById(@PathVariable("id") int id){
+    public final ResponseEntity<?> getActiveUserById(@PathVariable("id") int id){
         Optional<Agent> response = this.agentService.findActiveAgentById(id);
         return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/caserne/{caserneId}")
-    public ResponseEntity<?> getAllActiveUsersByCaserne(@PathVariable("caserneId") int caserneId){
+    public final ResponseEntity<?> getAllActiveUsersByCaserne(@PathVariable("caserneId") int caserneId){
         Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(caserneId);
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
@@ -80,7 +80,7 @@ public class AgentController {
     }
 
     @GetMapping(value = "/grades")
-    public ResponseEntity<?> getAllGrades(){
+    public final ResponseEntity<?> getAllGrades(){
         return new ResponseEntity<>(this.agentService.findAllGrade(), HttpStatus.OK);
     }
 

@@ -37,5 +37,6 @@ public class Engin {
 
     private boolean available = true;
 
+    @JsonIgnore
     private boolean hidden = false;
 }
