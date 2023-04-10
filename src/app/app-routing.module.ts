@@ -14,6 +14,10 @@ import {MainMenuComponent} from '@pages/main-menu/main-menu.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
 import { SubMenu2Component } from '@pages/main-menu/sub-menu2/sub-menu2.component';
 import { SuiviComponent } from '@pages/suivi/suivi.component';
+import { CreationAgentComponent } from '@pages/admin/creation-agent/creation-agent.component';
+import { CreationCaserneComponent } from '@pages/admin/creation-caserne/creation-caserne.component';
+import { CreationEnginComponent } from '@pages/admin/creation-engin/creation-engin.component';
+import { CreationEquipeComponent } from '@pages/admin/creation-equipe/creation-equipe.component';
 
 const routes: Routes = [
     {
@@ -45,6 +49,22 @@ const routes: Routes = [
             {
               path: 'suivi',
               component: SuiviComponent
+            },
+            {
+              path: 'c_agent',
+              component: CreationAgentComponent
+            },
+            {
+              path: 'c_caserne',
+              component: CreationCaserneComponent
+            },
+            {
+              path: 'c_engin',
+              component: CreationEnginComponent
+            },
+            {
+              path: 'c_equipe',
+              component: CreationEquipeComponent
             },
             {
                 path: '',

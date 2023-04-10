@@ -1,0 +1,142 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+              <h1>Caserne</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Blank Page</li>
+              </ol>
+          </div> -->
+      </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+      <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Formualaire de création de Caserne</h3>
+          </div>
+          <div class="col-12 grid-margin">
+
+              <div class="card-body">
+                <form class="form-sample" [formGroup]="caserneForm" (ngSubmit)="onSubmit()">
+                  <p class="card-description"  *ngIf="hideAffliation === 0">
+                    <strong>Caserne Et Affiliation</strong>
+                  </p>
+                  <p class="card-description"  *ngIf="hideAffliation === 1">
+                    <strong>Caserne </strong>
+                  </p>
+                  <p class="card-description"  *ngIf="hideAffliation === 2">
+                    <strong>Caserne Et Affiliation</strong>
+                  </p>
+                  <p class="card-description"  *ngIf="hideAffliation === 3">
+                    <strong>Caserne Et Affiliation</strong>
+                  </p>
+                  <div class="row" >
+                    <div class="col-md-6">
+                      <div class="form-group row" >
+                        <p class="col-sm-3 col-form-label">Types Caserne</p>
+                        <div class="col-sm-9" >
+                          <select class="form-control" formControlName="idCaserneType" [(ngModel)]="hideAffliation">
+                            <option value=1 [ngValue]="1" >BRIGADE</option>
+                            <option  value=2 [ngValue]="2" >COMPAGNIE</option>
+                            <option  value=3 [ngValue]="3">CENTRE_SECOURS</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="hideAffliation === 0">
+                      <div class="form-group row" >
+                        <p class="col-sm-3 col-form-label">Affiliation</p>
+                        <div class="col-sm-9">
+                          <select class="form-control" formControlName="idCaserneParent" >
+                            <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="hideAffliation === 2">
+                      <div class="form-group row" >
+                        <p class="col-sm-3 col-form-label">Affiliation</p>
+                        <div class="col-sm-9">
+                          <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" >
+                            <option *ngFor="let c of brigade" value="{{c.id}}">{{c.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="hideAffliation === 3" (click)="sortByCompagnie()">
+                      <div class="form-group row" >
+                        <p class="col-sm-3 col-form-label">Affiliation</p>
+                        <div class="col-sm-9">
+                          <select class="form-control" formControlName="idCaserneParent" >
+                            <option *ngFor="let c of compagnie" value="{{c.id}}">{{c.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="card-description ">
+                    <strong>Information </strong>
+                  </p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <p class="col-sm-3 col-form-p">Nom</p>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control"formControlName="name" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <p class="col-sm-3 col-form-p">Ville</p>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" formControlName="city" />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                      <div class="form-group row">
+                        <p class="col-sm-3 col-form-p">Date of Birth</p>
+                        <div class="col-sm-9">
+                          <input class="form-control" placeholder="dd/mm/yyyy"/>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <p class="col-sm-3 col-form-p">Zone</p>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" formControlName="area"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <pf-button type="submit"  style="margin-left: 90%;" (click)="onSubmit()">Submit</pf-button>
+          </div>
+          <!-- /.card-footer-->
+      </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+

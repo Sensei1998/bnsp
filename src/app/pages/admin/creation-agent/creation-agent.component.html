@@ -1,0 +1,248 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+              <h1>Agent</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Blank Page</li>
+              </ol>
+          </div> -->
+      </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<section>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Formualaire de création d'agent</h3>
+
+      <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
+          class="fa fa-minus"></i></pf-button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+          <p class="card-description ">
+            <strong>Information Personnelle</strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Matricule</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="matricule" />
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="lastname" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Prenom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="firstname" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Password</p>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" formControlName="password"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            <strong>Caserne et Grade</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="caserneId">
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Grade</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="gradeId" >
+                    <option *ngFor="let g of grade" value="{{g.id}}">{{g.grade}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+     <pf-button type="submit"  style="margin-left: 90%;" (click)="onSubmit()" (click)="modal.close('Close click')">Submit</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Formualaire de d'édition d'agent</h3>
+
+      <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
+          class="fa fa-minus"></i></pf-button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="agentEditForm" (ngSubmit)="onSubmit()">
+          <p class="card-description ">
+            <strong>Information Personnelle</strong>
+          </p>
+          <div class="row" hidden>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">id</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="id" [(ngModel)]="agent.id"/>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Matricule</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="matricule" [(ngModel)]="agent.matricule"/>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="lastname" [(ngModel)]="agent.lastname"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Prenom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="firstname" [(ngModel)]="agent.firstname"/>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <p class="card-description">
+            <strong>Caserne et Grade</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="caserneId" >
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Grade</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="gradeId" [(ngModel)]="agent.grade.id">
+                    <option *ngFor="let g of grade" value="{{g.id}}">{{g.grade}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+     <pf-button type="submit"  style="margin-left: 90%;" (click)="onEdit()" (click)="modal.close('Close click')">Submit</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+<section class="content">
+  <div class="grid-margin stretch-card container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Liste des agents</h4>
+        <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 80%">
+          <i class="fa fa-plus"></i>
+        </pf-button>
+        <div class="table-responsive">
+          <table class="table table-hover" >
+            <thead>
+              <tr>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>Prenon</th>
+                <th>Grade</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let u of users">
+              <tr>
+                <td>{{u.matricule}}</td>
+                <td>{{u.lastname}}</td>
+                <td> {{u.firstname}}</td>
+                <td>{{u.grade.grade}}</td>
+                <td (click)="openEdit(content1)" (click)="getAgentById(u.id)"><i class="fa fa-edit"></i></td>
+                <td (click)="deleteAgent(u.id)"><i class="fa fa-trash" style="color: red;"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

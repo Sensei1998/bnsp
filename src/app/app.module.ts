@@ -41,7 +41,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SubMenu2Component } from './pages/main-menu/sub-menu2/sub-menu2.component';
 import { SuiviComponent } from './pages/suivi/suivi.component';
 import { NgbModule, NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from './pages/modal/modal.component';
+import { CreationCaserneComponent } from './pages/admin/creation-caserne/creation-caserne.component';
+import { CreationEquipeComponent } from './pages/admin/creation-equipe/creation-equipe.component';
+import { CreationEnginComponent } from './pages/admin/creation-engin/creation-engin.component';
+import { CreationAgentComponent } from './pages/admin/creation-agent/creation-agent.component';
+
 
 
 defineCustomElements();
@@ -72,7 +76,11 @@ registerLocaleData(localeEn, 'en-EN');
         SidebarSearchComponent,
         SubMenu2Component,
         SuiviComponent,
-        ModalComponent
+        CreationCaserneComponent,
+        CreationEquipeComponent,
+        CreationEnginComponent,
+        CreationAgentComponent,
+
     ],
     imports: [
         BrowserModule,

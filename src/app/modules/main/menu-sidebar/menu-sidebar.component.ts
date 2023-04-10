@@ -62,5 +62,31 @@ export const MENU = [
               path: ['/suivi']
           }
         ]
-    }
+    },
+    {
+      name: 'Admin Fonction',
+      iconClasses: 'fas fa-folder',
+      children: [
+          {
+              name: 'Agent ',
+              iconClasses: 'far fa-address-book',
+              path: ['/c_agent']
+          },
+          {
+              name: 'Caserne',
+              iconClasses: 'fas fa-home',
+              path: ['/c_caserne']
+          },
+          {
+            name: 'Engin',
+            iconClasses: 'fas fa-truck',
+            path: ['/c_engin']
+          },
+          {
+            name: 'Equipe',
+            iconClasses: 'fas fa-users',
+            path: ['/c_equipe']
+        }
+      ]
+  }
 ];

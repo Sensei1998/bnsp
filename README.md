@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center">Admin LTE 3.2.0 - Angular 15.0.1</h1>
+<h1 align="center">BNSP LTE 3.2.0 - Angular 15.0.1</h1>
 
 <p>
   This repository is a form of original AdminLTE project. It is aim to use AdminLTE template with Angular.

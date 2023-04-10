@@ -390,210 +390,211 @@
 </section>
 <!-- /.content -->
 <section>
-<ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title">Choix des vehicules d'interventions</h4>
-		<!-- <button type="button" class="fa fa-minus" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
-    <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i class="fa fa-minus"></i></pf-button>
-	</div>
-	<div class="modal-body">
-    <div class="card-body">
-      <form>
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Choix</th>
-                <th>Voiture</th>
-                <th >Fonction</th>
-                <th>Nom</th>
-                <th >Grade</th>
-                <th>Remplacement </th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr >
-                <td><pf-checkbox style=" margin-top:150%; margin-left:25%"></pf-checkbox></td>
-                <td>Premier Secours</td>
-                <td>
-                  <p>CA</p>
-                  <p>CH</p>
-                  <p>SVT</p>
-                  <p>HDL</p>
-                  <p>Cond</p>
-                </td>
-                <td>
-                  <p>Oumarou BATIONO</p>
-                  <p>Christine BAMA</p>
-                  <p>Estelle DIBLONI</p>
-                  <p>Christian GREY</p>
-                  <p>John Doe</p>
-                </td>
-                <td >
-                  <p>Sergent</p>
-                  <p>Caporal</p>
-                  <p>Planton</p>
-                  <p>Colonel</p>
-                  <p>Sergent</p>
-                </td>
-                <td>
-                  <p>Oumarou BATIONO</p>
-                  <p>Christine BAMA</p>
-                  <p>Estelle DIBLONI</p>
-                  <p>Christian GREY</p>
-                  <p>Jane Doe</p>
-                </td>
-                <td >Disponible</td>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Choix des vehicules d'interventions</h4>
+      <!-- <button type="button" class="fa fa-minus" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
+      <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
+          class="fa fa-minus"></i></pf-button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Choix</th>
+                  <th>Voiture</th>
+                  <th>Fonction</th>
+                  <th>Nom</th>
+                  <th>Grade</th>
+                  <th>Remplacement </th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:150%; margin-left:25%"></pf-checkbox></td>
+                  <td>Premier Secours</td>
+                  <td>
+                    <p>CA</p>
+                    <p>CH</p>
+                    <p>SVT</p>
+                    <p>HDL</p>
+                    <p>Cond</p>
+                  </td>
+                  <td>
+                    <p>Oumarou BATIONO</p>
+                    <p>Christine BAMA</p>
+                    <p>Estelle DIBLONI</p>
+                    <p>Christian GREY</p>
+                    <p>John Doe</p>
+                  </td>
+                  <td>
+                    <p>Sergent</p>
+                    <p>Caporal</p>
+                    <p>Planton</p>
+                    <p>Colonel</p>
+                    <p>Sergent</p>
+                  </td>
+                  <td>
+                    <p>Oumarou BATIONO</p>
+                    <p>Christine BAMA</p>
+                    <p>Estelle DIBLONI</p>
+                    <p>Christian GREY</p>
+                    <p>Jane Doe</p>
+                  </td>
+                  <td>Disponible</td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                <td>Fourgon</td>
-                <td>
-                  <p>SDA</p>
-                  <p>HDL</p>
-                  <p>1 CH</p>
-                  <p>1 SVT</p>
-                  <p>2 CH</p>
-                  <p>2 SVT</p>
-                  <p>2 SVT</p>
-                </td>
-                <td></td>
-                <td ></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
+                  <td>Fourgon</td>
+                  <td>
+                    <p>SDA</p>
+                    <p>HDL</p>
+                    <p>1 CH</p>
+                    <p>1 SVT</p>
+                    <p>2 CH</p>
+                    <p>2 SVT</p>
+                    <p>2 SVT</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>PSR N°1</td>
-                <td>
-                  <p>CHEF</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td ></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>PSR N°1</td>
+                  <td>
+                    <p>CHEF</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>PSR N°2</td>
-                <td>
-                  <p>CHEF</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>PSR N°2</td>
+                  <td>
+                    <p>CHEF</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>PSR N°3</td>
-                <td>
-                  <p>CHEF</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>PSR N°3</td>
+                  <td>
+                    <p>CHEF</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>V.I.D</td>
-                <td>
-                  <p>CHEF</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>ECHELLE</td>
-                <td>
-                  <p>CHEF</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>V.I.D</td>
+                  <td>
+                    <p>CHEF</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>ECHELLE</td>
+                  <td>
+                    <p>CHEF</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                <td>VEHICULE DESINC</td>
-                <td>
-                  <p>CH.A</p>
-                  <p>1 CH</p>
-                  <p>1 SVT</p>
-                  <p>2 CH</p>
-                  <p>2 SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
+                  <td>VEHICULE DESINC</td>
+                  <td>
+                    <p>CH.A</p>
+                    <p>1 CH</p>
+                    <p>1 SVT</p>
+                    <p>2 CH</p>
+                    <p>2 SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                <td>CSL</td>
-                <td>
-                  <p>CH.A</p>
-                  <p>1 CH</p>
-                  <p>1 SVT</p>
-                  <p>2 CH</p>
-                  <p>2 SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
+                  <td>CSL</td>
+                  <td>
+                    <p>CH.A</p>
+                    <p>1 CH</p>
+                    <p>1 SVT</p>
+                    <p>2 CH</p>
+                    <p>2 SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
-              <tr>
-                <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                <td>CITERNE</td>
-                <td>
-                  <p>CH.A</p>
-                  <p>SVT</p>
-                  <p>Cond</p>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                </tr>
+                <tr>
+                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
+                  <td>CITERNE</td>
+                  <td>
+                    <p>CH.A</p>
+                    <p>SVT</p>
+                    <p>Cond</p>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
 
-              </tr>
+                </tr>
 
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
 
-      </form>
+        </form>
 
-</div>
-	</div>
-	<div class="modal-footer">
-		<!-- <button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</button>-->
-    <pf-button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</pf-button>
-	</div>
-</ng-template>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</button>-->
+      <pf-button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</pf-button>
+    </div>
+  </ng-template>
 </section>
