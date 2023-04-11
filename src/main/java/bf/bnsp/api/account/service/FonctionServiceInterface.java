@@ -15,15 +15,15 @@ public interface FonctionServiceInterface {
 
     List<Fonction> createDailyProgram(DailyProgramCreationForm dailyProgramForm);
 
-    List<Fonction> updateDailyProgram(DailyProgramCreationForm dailyProgramForm, LocalDate date, Caserne caserne);
+    List<Fonction> updateDailyProgram(DailyProgramCreationForm dailyProgramForm, LocalDate date);
 
     List<Fonction> findDailyProgramDetailByCaserneAndDate(Caserne caserne, LocalDate date);
 
-    List<Fonction> findDailyProgramByCaserneAndDate(Caserne caserne, LocalDate date);
-
     List<Fonction> findAllDailyProgram();
 
-    List<Fonction> findAllDailyProgramByCaserne(Caserne caserne);
+    List<Fonction> findAllDailyProgramByCaserneOrderByDate(Caserne caserne);
 
-    List<Fonction> deleteDailyProgramByCaserneAndDate(Caserne caserne, Date date);
+    List<LocalDate> findDailyProgramDateByCaserne(Caserne caserne);
+
+    List<Fonction> deleteFonctionList(Caserne caserne, LocalDate date);
 }

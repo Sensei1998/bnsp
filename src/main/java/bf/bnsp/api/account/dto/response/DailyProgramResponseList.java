@@ -1,4 +1,4 @@
 package bf.bnsp.api.account.dto.response;
 
-public class AgentResponse {
+public class DailyProgramResponseList {
 }

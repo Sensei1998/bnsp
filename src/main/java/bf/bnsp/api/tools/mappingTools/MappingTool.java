@@ -1,5 +1,6 @@
 package bf.bnsp.api.tools.mappingTools;
 
+import bf.bnsp.api.account.dto.response.DailyProgramResponseList;
 import bf.bnsp.api.account.dto.response.DailyProgramResponse;
 import bf.bnsp.api.account.dto.response.FonctionAgentResponse;
 import bf.bnsp.api.account.dto.response.FonctionTeamResponse;
@@ -42,5 +43,9 @@ public class MappingTool {
         tmpTeamResponse = new FonctionTeamResponse(lastTeam.getId(), lastTeam.getEquipeType().getEquipeType().name(), lastTeam.getDesignation(), agentList);
         teamList.add(tmpTeamResponse);
         return new DailyProgramResponse(fonctions.get(0).getKeys().getDate(), fonctions.get(0).getEquipe().getCaserne().getId(), fonctions.get(0).getEquipe().getCaserne().getName(), fonctions.get(0).getEquipe().getCaserne().getCity(), fonctions.get(0).getEquipe().getCaserne().getArea(), teamList);
+    }
+
+    public List<DailyProgramResponseList> mappingDailyProgramList(List<Fonction> fonctions){
+    return null;
     }
 }

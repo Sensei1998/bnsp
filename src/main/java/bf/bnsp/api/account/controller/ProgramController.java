@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,35 +42,46 @@ public class ProgramController {
         return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/update")
+    public ResponseEntity<?> updateDailyProgram(@RequestBody DailyProgramCreationForm dailyProgramForm){
+        List<Fonction> response = this.dailyProgramService.updateDailyProgram(dailyProgramForm, dailyProgramForm.getDate());
+        return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
     @GetMapping(value = {"/", ""})
     public final ResponseEntity<?> getAllDailyPrograms(){
         List<Fonction> response = this.dailyProgramService.findAllDailyProgram();
-        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+        return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/caserne")
-    public final ResponseEntity<?> getDailyProgramsByCaserne(@RequestBody DailyProgramKeysForm keysForm){
-        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(keysForm.getCaserneId());
+    @GetMapping(value = "/caserne/{caserneId}")
+    public final ResponseEntity<?> getDailyProgramsDateByCaserne(@PathVariable("caserneId") int caserneId){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(caserneId);
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
-            List<Fonction> response = this.dailyProgramService.findDailyProgramDetailByCaserneAndDate(caserne.get(), keysForm.getDate());
+            List<LocalDate> response = this.dailyProgramService.findDailyProgramDateByCaserne(caserne.get());
             return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
         }
     }
 
-    /*@GetMapping(value = "/search")
-    public final ResponseEntity<?> tmpFunction(@RequestBody DailyProgramKeysForm keysForm){
-        Optional<Equipe> equipe = this.equipeService.findActiveEquipeById(keysForm.getEquipeId());
-        if(equipe.isEmpty()) return ResponseEntity.notFound().build();
+    @GetMapping(value = "/search")
+    public final ResponseEntity<?> getDailyProgramsByCaserneAndDate(@RequestBody DailyProgramKeysForm keysForm){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(keysForm.getCaserneId());
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
-            DailyProgramKeys keys = new DailyProgramKeys(keysForm.getDate(), equipe.get());
-            Optional<DailyProgram> dailyProgram = this.dailyProgramService.findDailyProgramByKey(keys);
-            if(dailyProgram.isEmpty()) return ResponseEntity.notFound().build();
-            else{
-                List<Fonction> response = this.dailyProgramService.findAllFonctionByDailyProgram(dailyProgram.get());
-                return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
-            }
-
+            List<Fonction> response = this.dailyProgramService.findDailyProgramDetailByCaserneAndDate(caserne.get(), keysForm.getDate());
+            System.out.println(response.toString());
+            return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
-    }*/
+    }
+
+    @DeleteMapping(value = "/delete")
+    public final ResponseEntity<?> deleteDailyProgramByCaserneAndDate(@RequestBody DailyProgramKeysForm keys){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(keys.getCaserneId());
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            List<Fonction> response = this.dailyProgramService.deleteFonctionList(caserne.get(), keys.getDate());
+            return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
+        }
+    }
 }
