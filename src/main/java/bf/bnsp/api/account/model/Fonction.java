@@ -1,11 +1,15 @@
 package bf.bnsp.api.account.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,25 +18,15 @@ import javax.persistence.*;
 @Table(name = "BNSP_FONCTION")
 public class Fonction {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name = "dailySheet_keys_date"), @JoinColumn(name = "dailySheet_keys_caserne")
-    })
-    private DailyProgram dailySheet;
-
+    @EmbeddedId
     @NonNull
-    @ManyToOne
-    private Equipe equipe;
+    private FonctionKeys keys;
 
-    @NonNull
     @ManyToOne
+    @NonNull
     private FonctionType function;
 
-    @NonNull
     @ManyToOne
-    private Agent agent;
+    @NonNull
+    private Equipe equipe;
 }

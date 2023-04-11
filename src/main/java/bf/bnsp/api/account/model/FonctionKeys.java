@@ -1,6 +1,5 @@
 package bf.bnsp.api.account.model;
 
-import bf.bnsp.api.caserne.model.Caserne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class DailyProgramKeys implements Serializable {
+public class FonctionKeys implements Serializable {
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 
     @ManyToOne
-    private Caserne caserne;
+    private Agent agent;
 }
