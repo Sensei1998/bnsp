@@ -2,11 +2,14 @@ package bf.bnsp.api.account.controller;
 
 import bf.bnsp.api.account.dto.form.DailyProgramCreationForm;
 import bf.bnsp.api.account.dto.form.DailyProgramKeysForm;
+import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.Fonction;
+import bf.bnsp.api.account.service.AgentService;
 import bf.bnsp.api.account.service.FonctionService;
 import bf.bnsp.api.account.service.EquipeService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
+import bf.bnsp.api.tools.dataType.EFonction;
 import bf.bnsp.api.tools.mappingTools.MappingTool;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +30,15 @@ public class ProgramController {
 
     private final EquipeService equipeService;
 
+    private final AgentService agentService;
+
     private final MappingTool mappingTool;
 
-    public ProgramController(FonctionService dailyProgramService, CaserneService caserneService, EquipeService equipeService, MappingTool mappingTool) {
+    public ProgramController(FonctionService dailyProgramService, CaserneService caserneService, EquipeService equipeService, AgentService agentService, MappingTool mappingTool) {
         this.dailyProgramService = dailyProgramService;
         this.caserneService = caserneService;
         this.equipeService = equipeService;
+        this.agentService = agentService;
         this.mappingTool = mappingTool;
     }
 
@@ -84,4 +90,15 @@ public class ProgramController {
             return response.size() > 0 ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
     }
+
+    @GetMapping(value = "/tmp/{agentId}")
+    public final ResponseEntity<?> getCurrentRole(@PathVariable("agentId") int agentId){
+        Optional<Agent> agent = this.agentService.findActiveAgentById(agentId);
+        if(agent.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            Optional<EFonction> response = this.dailyProgramService.findCurrentFunctionByAgent(agent.get());
+            return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
+        }
+    }
+
 }

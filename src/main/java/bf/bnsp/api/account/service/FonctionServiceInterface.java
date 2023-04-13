@@ -1,9 +1,11 @@
 package bf.bnsp.api.account.service;
 
 import bf.bnsp.api.account.dto.form.DailyProgramCreationForm;
+import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.Equipe;
 import bf.bnsp.api.account.model.Fonction;
 import bf.bnsp.api.caserne.model.Caserne;
+import bf.bnsp.api.tools.dataType.EFonction;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,6 +22,8 @@ public interface FonctionServiceInterface {
     List<Fonction> findDailyProgramDetailByCaserneAndDate(Caserne caserne, LocalDate date);
 
     List<Fonction> findAllDailyProgram();
+
+    Optional<EFonction> findCurrentFunctionByAgent(Agent agent);
 
     List<Fonction> findAllDailyProgramByCaserneOrderByDate(Caserne caserne);
 

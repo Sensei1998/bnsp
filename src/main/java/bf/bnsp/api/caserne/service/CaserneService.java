@@ -1,5 +1,9 @@
 package bf.bnsp.api.caserne.service;
 
+import bf.bnsp.api.account.model.Agent;
+import bf.bnsp.api.account.model.Equipe;
+import bf.bnsp.api.account.service.AgentService;
+import bf.bnsp.api.account.service.EquipeService;
 import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
 import bf.bnsp.api.caserne.model.Caserne;
@@ -30,6 +34,12 @@ public class CaserneService implements CaserneServiceInterface {
 
     @Autowired
     private EnginService enginService;
+
+    @Autowired
+    private AgentService agentService;
+
+    @Autowired
+    private EquipeService equipeService;
 
     @Override
     public Optional<Caserne> createCaserne(CaserneCreationForm caserneForm, Optional<Caserne> caserneParent) {
@@ -93,6 +103,14 @@ public class CaserneService implements CaserneServiceInterface {
         List<Engin> engins = this.enginService.findAllActiveEnginByCaserne(caserne);
         for (Engin element: engins) {
             this.enginService.deleteEngin(element);
+        }
+        List<Agent> agents = this.agentService.findAllActiveAgentByCaserne(caserne);
+        for (Agent element: agents) {
+            this.agentService.deleteAgent(element);
+        }
+        List<Equipe> equipes = this.equipeService.findAllActiveEquipeByCaserne(caserne);
+        for (Equipe element: equipes) {
+            this.equipeService.deleteEquipe(element);
         }
         return Optional.of(caserne);
     }

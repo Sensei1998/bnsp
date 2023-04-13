@@ -7,6 +7,7 @@ import bf.bnsp.api.account.model.*;
 import bf.bnsp.api.account.repository.FonctionRepository;
 import bf.bnsp.api.account.repository.FonctionTypeRepository;
 import bf.bnsp.api.caserne.model.Caserne;
+import bf.bnsp.api.tools.dataType.EFonction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +101,12 @@ public class FonctionService implements FonctionServiceInterface {
     @Override
     public List<Fonction> findAllDailyProgram() {
         return this.fonctionRepository.findAll();
+    }
+
+    @Override
+    public Optional<EFonction> findCurrentFunctionByAgent(Agent agent) {
+        Optional<Fonction> fonction = this.fonctionRepository.findByKeys(new FonctionKeys(LocalDate.now(), agent));
+        return fonction.isPresent() ? Optional.of(fonction.get().getFunction().getRule()) : Optional.empty();
     }
 
     @Override
