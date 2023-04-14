@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {DateTime} from 'luxon';
@@ -28,7 +29,11 @@ export class SubMenu2Component implements OnInit {
     }
   ];
 
-  constructor(private fb: FormBuilder){}
+  url ="http://localhost:8081/bnsp/api";
+  caserne;
+
+  constructor(private fb: FormBuilder,
+    private http: HttpClient){}
 
   ngOnInit(): void {
     this.CompagnieForm = this.fb.group({
@@ -40,12 +45,21 @@ export class SubMenu2Component implements OnInit {
   this.addCompagnie();
   })
 
+  this.getCaserne();
+
   }
 
   get compagnie(): FormArray{
     return this.CompagnieForm.get('compagnie') as FormArray;
   }
 
+  getCaserne(){
+    return this.http.get(this.url + "/casernes").subscribe(
+      caserne => {
+        this.caserne = caserne;
+      }
+    );
+  }
   deleteCompagnie(index: number){
     this.compagnie.removeAt(index);
     this.compagnie.markAsDirty()

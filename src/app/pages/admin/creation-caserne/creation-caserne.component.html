@@ -16,127 +16,433 @@
   <!-- /.container-fluid -->
 </section>
 
-<!-- Main content -->
 <section class="content">
-  <!-- Default box -->
-  <div class="container-fluid">
-      <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Formualaire de création de Caserne</h3>
-          </div>
-          <div class="col-12 grid-margin">
-
-              <div class="card-body">
-                <form class="form-sample" [formGroup]="caserneForm" (ngSubmit)="onSubmit()">
-                  <p class="card-description"  *ngIf="hideAffliation === 0">
-                    <strong>Caserne Et Affiliation</strong>
-                  </p>
-                  <p class="card-description"  *ngIf="hideAffliation === 1">
-                    <strong>Caserne </strong>
-                  </p>
-                  <p class="card-description"  *ngIf="hideAffliation === 2">
-                    <strong>Caserne Et Affiliation</strong>
-                  </p>
-                  <p class="card-description"  *ngIf="hideAffliation === 3">
-                    <strong>Caserne Et Affiliation</strong>
-                  </p>
-                  <div class="row" >
-                    <div class="col-md-6">
-                      <div class="form-group row" >
-                        <p class="col-sm-3 col-form-label">Types Caserne</p>
-                        <div class="col-sm-9" >
-                          <select class="form-control" formControlName="idCaserneType" [(ngModel)]="hideAffliation">
-                            <option value=1 [ngValue]="1" >BRIGADE</option>
-                            <option  value=2 [ngValue]="2" >COMPAGNIE</option>
-                            <option  value=3 [ngValue]="3">CENTRE_SECOURS</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="hideAffliation === 0">
-                      <div class="form-group row" >
-                        <p class="col-sm-3 col-form-label">Affiliation</p>
-                        <div class="col-sm-9">
-                          <select class="form-control" formControlName="idCaserneParent" >
-                            <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="hideAffliation === 2">
-                      <div class="form-group row" >
-                        <p class="col-sm-3 col-form-label">Affiliation</p>
-                        <div class="col-sm-9">
-                          <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" >
-                            <option *ngFor="let c of brigade" value="{{c.id}}">{{c.name}}</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="hideAffliation === 3" (click)="sortByCompagnie()">
-                      <div class="form-group row" >
-                        <p class="col-sm-3 col-form-label">Affiliation</p>
-                        <div class="col-sm-9">
-                          <select class="form-control" formControlName="idCaserneParent" >
-                            <option *ngFor="let c of compagnie" value="{{c.id}}">{{c.name}}</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="card-description ">
-                    <strong>Information </strong>
-                  </p>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <p class="col-sm-3 col-form-p">Nom</p>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control"formControlName="name" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <p class="col-sm-3 col-form-p">Ville</p>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control" formControlName="city" />
-                        </div>
-                      </div>
-                    </div>
-                    <!-- <div class="col-md-6">
-                      <div class="form-group row">
-                        <p class="col-sm-3 col-form-p">Date of Birth</p>
-                        <div class="col-sm-9">
-                          <input class="form-control" placeholder="dd/mm/yyyy"/>
-                        </div>
-                      </div>
-                    </div> -->
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <p class="col-sm-3 col-form-p">Zone</p>
-                        <div class="col-sm-9">
-                          <input type="text" class="form-control" formControlName="area"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </form>
+  <div class="grid-margin stretch-card container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Liste des Casernes</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Trier par Type</p>
+              <div class="col-sm-8">
+                <select class="form-control" [(ngModel)]="sort" >
+                  <option [ngValue]="0" >Toute les Casernes</option>
+                  <option value=1 [ngValue]="1" >BRIGADE</option>
+                  <option  value=2 [ngValue]="2" >COMPAGNIE</option>
+                  <option  value=3 [ngValue]="3">CENTRE_SECOURS</option>
+                </select>
               </div>
-          </div>
-          <!-- /.card-body -->
+              <div class="col-md-2" style="margin-left: 77%;">
+                <div class="form-group row" >
+                  <div >
+                    <pf-button *ngIf="sort !== 0" (click)="getCaserneTypesById(sort)">Triez</pf-button>
+                    <pf-button *ngIf="sort === 0" (click)="getCaserne()">Triez</pf-button>
+                  </div>
 
-          <div class="card-footer">
-            <pf-button type="submit"  style="margin-left: 90%;" (click)="onSubmit()">Submit</pf-button>
+                </div>
+              </div>
+            </div>
           </div>
-          <!-- /.card-footer-->
+
+
+          <div class="col-md-4">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Trier par Affiliation</p>
+              <div class="col-sm-8">
+                <select class="form-control" [(ngModel)]="sortaff" >
+                  <option [ngValue]="0" >Toute les Casernes</option>
+                  <option value=1 [ngValue]="1" >BRIGADE</option>
+                  <option  value=2 [ngValue]="2" >COMPAGNIE</option>
+                </select>
+              </div>
+              <div class="col-md-2" style="margin-left: 77%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button *ngIf="sortaff !== 0" (click)="getCaserneAffliationById(sortaff)">Triez</pf-button>
+                    <pf-button *ngIf="sortaff === 0" (click)="getCaserne()">Triez</pf-button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 25%;">
+              <i class="fa fa-plus"></i>
+            </pf-button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover" >
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Ville</th>
+                <th>Zone</th>
+                <th>Type de Caserne</th>
+                <th></th>
+
+              </tr>
+            </thead>
+            <tbody *ngFor="let c of caserne">
+              <tr>
+                <td>{{c.name}}</td>
+                <td>{{c.city}}</td>
+                <td> {{c.area}}</td>
+                <td>{{c.caserneType.caserneType}}</td>
+                <td class="row"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getCaserneById(c.id)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getCaserneById(c.id)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getCaserneById(c.id)" (click)="openSupp(content3)"></i></td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+    </div>
   </div>
-  <!-- /.card -->
 </section>
-<!-- /.content -->
 
 
+<section>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Formulaire de création de Caserne</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="caserneForm" (ngSubmit)="onSubmit()">
+          <p class="card-description"  *ngIf="hideAffliation === 0">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 1">
+            <strong>Caserne </strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 2">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 3">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Types </p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="idCaserneType" [(ngModel)]="hideAffliation">
+                    <option value=1 [ngValue]="1" >BRIGADE</option>
+                    <option  value=2 [ngValue]="2" >COMPAGNIE</option>
+                    <option  value=3 [ngValue]="3">CENTRE_SECOURS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 0">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" >
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 2">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" >
+                    <option *ngFor="let c of brigade" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 3" (click)="sortByCompagnie()">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" >
+                    <option *ngFor="let c of compagnie" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="name" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Ville</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="city" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Zone</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="area"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit"  style="margin-left: 25%;" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+        <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Formulaire d'édition de Caserne</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="caserneUpdateForm" (ngSubmit)="onSubmit2()">
+          <p class="card-description"  *ngIf="hideAffliation === 0">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 1">
+            <strong>Caserne </strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 2">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <p class="card-description"  *ngIf="hideAffliation === 3">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6" hidden="true">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">id</p>
+                <div class="col-sm-9" >
+                  <input type="text" class="form-control"formControlName="id" [(ngModel)]="edit.id"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Types </p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="idCaserneType" [(ngModel)]="hideAffliation" [(ngModel)]="edit.caserneType.id">
+                    <option value=1 [ngValue]="1" >BRIGADE</option>
+                    <option  value=2 [ngValue]="2" >COMPAGNIE</option>
+                    <option  value=3 [ngValue]="3">CENTRE_SECOURS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 0">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.affiliation.id" >
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 2">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" [(ngModel)]="edit.affiliation.id" >
+                    <option *ngFor="let c of brigade" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="hideAffliation === 3" (click)="sortByCompagnie()">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.affiliation.id" >
+                    <option *ngFor="let c of compagnie" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="name" [(ngModel)]="edit.name"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Ville</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="city" [(ngModel)]="edit.city" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Zone</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="area" [(ngModel)]="edit.area"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>    </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Caserne</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="caserneUpdateForm" (ngSubmit)="onSubmit2()">
+          <p class="card-description" [(ngModel)]="edit.caserneType.id"  *ngIf="edit.caserneType.id !== 1">
+            <strong>Caserne Et Affiliation</strong>
+          </p>
+          <p class="card-description" [(ngModel)]="edit.caserneType.id"  *ngIf="edit.caserneType.id === 1">
+            <strong>Caserne </strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6" hidden="true">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">id</p>
+                <div class="col-sm-9" >
+                  <p class="form-control" [(ngModel)]="edit.id"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Types </p>
+                <div class="col-sm-9" >
+                  <p class="form-control"  [(ngModel)]="edit.caserneType.caserneType">{{edit.caserneType.caserneType}}</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6"[(ngModel)]="edit.caserneType.id"  *ngIf="edit.caserneType.id !== 1">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Affiliation</p>
+                <div class="col-sm-9">
+                  <p class="form-control"  [(ngModel)]="edit.affiliation.id"> {{edit.affiliation.name}} </p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <p type="text" class="form-control"formControlName="name" [(ngModel)]="edit.name"> {{edit.name}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Ville</p>
+                <div class="col-sm-9">
+                  <p type="text" class="form-control" formControlName="city" [(ngModel)]="edit.city" > {{edit.city}} </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Zone</p>
+                <div class="col-sm-9">
+                  <p type="text" class="form-control" formControlName="area" [(ngModel)]="edit.area"> {{edit.area}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+
+<section>
+  <ng-template #content3 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Confirmer?</h3>
+
+    </div>
+    <div class="modal-body">
+      <h3>Voulez-vous vraiment supprimer cette Caserne?</h3>
+    </div>
+    <div class="modal-footer">
+     <button type="submit"  style="margin-left: 25%;" (click)="deleteCaserne(caserne.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
+     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+
+    </div>
+  </ng-template>
+</section>

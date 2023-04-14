@@ -104,9 +104,6 @@ export class ApiService {
       return this.http.get(this.url + "/casernes/" + id);
     }
 
-    getCaserneByTipes(){
-      return this.http.get(this.url + "/casernes/types");
-    }
 
     getCaserneTypesById(id: number){
       return this.http.get(this.url + "/casernes/types/" + id);

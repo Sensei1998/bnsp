@@ -19,10 +19,7 @@
 <section>
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h3 class="modal-title" >Formualaire de création d'agent</h3>
-
-      <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
-          class="fa fa-minus"></i></pf-button>
+      <h3 class="modal-title" >Formulaire de création d'agent</h3>
     </div>
     <div class="modal-body">
       <div class="card-body">
@@ -31,15 +28,7 @@
             <strong>Information Personnelle</strong>
           </p>
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Matricule</p>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="matricule" />
-                </div>
 
-              </div>
-            </div>
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Nom</p>
@@ -48,13 +37,29 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Prenom</p>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" formControlName="firstname" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Mot de passe</p>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" formControlName="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,}$" />
+                  <!-- <div *ngIf="agentForm.get('password').invalid && agentForm.get('password').touched" class="text-danger">
+                    Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial et être d'au moins 8 caractères.
+                  </div> -->
+                  <div>
+                    <p *ngIf="!isPasswordValid" class="text-danger">Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -68,10 +73,24 @@
             </div> -->
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Password</p>
+                <p class="col-sm-3 col-form-p">Répété le Mot de passe</p>
                 <div class="col-sm-9">
-                  <input type="password" class="form-control" formControlName="password"/>
+                  <input type="password" class="form-control" formControlName="confirmPassword" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,}$"/>
+                  <div  class="text-danger">
+                    <p *ngIf="!isPasswordMatch" class="text-danger">Les mots de passe ne correspondent pas.</p>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Matricule</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="matricule" />
+                </div>
+
               </div>
             </div>
           </div>
@@ -105,7 +124,8 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="submit"  style="margin-left: 90%;" (click)="onSubmit()" (click)="modal.close('Close click')">Submit</pf-button>
+     <button type="submit"  style="margin-left: 25%;"(click)="onSubmit()"(click)="modal.close('Close click')"  class="btn btn-success">Enregister</button>
+     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
     </div>
   </ng-template>
 </section>
@@ -114,10 +134,8 @@
 <section>
   <ng-template #content1 let-modal>
     <div class="modal-header">
-      <h3 class="modal-title" >Formualaire de d'édition d'agent</h3>
+      <h3 class="modal-title" >Formulaire de modification d'agent</h3>
 
-      <pf-button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
-          class="fa fa-minus"></i></pf-button>
     </div>
     <div class="modal-body">
       <div class="card-body">
@@ -181,7 +199,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Caserne</p>
                 <div class="col-sm-9" >
-                  <select class="form-control" formControlName="caserneId" >
+                  <select class="form-control" formControlName="caserneId" [(ngModel)]="agent.caserne.id">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
@@ -203,7 +221,8 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="submit"  style="margin-left: 90%;" (click)="onEdit()" (click)="modal.close('Close click')">Submit</pf-button>
+     <button type="submit"  style="margin-left: 25%;" (click)="onEdit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
     </div>
   </ng-template>
 </section>
@@ -214,9 +233,35 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Liste des agents</h4>
-        <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 80%">
-          <i class="fa fa-plus"></i>
-        </pf-button>
+        <div class="row" style="margin-left: 20%;">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Trier par caserne</p>
+              <div class="col-sm-8">
+                <select class="form-control" [(ngModel)]="compagnie" >
+                  <option [ngValue]="0" >Tous les Agents</option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-2" style="margin-left: 84%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button *ngIf="compagnie !== 0" (click)="getAgentByCaserne(compagnie)">Triez</pf-button>
+                    <pf-button *ngIf="compagnie === 0" (click)="getAgent()">Triez</pf-button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
+            <i class="fa fa-plus"></i>
+          </pf-button>
+        </div>
+
+
+
         <div class="table-responsive">
           <table class="table table-hover" >
             <thead>
@@ -226,7 +271,6 @@
                 <th>Prenon</th>
                 <th>Grade</th>
                 <th></th>
-                <th></th>
               </tr>
             </thead>
             <tbody *ngFor="let u of users">
@@ -235,8 +279,12 @@
                 <td>{{u.lastname}}</td>
                 <td> {{u.firstname}}</td>
                 <td>{{u.grade.grade}}</td>
-                <td (click)="openEdit(content1)" (click)="getAgentById(u.id)"><i class="fa fa-edit"></i></td>
-                <td (click)="deleteAgent(u.id)"><i class="fa fa-trash" style="color: red;"></i></td>
+                <td class="row" >
+                  <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>
+                </td>
+
               </tr>
             </tbody>
           </table>
@@ -244,5 +292,120 @@
       </div>
     </div>
   </div>
+</section>
+
+
+
+<section>
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Agent</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="agentEditForm" (ngSubmit)="onSubmit()">
+          <p class="card-description ">
+            <strong>Information Personnelle</strong>
+          </p>
+          <div class="row" hidden>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">id</p>
+                <div class="col-sm-9">
+                  <p class="form-control" formControlName="id" >{{agent.id}}</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <p class="form-control"formControlName="lastname" > {{agent.lastname}} </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Prenom</p>
+                <div class="col-sm-9">
+                  <p  class="form-control" formControlName="firstname" > {{agent.firstname}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Matricule</p>
+                <div class="col-sm-9">
+                  <p  class="form-control" formControlName="matricule" >{{agent.matricule}} </p>
+                </div>
+
+              </div>
+            </div>
+
+
+            <!-- <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <p class="card-description">
+            <strong>Caserne et Grade</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <p class="form-control" formControlName="caserneId"> {{agent.caserne.name}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Grade</p>
+                <div class="col-sm-9">
+                  <p  class="form-control" formControlName="gradeId">{{agent.grade.grade}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+     <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+
+<section>
+  <ng-template #content3 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Confirmer?</h3>
+
+    </div>
+    <div class="modal-body">
+      <h3>Voulez-vous vraiment supprimer cet agent?</h3>
+    </div>
+    <div class="modal-footer">
+     <button type="submit"  style="margin-left: 25%;" (click)="deleteAgent(agent.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
+     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+
+    </div>
+  </ng-template>
 </section>
 

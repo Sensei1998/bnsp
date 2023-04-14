@@ -1,7 +1,7 @@
 import { AgentCreationForm } from '@/model/AgentCreationForm.model';
 import { AgentUpdateForm } from '@/model/AgentUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
@@ -18,7 +18,8 @@ export class CreationAgentComponent implements OnInit{
     matricule: [[], Validators.required],
     firstname:   [[], Validators.required],
     lastname:  [[], Validators.required],
-    password:   [[], Validators.required],
+    password:   [[], Validators.required, ],
+    confirmPassword: [[], Validators.required],
     caserneId:   [[], Validators.required],
     gradeId: [[], Validators.required],
   });
@@ -42,6 +43,13 @@ export class CreationAgentComponent implements OnInit{
     gradeId: [[], Validators.required],
   });
 
+  passwordControle;
+
+  isPasswordValid = true;
+  isPasswordMatch = true;
+
+  compagnie;
+
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
@@ -53,8 +61,26 @@ export class CreationAgentComponent implements OnInit{
     this.getCaserne();
     this.getGrade();
     this.getAgent();
+    this.agentForm.get('password').valueChanges.subscribe(() => {
+      this.checkPassword();
+    });
+
+    this.agentForm.get('confirmPassword').valueChanges.subscribe(() => {
+      this.checkPasswordMatch();
+    });
   }
 
+  checkPassword() {
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])[a-zA-Z\d@#$%]{8,}$/;
+    const password = this.agentForm.get('password').value;
+    this.isPasswordValid = passwordPattern.test(password);
+  }
+
+  checkPasswordMatch() {
+    const password = this.agentForm.get('password').value;
+    const confirmPassword = this.agentForm.get('confirmPassword').value;
+    this.isPasswordMatch = password === confirmPassword;
+  }
 
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(
@@ -63,6 +89,18 @@ export class CreationAgentComponent implements OnInit{
       }
     );
   }
+
+  getAgentByCaserne(id: number){
+      return this.http.get(this.url + "/users/caserne/" + id).subscribe(
+        user => {
+          this.users = user
+        }
+      );
+
+
+  }
+
+
 
   getGrade(){
    return this.http.get(this.url + "/users/grades").subscribe(
@@ -92,6 +130,7 @@ export class CreationAgentComponent implements OnInit{
     return this.http.get(this.url + "/users/" + id).subscribe(
       agent =>{
         this.agent = agent;
+        console.log(this.agent);
       }
     );
   }
@@ -99,6 +138,7 @@ export class CreationAgentComponent implements OnInit{
   deleteAgent(id: number){
     return this.http.delete(this.url + "/users/" + id ).subscribe(
       supp => {
+        this.toastr.success('Agent supprimé avec succès!');
         window.location.reload()
       }
     );
@@ -106,21 +146,28 @@ export class CreationAgentComponent implements OnInit{
 
   onSubmit(){
 
-    if(this.agentForm.valid){
-      let Agent:AgentCreationForm = {
-        matricule: this.agentForm.get("matricule").value,
-        firstname: this.agentForm.get("firstname").value,
-        lastname: this.agentForm.get("lastname").value,
-        password: this.agentForm.get("password").value,
-        caserneId: this.agentForm.get("caserneId").value,
-        gradeId: this.agentForm.get("gradeId").value,
+
+      if(this.agentForm.valid){
+        let Agent:AgentCreationForm = {
+          matricule: this.agentForm.get("matricule").value,
+          firstname: this.agentForm.get("firstname").value,
+          lastname: this.agentForm.get("lastname").value,
+          password: this.agentForm.get("password").value,
+          caserneId: this.agentForm.get("caserneId").value,
+          gradeId: this.agentForm.get("gradeId").value,
+        };
+        console.log(Agent);
+        this.createAgent(Agent);
+        this.toastr.success('Agent crée avec succès!');
+        window.location.reload();
+      }else if (this.agentForm.invalid){
+        console.log(this.agentForm);
+        this.toastr.error('Formulaire invalide!');
+      } else {
+        this.toastr.error('Formulaire invalide!');
       }
-      this.createAgent(Agent);
-      this.toastr.success('Agent crée avec success!');
-      window.location.reload();
-    } else{
-      this.toastr.error('Formulaire invalid!');
-    }
+
+
   }
 
   onEdit(){
@@ -135,10 +182,10 @@ export class CreationAgentComponent implements OnInit{
         gradeId: this.agentEditForm.get("gradeId").value,
       }
       this.updateAgent(Agent);
-      this.toastr.success('Agent mise à jour avec success!');
+      this.toastr.success('Agent mise à jour avec succès!');
       window.location.reload();
     } else{
-      this.toastr.error('Formulaire invalid!');
+      this.toastr.error('Formulaire invalide!');
     }
   }
 
@@ -148,6 +195,14 @@ export class CreationAgentComponent implements OnInit{
 
   openEdit(content) {
 		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+	}
+
+  openRead(content) {
+		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+	}
+
+  openSupp(content) {
+		this.modalService.open(content, {size: 'xl', centered: true });
 	}
 
 }

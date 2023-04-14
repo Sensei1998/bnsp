@@ -1,7 +1,9 @@
 import { EnginCreationForm } from '@/model/EnginCreationForm.model';
+import { EnginUpdateForm } from '@/model/EnginUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -19,27 +21,81 @@ export class CreationEnginComponent implements OnInit{
     description: [[], Validators.required],
   });
 
+  enginUdapteForm:FormGroup = this.formBuilder.group({
+    enginId: [[], Validators.required],
+    caserneId:[[], Validators.required],
+    enginTypeId: [[], Validators.required],
+    immatriculation: [[], Validators.required],
+    description: [[], Validators.required],
+  });
+
   caserne;
+  engin;
+  edit;
+  sort;
 
 
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private http: HttpClient){}
+    private http: HttpClient,
+    config: NgbModalConfig, private modalService: NgbModal){
+    config.backdrop = 'static';
+		config.keyboard = false;
+    }
 
   ngOnInit(): void {
     this.getCaserne();
+    this.getEngin();
   }
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(
       caserne => {
-        this.caserne = caserne
-        this.caserne = this.caserne.filter(element => element.caserneType.id === 2   );
+        this.caserne = caserne;
       }
     );
   }
 
+  getEngin(){
+    return this.http.get(this.url + "/engins").subscribe(
+      engin => {
+        this.engin = engin;
+      }
+    );
+  }
+
+  getEnginByCaserne(id: number){
+    return this.http.get(this.url + "/engins/caserne/" + id).subscribe(
+      engin => {
+        this.engin = engin;
+      }
+    );
+  }
+
+
   createEngins(engin: EnginCreationForm){
     return this.http.post<EnginCreationForm>(this.url + "/engins/create", engin).subscribe();
+  }
+
+  updateEngin(engin:  EnginUpdateForm){
+    return this.http.put<EnginUpdateForm>(this.url + "/engins/update", engin).subscribe();
+  }
+
+  getEnginById(id: number){
+    return this.http.get(this.url + "/engins/" + id).subscribe(
+      edit =>{
+        this.edit = edit;
+        console.log(this.edit.id);
+      }
+    );
+  }
+
+  deleteEngin(id: number){
+    return this.http.delete(this.url + "/engins/" + id).subscribe(
+      del => {
+        this.toastr.success('Engin supprimé avec succès!');
+        window.location.reload();
+      }
+    );
   }
 
 
@@ -54,10 +110,44 @@ export class CreationEnginComponent implements OnInit{
       }
       this.createEngins(Engin);
       window.location.reload();
-      this.toastr.success('Engin crée avec success!');
+      this.toastr.success('Engin crée avec succès!');
     } else{
-      this.toastr.error('Formulaire invalid!');
+      this.toastr.error('Formulaire invalide!');
     }
   }
+
+  onSubmit2(){
+    console.log(this.enginUdapteForm);
+    if(this.enginUdapteForm.valid){
+      let Engin:EnginUpdateForm = {
+        enginId: this.enginUdapteForm.get("enginId").value,
+        caserneId: this.enginUdapteForm.get("caserneId").value,
+        enginTypeId: this.enginUdapteForm.get("enginTypeId").value,
+        immatriculation: this.enginUdapteForm.get("immatriculation").value,
+        description: this.enginUdapteForm.get("description").value
+      }
+      this.updateEngin(Engin);
+      window.location.reload();
+      this.toastr.success('Engin mise à jour avec succès!');
+    } else{
+      this.toastr.error('Formulaire invalide!');
+    }
+  }
+
+  openCreate(content) {
+		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+	}
+  openEdit(content) {
+		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+	}
+
+  openRead(content) {
+		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+	}
+
+
+  openSupp(content) {
+		this.modalService.open(content, {size: 'xl', centered: true });
+	}
 
 }

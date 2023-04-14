@@ -67,16 +67,17 @@ export const MENU = [
       name: 'Admin Fonction',
       iconClasses: 'fas fa-folder',
       children: [
+        {
+              name: 'Caserne',
+              iconClasses: 'fas fa-home',
+              path: ['/c_caserne']
+          },
           {
               name: 'Agent ',
               iconClasses: 'far fa-address-book',
               path: ['/c_agent']
           },
-          {
-              name: 'Caserne',
-              iconClasses: 'fas fa-home',
-              path: ['/c_caserne']
-          },
+
           {
             name: 'Engin',
             iconClasses: 'fas fa-truck',
