@@ -23,6 +23,7 @@ public class Engin {
     private String description;
 
     @NonNull
+    @Column(unique = true)
     private String immatriculation;
 
     @ManyToOne

@@ -7,14 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class InterventionFollowedKey {
+public class InterventionFollowedKey implements Serializable {
 
+    @ManyToOne
     private Intervention intervention;
 
+    @ManyToOne
     private Caserne caserne;
 }

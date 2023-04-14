@@ -22,4 +22,7 @@ public interface EnginRepository extends JpaRepository<Engin, Integer> {
     @Transactional
     List<Engin> findByHiddenFalse();
 
+    @Transactional
+    long countByImmatriculationContains(String immatriculation);
+
 }

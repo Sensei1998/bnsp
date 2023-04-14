@@ -94,6 +94,7 @@ public class EnginService implements EnginServiceInterface{
     @Override
     public Optional<Engin> deleteEngin(Engin targetedEngin) {
         targetedEngin.setHidden(true);
+        targetedEngin.setImmatriculation(targetedEngin.getImmatriculation() + "_#HIDDEN" + this.enginRepository.countByImmatriculationContains(targetedEngin.getImmatriculation()));
         this.enginRepository.save(targetedEngin);
         return Optional.of(targetedEngin);
     }
