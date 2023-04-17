@@ -1,17 +1,15 @@
 package bf.bnsp.api.intervention.model;
 
 import bf.bnsp.api.account.model.Equipe;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import bf.bnsp.api.caserne.model.Engin;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "INTERVENTION_ENGIN")
 public class InterventionSheetToTeam {
@@ -21,10 +19,15 @@ public class InterventionSheetToTeam {
     private int id;
 
     @ManyToOne
+    @NonNull
     private InterventionSheet interventionSheet;
 
     @ManyToOne
+    @NonNull
     private Equipe equipe;
+
+    @ManyToOne
+    private Engin engin;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createAt;
@@ -40,5 +43,9 @@ public class InterventionSheetToTeam {
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime checkIn;
+
+    private boolean active = false;
+
+    private boolean hidden = false;
 
 }

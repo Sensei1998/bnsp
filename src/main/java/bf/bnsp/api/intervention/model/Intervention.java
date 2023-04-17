@@ -4,10 +4,8 @@ import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.model.additional.CallerInfo;
 import bf.bnsp.api.intervention.model.additional.Incident;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,7 +15,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "BNSP_INTERVENTION")
 public class Intervention {
@@ -27,12 +25,14 @@ public class Intervention {
     private int id;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne
+    @NonNull
     private Agent agentCCOT;
 
     @Embedded
+    @NonNull
     private CallerInfo caller;
 
     @Embedded
@@ -40,5 +40,6 @@ public class Intervention {
 
     private boolean done = false;
 
+    @JsonIgnore
     private boolean hidden = false;
 }

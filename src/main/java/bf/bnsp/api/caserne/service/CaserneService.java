@@ -47,7 +47,7 @@ public class CaserneService implements CaserneServiceInterface {
         if(caserneType.isEmpty()) return Optional.empty();
         else if (!this.controlFormCaserne.controleCaserneHierarchy(caserneType.get(), caserneParent)) return Optional.empty();
         else{
-            Caserne caserne = new Caserne( caserneType.get(), caserneForm.getName(), caserneForm.getCity(), caserneForm.getArea());
+            Caserne caserne = new Caserne( caserneType.get(), caserneForm.getName(), caserneForm.getCity(), caserneForm.getArea(), String.join(";", caserneForm.getTelephone()), caserneForm.getEmail());
             if(caserneParent.isPresent()) caserne.setAffiliation(caserneParent.get());
             this.caserneRepository.save(caserne);
             return Optional.of(caserne);
@@ -64,6 +64,8 @@ public class CaserneService implements CaserneServiceInterface {
             caserne.setName(caserneForm.getName());
             caserne.setCity(caserneForm.getCity());
             caserne.setArea(caserneForm.getArea());
+            caserne.setEmail(caserneForm.getEmail());
+            caserne.setPhoneNumber(String.join(";", caserneForm.getTelephone()));
             if(caserneParent.isPresent()) caserne.setAffiliation(caserneParent.get());
             this.caserneRepository.save(caserne);
             return Optional.of(caserne);

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +22,13 @@ public class AgentCreationForm {
 
     private String password;
 
+    private String email;
+
+    private List<String> telephone = new ArrayList<>();
+
     private int caserneId;
 
     private int gradeId;
+
+    private int defaultFonction = -1;
 }

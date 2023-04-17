@@ -35,8 +35,10 @@ public class Caserne {
     @NonNull
     private String area;
 
+    @NonNull
     private String phoneNumber;
 
+    @NonNull
     @Column(unique = true)
     private String email;
 

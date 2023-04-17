@@ -35,12 +35,22 @@ public class Agent {
     private String password;
 
     @NonNull
+    private String phoneNumber;
+
+    @Column(unique = true)
+    @NonNull
+    private String email;
+
+    @NonNull
     @ManyToOne
     private Caserne caserne;
 
     @NonNull
     @ManyToOne
     private Grade grade;
+
+    @ManyToOne
+    private FonctionType defaultFonction;
 
     @JsonIgnore
     private boolean hidden = false;

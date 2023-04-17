@@ -5,6 +5,7 @@ import bf.bnsp.api.account.dto.form.AgentUpdateForm;
 import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.Grade;
 import bf.bnsp.api.account.repository.AgentRepository;
+import bf.bnsp.api.account.repository.FonctionTypeRepository;
 import bf.bnsp.api.account.repository.GradeRepository;
 import bf.bnsp.api.caserne.model.Caserne;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,16 @@ public class AgentService implements AgentServiceInterface{
     @Autowired
     private GradeRepository gradeRepository;
 
+    @Autowired
+    private FonctionTypeRepository fonctionTypeRepository;
+
     @Override
     public Optional<Agent> createAgent(AgentCreationForm agentForm, Caserne caserne) {
         Optional<Grade> grade = this.gradeRepository.findById(agentForm.getGradeId());
         if(grade.isEmpty()) return Optional.empty();
         else{
-            Agent agent = new Agent(agentForm.getMatricule(), agentForm.getFirstname(), agentForm.getLastname(), agentForm.getPassword(), caserne, grade.get());
+            Agent agent = new Agent(agentForm.getMatricule(), agentForm.getFirstname(), agentForm.getLastname(), agentForm.getPassword(), String.join(";", agentForm.getTelephone()), agentForm.getEmail(), caserne, grade.get());
+            if(agentForm.getDefaultFonction() != -1) agent.setDefaultFonction(this.fonctionTypeRepository.findById(agentForm.getDefaultFonction()).get());
             this.agentRepository.save(agent);
             return Optional.of(agent);
         }
@@ -43,6 +48,9 @@ public class AgentService implements AgentServiceInterface{
             targetedAgent.setLastname(agentForm.getLastname());
             targetedAgent.setCaserne(caserne);
             targetedAgent.setGrade(grade.get());
+            targetedAgent.setEmail(agentForm.getEmail());
+            targetedAgent.setPhoneNumber(String.join(";", agentForm.getTelephone()));
+            if(agentForm.getDefaultFonction() != -1) targetedAgent.setDefaultFonction(this.fonctionTypeRepository.findById(agentForm.getDefaultFonction()).get());
             this.agentRepository.save(targetedAgent);
             return Optional.of(targetedAgent);
         }
@@ -76,6 +84,8 @@ public class AgentService implements AgentServiceInterface{
     @Override
     public Optional<Agent> deleteAgent(Agent targetedAgent) {
         targetedAgent.setHidden(true);
+        targetedAgent.setMatricule(targetedAgent.getMatricule() + "_#HIDDEN" + this.agentRepository.countByMatriculeContains(targetedAgent.getMatricule()));
+        targetedAgent.setEmail(targetedAgent.getEmail() + "_#HIDDEN" + this.agentRepository.countByEmailContains(targetedAgent.getEmail()));
         this.agentRepository.save(targetedAgent);
         return Optional.of(targetedAgent);
     }

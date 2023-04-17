@@ -74,7 +74,7 @@ public class FonctionService implements FonctionServiceInterface {
             }
         }
 
-        //Remove all Agent who not in the new list
+        //Remove all Agent who are not in the new list
         List<Fonction> deletedFonction = new ArrayList<>();
         List<Integer> registeredAgents = this.fonctionRepository.findAgentIdByDateAndCaserne(date, targetedTeam.get().getCaserne());
         List<Integer> formAgents = new ArrayList<>();

@@ -22,4 +22,10 @@ public interface AgentRepository extends JpaRepository<Agent, Integer> {
     @Transactional
     List<Agent> findByHiddenFalse();
 
+    @Transactional
+    long countByMatriculeContains(String matricule);
+
+    @Transactional
+    long countByEmailContains(String email);
+
 }
