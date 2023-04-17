@@ -29,4 +29,6 @@ public class Fonction {
     @ManyToOne
     @NonNull
     private Equipe equipe;
+
+    private boolean hidden = false;
 }

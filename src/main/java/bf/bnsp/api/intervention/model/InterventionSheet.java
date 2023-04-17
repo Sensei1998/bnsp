@@ -13,6 +13,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "BNSP_INTERVENTION_FOLLOWED")
 public class InterventionSheet {

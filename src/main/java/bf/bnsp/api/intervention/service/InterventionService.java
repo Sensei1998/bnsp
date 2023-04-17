@@ -100,5 +100,10 @@ public class InterventionService implements InterventionServiceInterface{
         return Optional.of(intervention);
     }
 
+    @Override
+    public Optional<Intervention> findActiveInterventionById(int id) {
+        return this.interventionRepository.findById(id);
+    }
+
 
 }

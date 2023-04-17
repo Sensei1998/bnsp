@@ -11,6 +11,8 @@ public class InterventionSheetMessageForm {
 
     private int interventionId;
 
+    private int caserneId;
+
     private int equipeId;
 
     private String message;

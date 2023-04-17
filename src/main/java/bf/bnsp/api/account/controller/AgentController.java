@@ -1,7 +1,9 @@
 package bf.bnsp.api.account.controller;
 
 import bf.bnsp.api.account.dto.form.AgentCreationForm;
+import bf.bnsp.api.account.dto.form.AgentLoginForm;
 import bf.bnsp.api.account.dto.form.AgentUpdateForm;
+import bf.bnsp.api.account.dto.response.AgentLoginResponse;
 import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.service.AgentService;
 import bf.bnsp.api.caserne.model.Caserne;
@@ -40,6 +42,12 @@ public class AgentController {
                 return new ResponseEntity<>(response.get(), HttpStatus.CREATED);
             }
         }
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody AgentLoginForm loginForm){
+        Optional<AgentLoginResponse> response =  this.agentService.loginAgent(loginForm);
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @PutMapping(value = "/update")

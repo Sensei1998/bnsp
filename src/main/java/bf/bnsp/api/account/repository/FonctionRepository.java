@@ -4,6 +4,7 @@ import bf.bnsp.api.account.model.Fonction;
 import bf.bnsp.api.account.model.FonctionKeys;
 import bf.bnsp.api.caserne.model.Caserne;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
@@ -27,4 +28,7 @@ public interface FonctionRepository extends JpaRepository<Fonction, Integer> {
 
     @Query("SELECT fnc FROM Fonction fnc WHERE fnc.keys.date = ?1 AND fnc.equipe.caserne = ?2 ORDER BY fnc.equipe.id")
     List<Fonction> findFonctionIdByDateAndCaserneOrderByEquipe(LocalDate date, Caserne caserne);
+
+    @Transactional
+    List<Fonction> removeByHiddenTrue();
 }

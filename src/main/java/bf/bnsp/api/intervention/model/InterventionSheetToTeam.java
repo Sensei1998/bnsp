@@ -2,6 +2,7 @@ package bf.bnsp.api.intervention.model;
 
 import bf.bnsp.api.account.model.Equipe;
 import bf.bnsp.api.caserne.model.Engin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -44,8 +45,10 @@ public class InterventionSheetToTeam {
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime checkIn;
 
+    @JsonIgnore
     private boolean active = false;
 
+    @JsonIgnore
     private boolean hidden = false;
 
 }

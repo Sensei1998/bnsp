@@ -18,9 +18,9 @@ public class InterventionSheetOut {
     private int equipeId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Optional<LocalDateTime> presentation;
+    private Optional<LocalDateTime> presentation = Optional.empty();
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Optional<LocalDateTime> departure;
+    private Optional<LocalDateTime> departure = Optional.empty();
 
 }

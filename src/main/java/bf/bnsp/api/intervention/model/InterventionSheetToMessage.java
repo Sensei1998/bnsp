@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "INTERVENTION_ENGIN")
+@Table(name = "INTERVENTION_MESSAGE")
 public class InterventionSheetToMessage {
 
     @Id

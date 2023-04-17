@@ -28,4 +28,6 @@ public interface AgentRepository extends JpaRepository<Agent, Integer> {
     @Transactional
     long countByEmailContains(String email);
 
+    @Transactional
+    Optional<Agent> findByEmailAndHiddenFalse(String email);
 }

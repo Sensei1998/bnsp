@@ -123,8 +123,10 @@ public class FonctionService implements FonctionServiceInterface {
     public List<Fonction> deleteFonctionList(Caserne caserne, LocalDate date) {
         List<Fonction> fonctions = this.findDailyProgramDetailByCaserneAndDate(caserne, date);
         for (Fonction element: this.fonctionRepository.findFonctionIdByDateAndCaserneOrderByEquipe(date, caserne)) {
-            this.fonctionRepository.delete(element);
+            element.setHidden(true);
+            this.fonctionRepository.save(element);
         }
+        fonctions = this.fonctionRepository.removeByHiddenTrue();
         return fonctions;
     }
 
