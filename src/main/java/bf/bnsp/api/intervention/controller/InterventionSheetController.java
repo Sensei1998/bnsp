@@ -97,7 +97,7 @@ public class InterventionSheetController {
         if(intervention.isEmpty() || caserne.isEmpty()) return ResponseEntity.notFound().build();
         else {
             Optional<InterventionSheet> interventionSheet = this.interventionSheetService.findActiveInterventionSheetById(new InterventionFollowedKey(intervention.get(), caserne.get()));
-            if(intervention.isEmpty()) return ResponseEntity.notFound().build();
+            if(interventionSheet.isEmpty()) return ResponseEntity.notFound().build();
             if(equipeId.isEmpty()){
                 response = this.interventionSheetService.findMessagesByInterventionSheet(interventionSheet.get());
                 return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();

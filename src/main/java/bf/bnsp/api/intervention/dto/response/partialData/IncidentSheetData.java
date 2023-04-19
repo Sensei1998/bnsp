@@ -13,6 +13,8 @@ import java.util.List;
 @Setter
 public class IncidentSheetData {
 
+    private int incidentId;
+
     private List<Person> proprietaires;
 
     private List<Person> victimes;

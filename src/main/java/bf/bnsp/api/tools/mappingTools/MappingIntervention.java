@@ -20,7 +20,7 @@ public class MappingIntervention {
         List<IncidentSheetData> incidentList = new ArrayList<>();
         Sinister firstSinister = sinisters.get(0);
         for (Sinister element: sinisters) {
-            incidentList.add(new IncidentSheetData(element.getOwners(), element.getVictims(), element.getDamages(), element.getComments()));
+            incidentList.add(new IncidentSheetData(element.getId(), element.getOwners(), element.getVictims(), element.getDamages(), element.getComments()));
         }
         return new IncidentResponseOneCaserne(firstSinister.getInterventionSheet().getKey().getIntervention().getId(), firstSinister.getInterventionSheet().getKey().getIntervention().getDate(), firstSinister.getInterventionSheet().getKey().getIntervention().getCaller(), firstSinister.getInterventionSheet().getKey().getIntervention().getIncident(), firstSinister.getInterventionSheet().getKey().getCaserne().getId(), firstSinister.getInterventionSheet().getKey().getCaserne().getName(), incidentList);
     }
@@ -40,7 +40,7 @@ public class MappingIntervention {
                 incidentList.clear();
             }
 
-            incidentList.add(new IncidentSheetData(element.getOwners(), element.getVictims(), element.getDamages(), element.getComments()));
+            incidentList.add(new IncidentSheetData(element.getId(), element.getOwners(), element.getVictims(), element.getDamages(), element.getComments()));
         }
         Sinister lastSinister = sinisters.get(sinisters.size() - 1);
         caserneDataList.add(new IncidentSheetCaserneData(lastSinister.getInterventionSheet().getKey().getCaserne().getId(), lastSinister.getInterventionSheet().getKey().getCaserne().getName(), incidentList));
