@@ -18,6 +18,7 @@ import { CreationAgentComponent } from '@pages/admin/creation-agent/creation-age
 import { CreationCaserneComponent } from '@pages/admin/creation-caserne/creation-caserne.component';
 import { CreationEnginComponent } from '@pages/admin/creation-engin/creation-engin.component';
 import { CreationEquipeComponent } from '@pages/admin/creation-equipe/creation-equipe.component';
+import { CreationProgramComponent } from '@pages/admin/creation-program/creation-program.component';
 
 const routes: Routes = [
     {
@@ -65,6 +66,10 @@ const routes: Routes = [
             {
               path: 'c_equipe',
               component: CreationEquipeComponent
+            },
+            {
+              path: 'c_program',
+              component: CreationProgramComponent
             },
             {
                 path: '',

@@ -7,5 +7,9 @@ export interface CaserneCreationForm{
 
   city: string;
 
-   area: string;
+  area: string;
+
+  telephone: string[];
+
+  email:string;
 }

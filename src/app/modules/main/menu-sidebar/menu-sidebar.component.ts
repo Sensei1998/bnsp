@@ -84,6 +84,11 @@ export const MENU = [
             path: ['/c_engin']
           },
           {
+            name: 'Program',
+            iconClasses: 'fas fa-clipboard',
+            path: ['/c_program']
+          },
+          {
             name: 'Equipe',
             iconClasses: 'fas fa-users',
             path: ['/c_equipe']

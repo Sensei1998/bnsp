@@ -45,6 +45,7 @@ import { CreationCaserneComponent } from './pages/admin/creation-caserne/creatio
 import { CreationEquipeComponent } from './pages/admin/creation-equipe/creation-equipe.component';
 import { CreationEnginComponent } from './pages/admin/creation-engin/creation-engin.component';
 import { CreationAgentComponent } from './pages/admin/creation-agent/creation-agent.component';
+import { CreationProgramComponent } from './pages/admin/creation-program/creation-program.component';
 
 
 
@@ -80,6 +81,7 @@ registerLocaleData(localeEn, 'en-EN');
         CreationEquipeComponent,
         CreationEnginComponent,
         CreationAgentComponent,
+        CreationProgramComponent,
 
     ],
     imports: [

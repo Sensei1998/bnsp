@@ -93,6 +93,47 @@
 
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Email</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="email" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" formArrayName="telephone" *ngFor="let n of number.controls; let i = index" >
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-p">Numero de telephone {{i + 1}}</p>
+                <div class="col-sm-8" >
+                  <input type="text" class="form-control" [formControlName]="i"  />
+                </div>
+                <div class="row" style="margin-left:2%;">
+                  <i class="fa fa-plus" (click)="addNumber()" ></i>
+                  <i class="fa fa-trash" *ngIf="number.length > 1" style="margin-left: 2%;" (click)="deleteNumber(i)" ></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Fonction</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="defaultFonction"  >
+                    <option value=1>ROLE_SUPERVISOR</option>
+                    <option value=2>ROLE_ADMINISTRATEUR</option>
+                    <option value=3>ROLE_CCOT</option>
+                    <option value=4>ROLE_BCTO</option>
+                    <option value=5>ROLE_CAP</option>
+                    <option value=6>ROLE_SGT</option>
+                    <option value=7>ROLE_CA</option>
+                    <option value=8>ROLE_CH</option>
+                    <option value=9>ROLE_SVT</option>
+                    <option value=10>ROLE_HDL</option>
+                    <option value=11>ROLE_CONDUCTEUR</option>
+                    <option value=12>ROLE_SDA</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
           <p class="card-description">
             <strong>Caserne et Grade</strong>
@@ -143,7 +184,7 @@
           <p class="card-description ">
             <strong>Information Personnelle</strong>
           </p>
-          <div class="row" hidden>
+          <div class="row" hidden="true">
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">id</p>
@@ -154,6 +195,26 @@
               </div>
             </div>
           </div>
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Nom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="lastname" [(ngModel)]="agent.lastname"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Prenom</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" formControlName="firstname" [(ngModel)]="agent.firstname"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
@@ -166,31 +227,47 @@
             </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Nom</p>
+                <p class="col-sm-3 col-form-p">Email</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control"formControlName="lastname" [(ngModel)]="agent.lastname"/>
+                  <input type="text" class="form-control"formControlName="email" [(ngModel)]="agent.email" />
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
+            <div class="col-md-6" formArrayName="telephone" *ngFor="let e of number2.controls; let i = index" >
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-p">Numero de telephone {{i + 1}}</p>
+                <div class="col-sm-8" >
+                  <input type="text" class="form-control" [formControlName]="i" value={{e.value}} />
+                </div>
+                <div class="row" style="margin-left:2%;">
+                  <i class="fa fa-plus" (click)="addNumber2()" ></i>
+                  <i class="fa fa-trash" *ngIf="number2.length > 1" style="margin-left: 2%;" (click)="deleteNumber2(i)" ></i>
+                </div>
+              </div>
+            </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Prenom</p>
+                <p class="col-sm-3 col-form-p">Fonction</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="firstname" [(ngModel)]="agent.firstname"/>
+                  <select class="form-control" formControlName="defaultFonction" [(ngModel)]="agent.defaultFonction.id" >
+                    <option value=1>ROLE_SUPERVISOR</option>
+                    <option value=2>ROLE_ADMINISTRATEUR</option>
+                    <option value=3>ROLE_CCOT</option>
+                    <option value=4>ROLE_BCTO</option>
+                    <option value=5>ROLE_CAP</option>
+                    <option value=6>ROLE_SGT</option>
+                    <option value=7>ROLE_CA</option>
+                    <option value=8>ROLE_CH</option>
+                    <option value=9>ROLE_SVT</option>
+                    <option value=10>ROLE_HDL</option>
+                    <option value=11>ROLE_CONDUCTEUR</option>
+                    <option value=12>ROLE_SDA</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Date of Birth</p>
-                <div class="col-sm-9">
-                  <input class="form-control" placeholder="dd/mm/yyyy"/>
-                </div>
-              </div>
-            </div> -->
           </div>
+
           <p class="card-description">
             <strong>Caserne et Grade</strong>
           </p>
@@ -269,6 +346,9 @@
                 <th>Matricule</th>
                 <th>Nom</th>
                 <th>Prenon</th>
+                <th>Email</th>
+                <th>Numero</th>
+                <th>Fonction</th>
                 <th>Grade</th>
                 <th></th>
               </tr>
@@ -278,8 +358,11 @@
                 <td>{{u.matricule}}</td>
                 <td>{{u.lastname}}</td>
                 <td> {{u.firstname}}</td>
+                <td> {{u.email}} </td>
+                <td> {{u.phoneNumber}} </td>
+                <td> {{u.defaultFonction.rule}} </td>
                 <td>{{u.grade.grade}}</td>
-                <td class="row" >
+                <td  >
                   <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>
@@ -307,12 +390,12 @@
           <p class="card-description ">
             <strong>Information Personnelle</strong>
           </p>
-          <div class="row" hidden>
+          <div class="row" hidden="true">
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">id</p>
                 <div class="col-sm-9">
-                  <p class="form-control" formControlName="id" >{{agent.id}}</p>
+                  <p type="text" class="form-control" formControlName="id" > {{agent.id}} </p>
                 </div>
 
               </div>
@@ -324,7 +407,7 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Nom</p>
                 <div class="col-sm-9">
-                  <p class="form-control"formControlName="lastname" > {{agent.lastname}} </p>
+                  <p type="text" class="form-control"formControlName="lastname" > {{agent.lastname}} </p>
                 </div>
               </div>
             </div>
@@ -332,7 +415,7 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Prenom</p>
                 <div class="col-sm-9">
-                  <p  class="form-control" formControlName="firstname" > {{agent.firstname}} </p>
+                  <p type="text" class="form-control" formControlName="firstname" > {{agent.firstname}} </p>
                 </div>
               </div>
             </div>
@@ -343,22 +426,39 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Matricule</p>
                 <div class="col-sm-9">
-                  <p  class="form-control" formControlName="matricule" >{{agent.matricule}} </p>
+                  <p type="text" class="form-control" formControlName="matricule" > {{agent.matricule}} </p>
                 </div>
 
               </div>
             </div>
-
-
-            <!-- <div class="col-md-6">
+            <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Date of Birth</p>
+                <p class="col-sm-3 col-form-p">Email</p>
                 <div class="col-sm-9">
-                  <input class="form-control" placeholder="dd/mm/yyyy"/>
+                  <p type="text" class="form-control"formControlName="email" > {{agent.email}} </p>
                 </div>
               </div>
-            </div> -->
+            </div>
+            <div class="col-md-6" formArrayName="telephone" *ngFor="let e of number2.controls; let i = index" >
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-p">Numero de telephone {{i + 1}}</p>
+                <div class="col-sm-8" >
+                  <p type="text" class="form-control" [formControlName]="i" > {{e.value}} </p>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Fonction</p>
+                <div class="col-sm-9">
+                  <p class="form-control" formControlName="defaultFonction">{{agent.defaultFonction.rule}}</p>
+
+                </div>
+              </div>
+            </div>
           </div>
+
           <p class="card-description">
             <strong>Caserne et Grade</strong>
           </p>
@@ -367,7 +467,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Caserne</p>
                 <div class="col-sm-9" >
-                  <p class="form-control" formControlName="caserneId"> {{agent.caserne.name}}</p>
+                  <p class="form-control" formControlName="caserneId"> {{agent.caserne.name}} </p>
                 </div>
               </div>
             </div>
@@ -375,7 +475,8 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Grade</p>
                 <div class="col-sm-9">
-                  <p  class="form-control" formControlName="gradeId">{{agent.grade.grade}}</p>
+                  <p class="form-control"  formControlName="gradeId"> {{agent.grade.grade}} </p>
+
                 </div>
               </div>
             </div>

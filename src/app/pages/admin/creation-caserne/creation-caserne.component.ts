@@ -2,7 +2,7 @@ import { CaserneCreationForm } from '@/model/CaserneCreationForm.model';
 import { CaserneUpdateForm } from '@/model/CaserneUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
@@ -21,6 +21,8 @@ export class CreationCaserneComponent implements OnInit {
     name: [[], Validators.required],
     city:[[], Validators.required],
     area: [[], Validators.required],
+    telephone:this.formBuilder.array(['']),
+    email:[[], Validators.required],
   });
 
   caserneUpdateForm:FormGroup = this.formBuilder.group({
@@ -30,6 +32,8 @@ export class CreationCaserneComponent implements OnInit {
     name: [[], Validators.required],
     city:[[], Validators.required],
     area: [[], Validators.required],
+    telephone:this.formBuilder.array(['']),
+    email:[[], Validators.required],
   });
 
   caserne;
@@ -39,6 +43,7 @@ export class CreationCaserneComponent implements OnInit {
   edit;
   sort;
   sortaff;
+  numero = this.formBuilder.array([]);
 
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -50,6 +55,33 @@ export class CreationCaserneComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCaserne();
+
+  }
+
+
+
+  get number(): FormArray{
+    return this.caserneForm.get('telephone') as FormArray;
+  }
+
+  addNumber(){
+    this.number.push(this.formBuilder.control(''),);
+  }
+  deleteNumber(index: number){
+    this.number.removeAt(index);
+    this.number.markAsDirty()
+  }
+
+  get number2(): FormArray{
+    return this.caserneUpdateForm.get('telephone') as FormArray;
+  }
+
+  addNumber2(){
+    this.number2.push(this.formBuilder.control(''),);
+  }
+  deleteNumber2(index: number){
+    this.number2.removeAt(index);
+    this.number2.markAsDirty()
   }
 
   createCaserne(caserne: CaserneCreationForm){
@@ -99,6 +131,13 @@ export class CreationCaserneComponent implements OnInit {
     return this.http.get(this.url + "/casernes/" + id).subscribe(
       edit =>{
         this.edit = edit;
+        let split = this.edit.phoneNumber.split(';');
+
+        split.forEach(phoneNumber => {
+          this.numero.push(this.formBuilder.control(phoneNumber));
+          this.caserneUpdateForm.setControl('telephone', this.formBuilder.array(split));
+        });
+
       }
     );
   }
@@ -121,8 +160,11 @@ export class CreationCaserneComponent implements OnInit {
         name: this.caserneForm.get("name").value,
         city: this.caserneForm.get("city").value,
         area: this.caserneForm.get("area").value,
+        telephone: this.caserneForm.getRawValue().telephone,
+        email: this.caserneForm.get("email").value,
       }
-      this.createCaserne(Caserne)
+      //console.log(Caserne);
+      this.createCaserne(Caserne);
       window.location.reload();
       this.toastr.success('Caserne crée avec succès!');
     } else{
@@ -131,7 +173,6 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   onSubmit2(){
-
     if(this.caserneUpdateForm.valid){
       let Caserne:CaserneUpdateForm = {
         id: this.caserneUpdateForm.get("id").value,
@@ -140,8 +181,11 @@ export class CreationCaserneComponent implements OnInit {
         name: this.caserneUpdateForm.get("name").value,
         city: this.caserneUpdateForm.get("city").value,
         area: this.caserneUpdateForm.get("area").value,
+        telephone: this.caserneUpdateForm.getRawValue().telephone,
+        email: this.caserneUpdateForm.get("email").value,
       }
-      this.updateCaserne(Caserne)
+
+      this.updateCaserne(Caserne);
       window.location.reload();
       this.toastr.success('Caserne mise à jour avec succès!');
     } else{

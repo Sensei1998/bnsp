@@ -10,4 +10,8 @@ export interface CaserneUpdateForm{
   city: string;
 
   area: string;
+
+  telephone: string[];
+
+  email:string;
 }

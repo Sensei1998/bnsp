@@ -2,7 +2,7 @@ import { AgentCreationForm } from '@/model/AgentCreationForm.model';
 import { AgentUpdateForm } from '@/model/AgentUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 
@@ -22,6 +22,9 @@ export class CreationAgentComponent implements OnInit{
     confirmPassword: [[], Validators.required],
     caserneId:   [[], Validators.required],
     gradeId: [[], Validators.required],
+    telephone:this.formBuilder.array(['']),
+    email:[[], Validators.required],
+    defaultFonction: [-1, Validators.required]
   });
 
 
@@ -41,6 +44,9 @@ export class CreationAgentComponent implements OnInit{
     lastname:  [[], Validators.required],
     caserneId:   [[], Validators.required],
     gradeId: [[], Validators.required],
+    telephone:this.formBuilder.array(['']),
+    email:[[], Validators.required],
+    defaultFonction: [-1, Validators.required]
   });
 
   passwordControle;
@@ -49,6 +55,7 @@ export class CreationAgentComponent implements OnInit{
   isPasswordMatch = true;
 
   compagnie;
+  numero = this.formBuilder.array([]);
 
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -68,6 +75,31 @@ export class CreationAgentComponent implements OnInit{
     this.agentForm.get('confirmPassword').valueChanges.subscribe(() => {
       this.checkPasswordMatch();
     });
+  }
+
+
+  get number(): FormArray{
+    return this.agentForm.get('telephone') as FormArray;
+  }
+
+  addNumber(){
+    this.number.push(this.formBuilder.control(''),);
+  }
+  deleteNumber(index: number){
+    this.number.removeAt(index);
+    this.number.markAsDirty()
+  }
+
+  get number2(): FormArray{
+    return this.agentEditForm.get('telephone') as FormArray;
+  }
+
+  addNumber2(){
+    this.number2.push(this.formBuilder.control(''),);
+  }
+  deleteNumber2(index: number){
+    this.number2.removeAt(index);
+    this.number2.markAsDirty()
   }
 
   checkPassword() {
@@ -130,7 +162,12 @@ export class CreationAgentComponent implements OnInit{
     return this.http.get(this.url + "/users/" + id).subscribe(
       agent =>{
         this.agent = agent;
-        console.log(this.agent);
+        let split = this.agent.phoneNumber.split(';');
+
+        split.forEach(phoneNumber => {
+          this.numero.push(this.formBuilder.control(phoneNumber));
+          this.agentEditForm.setControl('telephone', this.formBuilder.array(split));
+        });
       }
     );
   }
@@ -155,6 +192,9 @@ export class CreationAgentComponent implements OnInit{
           password: this.agentForm.get("password").value,
           caserneId: this.agentForm.get("caserneId").value,
           gradeId: this.agentForm.get("gradeId").value,
+          telephone: this.agentForm.getRawValue().telephone,
+          email: this.agentForm.get("email").value,
+          defaultFonction: this.agentForm.get("defaultFonction").value,
         };
         console.log(Agent);
         this.createAgent(Agent);
@@ -180,6 +220,9 @@ export class CreationAgentComponent implements OnInit{
         lastname: this.agentEditForm.get("lastname").value,
         caserneId: this.agentEditForm.get("caserneId").value,
         gradeId: this.agentEditForm.get("gradeId").value,
+        telephone: this.agentEditForm.getRawValue().telephone,
+        email: this.agentEditForm.get("email").value,
+        defaultFonction: this.agentEditForm.get("defaultFonction").value,
       }
       this.updateAgent(Agent);
       this.toastr.success('Agent mise à jour avec succès!');

@@ -1,0 +1,335 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+              <h1>Programme</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Blank Page</li>
+              </ol>
+          </div> -->
+      </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+  <div class="grid-margin stretch-card container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Liste des Programmes</h4>
+        <div class="row" style="margin-left: 20%;">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Trier par caserne</p>
+              <div class="col-sm-8">
+                <select class="form-control" [(ngModel)]="sort" >
+                  <option [ngValue]="0" >Tous les Vehicule</option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-2" style="margin-left: 84%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
+                    <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 40%;">
+              <i class="fa fa-plus"></i>
+            </pf-button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover" >
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Immatriculation</th>
+                <th>Description</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let e of engin">
+              <tr>
+                <td>{{e.enginType.enginType}}</td>
+                <td>{{e.immatriculation}}</td>
+                <td> {{e.description}}</td>
+                <td class="row"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getEnginById(e.id)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getEnginById(e.id)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getEnginById(e.id)" (click)="openSupp(content3)"></i></td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Formulaire de création d'un Vehicule</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="enginForm" (ngSubmit)="onSubmit()">
+          <p class="card-description">
+            <strong>Caserne Et Véhicule</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="caserneId" >
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Vehicule</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="enginTypeId" >
+                    <option value=1>PREMIER_SECOURS</option>
+                    <option value=2>FOURGON</option>
+                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
+                    <option value=4>INTERVENTION_DIVERSE</option>
+                    <option value=5>DESINCARCERATION</option>
+                    <option value=6>ECHELLE</option>
+                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
+                    <option value=8>CITERNE</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Immatriculation</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="immatriculation" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Description</p>
+                <div class="col-sm-9">
+                  <textarea type="text" class="form-control" formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Formulaire d'édition d'engin</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="enginUdapteForm" (ngSubmit)="onSubmit2()">
+          <p class="card-description">
+            <strong>Caserne Et Véhicule</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6" hidden="true">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Id</p>
+                <div class="col-sm-9" >
+                  <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Vehicule</p>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="enginTypeId"   [(ngModel)]="edit.enginType.id">
+                    <option value=1>PREMIER_SECOURS</option>
+                    <option value=2>FOURGON</option>
+                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
+                    <option value=4>INTERVENTION_DIVERSE</option>
+                    <option value=5>DESINCARCERATION</option>
+                    <option value=6>ECHELLE</option>
+                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
+                    <option value=8>CITERNE</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Immatriculation</p>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Description</p>
+                <div class="col-sm-9">
+                  <textarea type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title">Engin</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="enginUdapteForm" (ngSubmit)="onSubmit2()">
+          <p class="card-description">
+            <strong>Caserne Et Véhicule</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6" hidden="true">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Id</p>
+                <div class="col-sm-9" >
+                  <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <p class="form-control" [(ngModel)]="edit.caserne.id"> {{edit.caserne.name}} </p>
+                  <!-- <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
+                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Vehicule</p>
+                <div class="col-sm-9">
+                  <p class="form-control" [(ngModel)]="edit.enginType.id"> {{edit.enginType.enginType}} </p>
+                  <!-- <select class="form-control" formControlName="enginTypeId"   [(ngModel)]="edit.enginType.id">
+                    <option value=1>PREMIER_SECOURS</option>
+                    <option value=2>FOURGON</option>
+                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
+                    <option value=4>INTERVENTION_DIVERSE</option>
+                    <option value=5>DESINCARCERATION</option>
+                    <option value=6>ECHELLE</option>
+                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
+                    <option value=8>CITERNE</option>
+                  </select> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-description ">
+            <strong>Information </strong>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Immatriculation</p>
+                <div class="col-sm-9">
+                  <p type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" > {{edit.immatriculation}} </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Description</p>
+                <div class="col-sm-9">
+                  <p type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"> {{edit.description}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+     <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+    </div>
+  </ng-template>
+</section>
+
+
+
+<section>
+  <ng-template #content3 let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" >Confirmer?</h3>
+
+    </div>
+    <div class="modal-body">
+      <h3>Voulez-vous vraiment supprimer ce véhicule?</h3>
+    </div>
+    <div class="modal-footer">
+     <button type="submit"  style="margin-left: 25%;"  (click)="deleteEngin(engin.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
+     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+
+    </div>
+  </ng-template>
+</section>
+
