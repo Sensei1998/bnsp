@@ -21,7 +21,8 @@ public class JwtUtils {
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + JwtProperties.EXPIRATION_TIME))
-                .claim("adminId", userPrincipal.getUser().getId())
+                .claim("agentId", userPrincipal.getUser().getId())
+                .claim("caserneId", userPrincipal.getUser().getCaserne().getId())
                 .signWith(SignatureAlgorithm.HS512, JwtProperties.SECRET)
                 .compact();
     }
