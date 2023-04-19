@@ -78,7 +78,7 @@ public class InterventionSheetController {
             if(interventionSheet.isEmpty()) return ResponseEntity.notFound().build();
             else{
                 Optional<InterventionSheetToMessage> response = this.interventionSheetService.createInterventionMessage(messageFormForm, interventionSheet.get());
-                return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                return response.isPresent() ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(Arrays.asList(response.get())).get(0), HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
         }
     }
@@ -86,7 +86,7 @@ public class InterventionSheetController {
     @GetMapping(value = "/message/{messageId}")
     public ResponseEntity<?> getMessageDetailById(@PathVariable("messageId") int messageId){
         Optional<InterventionSheetToMessage> response = this.interventionSheetService.findMessageById(messageId);
-        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
+        return response.isPresent() ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(Arrays.asList(response.get())).get(0), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/message/intervention/{interventionId}/caserne/{caserneId}")
@@ -100,14 +100,14 @@ public class InterventionSheetController {
             if(interventionSheet.isEmpty()) return ResponseEntity.notFound().build();
             if(equipeId.isEmpty()){
                 response = this.interventionSheetService.findMessagesByInterventionSheet(interventionSheet.get());
-                return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+                return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(response), HttpStatus.OK) : ResponseEntity.noContent().build();
             }
             else {
                 Optional<Equipe> equipe =  this.equipeService.findActiveEquipeById(equipeId.get());
                 if(equipe.isEmpty()) return ResponseEntity.notFound().build();
                 else{
                     response = this.interventionSheetService.findMessagesByInterventionSheetAndTeam(interventionSheet.get(), equipe.get());
-                    return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+                    return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(response), HttpStatus.OK) : ResponseEntity.noContent().build();
                 }
             }
         }
@@ -116,7 +116,7 @@ public class InterventionSheetController {
     @DeleteMapping(value = "/message/{messageId}")
     public ResponseEntity<?> deleteMessageDetailById(@PathVariable("messageId") int messageId){
         Optional<InterventionSheetToMessage> response = this.interventionSheetService.deleteMessageById(messageId);
-        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
+        return response.isPresent() ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(Arrays.asList(response.get())).get(0), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @PostMapping(value = "/incident")

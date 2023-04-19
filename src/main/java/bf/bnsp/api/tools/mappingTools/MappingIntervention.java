@@ -3,8 +3,10 @@ package bf.bnsp.api.tools.mappingTools;
 import bf.bnsp.api.intervention.dto.form.partialData.PersonInfo;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseMultiCaserne;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseOneCaserne;
+import bf.bnsp.api.intervention.dto.response.MessageResponse;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetCaserneData;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetData;
+import bf.bnsp.api.intervention.model.InterventionSheetToMessage;
 import bf.bnsp.api.intervention.model.Person;
 import bf.bnsp.api.intervention.model.Sinister;
 import org.springframework.stereotype.Service;
@@ -48,4 +50,11 @@ public class MappingIntervention {
         return new IncidentResponseMultiCaserne(firstSinister.getId(), firstSinister.getCreateAt(), firstSinister.getInterventionSheet().getKey().getIntervention().getCaller(), firstSinister.getInterventionSheet().getKey().getIntervention().getIncident(), caserneDataList);
     }
 
+    public List<MessageResponse> mappingMessage(List<InterventionSheetToMessage> messages){
+        List<MessageResponse> response = new ArrayList<>();
+        for (InterventionSheetToMessage element: messages) {
+            response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getSentAt(), element.getMessage()));
+        }
+        return response;
+    }
 }
