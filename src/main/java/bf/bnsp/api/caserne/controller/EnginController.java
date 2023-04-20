@@ -1,9 +1,6 @@
 package bf.bnsp.api.caserne.controller;
 
-import bf.bnsp.api.caserne.dto.form.EnginCreationForm;
-import bf.bnsp.api.caserne.dto.form.EnginUpdateAvailability;
-import bf.bnsp.api.caserne.dto.form.EnginUpdateForm;
-import bf.bnsp.api.caserne.dto.form.EnginUpdateOut;
+import bf.bnsp.api.caserne.dto.form.*;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.model.Engin;
 import bf.bnsp.api.caserne.service.CaserneService;
@@ -99,6 +96,12 @@ public class EnginController {
             List<Engin> response = this.enginService.findAllActiveEnginByCaserne(caserne.get());
             return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
         }
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<?> getActiveEnginByImmatriculation(@RequestBody EnginSearchForm searchForm){
+        Optional<Engin> response = this.enginService.findActiveEnginByImmatriculation(searchForm.getImmatriculation());
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/types")

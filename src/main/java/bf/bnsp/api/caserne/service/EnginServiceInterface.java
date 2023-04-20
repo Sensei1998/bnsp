@@ -23,6 +23,8 @@ public interface EnginServiceInterface {
 
     Optional<Engin> findActiveEnginByCaserneAndId(int enginId, Caserne caserne);
 
+    Optional<Engin> findActiveEnginByImmatriculation(String immatriculation);
+
     List<Engin> findAllActiveEngin();
 
     List<Engin> findAllActiveEnginByCaserne(Caserne caserne);

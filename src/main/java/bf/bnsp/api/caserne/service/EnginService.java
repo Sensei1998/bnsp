@@ -77,6 +77,11 @@ public class EnginService implements EnginServiceInterface{
     }
 
     @Override
+    public Optional<Engin> findActiveEnginByImmatriculation(String immatriculation) {
+        return this.enginRepository.findByImmatriculationAndHiddenFalse(immatriculation);
+    }
+
+    @Override
     public List<Engin> findAllActiveEngin() {
         return this.enginRepository.findByHiddenFalse();
     }

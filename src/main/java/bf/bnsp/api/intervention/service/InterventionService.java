@@ -18,6 +18,7 @@ import bf.bnsp.api.intervention.repository.InterventionSheetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ public class InterventionService implements InterventionServiceInterface{
     public Optional<Intervention> createBasicIntervention(InterventionInitForm interventionForm, Agent agent) {
         CallerInfo callerInfo = new CallerInfo(interventionForm.getProvenance(), interventionForm.getPhoneNumber(), interventionForm.getName(), interventionForm.getAddress(), new Localisation(interventionForm.getLongitude(), interventionForm.getLatitude(), interventionForm.getPrecision()));
         Intervention intervention = new Intervention(agent, callerInfo);
+        intervention.setDate(LocalDateTime.of(interventionForm.getDate(), interventionForm.getTime()));
         this.interventionRepository.save(intervention);
         return Optional.of(intervention);
     }
@@ -50,6 +52,7 @@ public class InterventionService implements InterventionServiceInterface{
         Intervention intervention = new Intervention(agent, callerInfo);
         Incident incident = new Incident(interventionForm.getIncident().getCategory(), interventionForm.getIncident().getLibelle(), interventionForm.getIncident().getComments());
         intervention.setIncident(incident);
+        intervention.setDate(LocalDateTime.of(interventionForm.getDate(), interventionForm.getTime()));
         for (Integer element: interventionForm.getCasernes()) {
             targetedCaserne = caserneService.findActiveCaserneById(element);
             if(targetedCaserne.isPresent()) casernes.add(targetedCaserne.get());
