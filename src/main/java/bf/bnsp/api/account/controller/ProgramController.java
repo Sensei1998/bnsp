@@ -84,6 +84,19 @@ public class ProgramController {
         return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyTeam(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/team/search")
+    public ResponseEntity<?> getDailyTeamByDateAndCaserne(@RequestBody DailyProgramSearchForm searchForm, @RequestHeader("Authorization") String token){
+        Optional<Caserne> caserne = Optional.empty();
+        if(searchForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
+        else caserne = this.caserneService.findActiveCaserneById(searchForm.getCaserneId().get());
+
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(searchForm.getDate(), caserne.get());
+            return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()).getTeams(), HttpStatus.OK) : ResponseEntity.noContent().build();
+        }
+    }
+
     @DeleteMapping(value = "/team/{teamId}")
     public final ResponseEntity<?> deleteDailyTeamById(@PathVariable("teamId") long id){
         Optional<DailyTeam> response = this.dailyProgramService.findActiveDailyTeamById(id);
