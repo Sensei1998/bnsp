@@ -6,6 +6,10 @@ import bf.bnsp.api.account.service.AgentService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.form.InterventionInitAdvancedForm;
 import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
+import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
+import bf.bnsp.api.intervention.dto.form.InterventionUpdateLocationForm;
+import bf.bnsp.api.intervention.model.CategoryIncident;
+import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
 import bf.bnsp.api.intervention.service.InterventionService;
 import bf.bnsp.api.tools.dataType.EGrade;
@@ -13,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -50,4 +55,43 @@ public class InterventionController {
             return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
+    @PutMapping(value = "/update/location")
+    public ResponseEntity<?> updateInterventionLocation(@RequestBody InterventionUpdateLocationForm locationForm){
+        Optional<Intervention> response = this.interventionService.findActiveInterventionById(locationForm.getId());
+        if(response.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            response = this.interventionService.updateInterventionLocation(locationForm, response.get().getAgentCCOT(), response.get());
+            return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PutMapping(value = "/update/info")
+    public ResponseEntity<?> updateInterventionInfo(@RequestBody InterventionUpdateGeneralForm infoForm){
+        Optional<Intervention> response = this.interventionService.findActiveInterventionById(infoForm.getId());
+        if(response.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            response = this.interventionService.updateInterventionGeneralInfo(infoForm, response.get().getAgentCCOT(), response.get());
+            return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @GetMapping(value = "/types/category")
+    public ResponseEntity<?> getCategoriesIncident(){
+        List<CategoryIncident> response = this.interventionService.findAllCategoryIncident();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/types")
+    public ResponseEntity<?> getIncidentType(@RequestParam("category") Optional<Integer> categoryId){
+        List<IncidentType> response = categoryId.isEmpty() ? this.interventionService.findAllIncidentType() : this.interventionService.findAllIncidentTypeByCategoryIncidentId(categoryId.get());
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/types/{typeId}")
+    public ResponseEntity<?> getIncidentType(@PathVariable("typeId") int typeId){
+        Optional<IncidentType> response = this.interventionService.findIncidentTypeById(typeId);
+        return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.notFound().build();
+    }
+
 }

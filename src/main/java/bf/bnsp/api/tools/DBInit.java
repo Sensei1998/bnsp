@@ -13,6 +13,9 @@ import bf.bnsp.api.caserne.repository.AffiliationRepository;
 import bf.bnsp.api.caserne.repository.CaserneTypeRepository;
 import bf.bnsp.api.caserne.repository.EnginTypeRepository;
 import bf.bnsp.api.account.repository.FonctionTypeRepository;
+import bf.bnsp.api.intervention.model.CategoryIncident;
+import bf.bnsp.api.intervention.model.IncidentType;
+import bf.bnsp.api.intervention.repository.CategoryIncidentRepository;
 import bf.bnsp.api.tools.dataType.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,9 @@ public class DBInit implements CommandLineRunner {
     @Autowired
     private AffiliationRepository affiliationRepository;
 
+    @Autowired
+    private CategoryIncidentRepository categoryIncidentRepository;
+
     @Override
     public void run(String... args) throws Exception {
         this.initRules();;
@@ -53,6 +59,7 @@ public class DBInit implements CommandLineRunner {
         this.initGrade();
         this.initEquipeType();
         this.initData();
+        this.initIncident();
     }
 
     private void initRules(){
@@ -97,5 +104,23 @@ public class DBInit implements CommandLineRunner {
         affiliation.setRules(rules);
         affiliation.setDefaultStatus(true);
         this.affiliationRepository.save(affiliation);
+    }
+
+    private void initIncident(){
+        List<CategoryIncident> categoryIncidents = new ArrayList<>();
+        List<IncidentType> incidentTypes = new ArrayList<>();
+        String tmpCategory = ECategoryIncident.CODE_000.getCategory();
+        CategoryIncident tmpIncident;
+        for (ECategoryIncident element: ECategoryIncident.values()) {
+            if(element.getCategory() != tmpCategory){
+                tmpIncident = new CategoryIncident(element.getCategory());
+                tmpIncident.setTypes(new ArrayList<>(incidentTypes));
+                categoryIncidents.add(tmpIncident);
+                incidentTypes.clear();
+                tmpCategory = element.getCategory();
+            }
+            incidentTypes.add(new IncidentType(element.getType()));
+        }
+        this.categoryIncidentRepository.saveAll(categoryIncidents);
     }
 }

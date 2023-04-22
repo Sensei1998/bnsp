@@ -7,12 +7,16 @@ import bf.bnsp.api.intervention.dto.form.InterventionInitAdvancedForm;
 import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateLocationForm;
+import bf.bnsp.api.intervention.model.CategoryIncident;
+import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
 import bf.bnsp.api.intervention.model.InterventionSheet;
 import bf.bnsp.api.intervention.model.additional.CallerInfo;
 import bf.bnsp.api.intervention.model.additional.Incident;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
 import bf.bnsp.api.intervention.model.additional.Localisation;
+import bf.bnsp.api.intervention.repository.CategoryIncidentRepository;
+import bf.bnsp.api.intervention.repository.IncidentTypeRepository;
 import bf.bnsp.api.intervention.repository.InterventionRepository;
 import bf.bnsp.api.intervention.repository.InterventionSheetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,12 @@ public class InterventionService implements InterventionServiceInterface{
     private InterventionSheetRepository interventionSheetRepository;
 
     @Autowired
+    private CategoryIncidentRepository categoryIncidentRepository;
+
+    @Autowired
+    private IncidentTypeRepository incidentTypeRepository;
+
+    @Autowired
     private CaserneService caserneService;
 
     @Override
@@ -48,9 +58,13 @@ public class InterventionService implements InterventionServiceInterface{
     public Optional<Intervention> createAdvancedIntervention(InterventionInitAdvancedForm interventionForm, Agent agent) {
         List<Caserne> casernes = new ArrayList<>();
         Optional<Caserne> targetedCaserne;
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(interventionForm.getIncident().getCategoryId());
+        Optional<IncidentType> incidentType = this.findIncidentTypeById(interventionForm.getIncident().getIncidentTypeId());
+        if(categoryIncident.isEmpty() || incidentType.isEmpty()) return Optional.empty();
+
         CallerInfo callerInfo = new CallerInfo(interventionForm.getAppelant().getProvenance(), interventionForm.getAppelant().getPhoneNumber(), interventionForm.getAppelant().getName(), interventionForm.getAppelant().getAddress(), new Localisation(interventionForm.getAppelant().getLongitude(), interventionForm.getAppelant().getLatitude(), interventionForm.getAppelant().getPrecision()));
         Intervention intervention = new Intervention(agent, callerInfo);
-        Incident incident = new Incident(interventionForm.getIncident().getCategory(), interventionForm.getIncident().getLibelle(), interventionForm.getIncident().getComments());
+        Incident incident = new Incident(categoryIncident.get().getCategory(), incidentType.get().getDesignation(), interventionForm.getIncident().getComments());
         intervention.setIncident(incident);
         intervention.setDate(LocalDateTime.of(interventionForm.getDate(), interventionForm.getTime()));
         for (Integer element: interventionForm.getCasernes()) {
@@ -95,8 +109,14 @@ public class InterventionService implements InterventionServiceInterface{
             if(targetedCaserne.isPresent()) casernes.add(targetedCaserne.get());
             else return Optional.empty();
         }
-        //Replace by a function that going to check if the targeted interventionSheet is active before remove it
-        this.interventionSheetRepository.deleteAll(deletedInterventionSheet);
+
+        for (InterventionSheet element: deletedInterventionSheet) {
+            if(element.isActive()){
+                element.setHidden(true);
+                this.interventionSheetRepository.save(element);
+            }
+            else this.interventionSheetRepository.delete(element);
+        }
         for (Caserne element: casernes) {
             this.interventionSheetRepository.save(new InterventionSheet(new InterventionFollowedKey(intervention, element)));
         }
@@ -106,6 +126,27 @@ public class InterventionService implements InterventionServiceInterface{
     @Override
     public Optional<Intervention> findActiveInterventionById(int id) {
         return this.interventionRepository.findById(id);
+    }
+
+    @Override
+    public List<CategoryIncident> findAllCategoryIncident() {
+        return this.categoryIncidentRepository.findAll();
+    }
+
+    @Override
+    public List<IncidentType> findAllIncidentType() {
+        return this.incidentTypeRepository.findAll();
+    }
+
+    @Override
+    public List<IncidentType> findAllIncidentTypeByCategoryIncidentId(int categoryId) {
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(categoryId);
+        return categoryIncident.isPresent() ? categoryIncident.get().getTypes() : new ArrayList<>();
+    }
+
+    @Override
+    public Optional<IncidentType> findIncidentTypeById(int incidentId) {
+        return this.incidentTypeRepository.findById(incidentId);
     }
 
 

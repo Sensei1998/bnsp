@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InterventionIncidentInfo {
 
-    private String category;
+    private int categoryId;
 
-    private String libelle;
+    private int incidentTypeId;
 
     private String comments;
 }
