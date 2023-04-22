@@ -43,7 +43,6 @@ public class Agent {
 
     @NonNull
     @ManyToOne
-    @JsonIgnore
     private Caserne caserne;
 
     @NonNull
