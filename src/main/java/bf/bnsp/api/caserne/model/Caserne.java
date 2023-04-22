@@ -23,9 +23,6 @@ public class Caserne {
     @ManyToOne
     private CaserneType caserneType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Caserne affiliation;
-
     @NonNull
     private String name;
 

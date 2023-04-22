@@ -18,7 +18,7 @@ public class MessageResponse {
 
     private int caserneId;
 
-    private int equipeId;
+    private long equipeId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime sentAt;

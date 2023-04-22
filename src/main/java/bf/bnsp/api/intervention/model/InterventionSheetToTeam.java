@@ -1,7 +1,6 @@
 package bf.bnsp.api.intervention.model;
 
-import bf.bnsp.api.account.model.Equipe;
-import bf.bnsp.api.caserne.model.Engin;
+import bf.bnsp.api.account.model.DailyTeam;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,10 +24,7 @@ public class InterventionSheetToTeam {
 
     @ManyToOne
     @NonNull
-    private Equipe equipe;
-
-    @ManyToOne
-    private Engin engin;
+    private DailyTeam equipe;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createAt;

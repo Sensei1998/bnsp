@@ -1,6 +1,6 @@
 package bf.bnsp.api.intervention.model;
 
-import bf.bnsp.api.account.model.Equipe;
+import bf.bnsp.api.account.model.DailyTeam;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,7 +24,7 @@ public class InterventionSheetToMessage {
 
     @ManyToOne
     @NonNull
-    private Equipe equipe;
+    private DailyTeam equipe;
 
     @NonNull
     private String message;

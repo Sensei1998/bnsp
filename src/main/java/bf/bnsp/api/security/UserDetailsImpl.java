@@ -1,13 +1,9 @@
 package bf.bnsp.api.security;
 
 import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.service.FonctionService;
 import bf.bnsp.api.tools.dataType.EFonction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

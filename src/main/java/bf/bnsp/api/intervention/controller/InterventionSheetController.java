@@ -1,8 +1,8 @@
 package bf.bnsp.api.intervention.controller;
 
 import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.model.Equipe;
-import bf.bnsp.api.account.service.EquipeService;
+import bf.bnsp.api.account.model.DailyTeam;
+import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
 import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
@@ -35,19 +35,19 @@ public class InterventionSheetController {
 
     private final CaserneService caserneService;
 
-    private final EquipeService equipeService;
-
     private final TokenUtils tokenUtils;
+
+    private final DailyProgramService dailyProgramService;
 
     private final MappingIntervention mappingIntervention;
 
 
-    public InterventionSheetController(InterventionSheetService interventionSheetService, InterventionService interventionService, CaserneService caserneService, EquipeService equipeService, TokenUtils tokenUtils, MappingIntervention mappingIntervention) {
+    public InterventionSheetController(InterventionSheetService interventionSheetService, InterventionService interventionService, CaserneService caserneService, TokenUtils tokenUtils, DailyProgramService dailyProgramService, MappingIntervention mappingIntervention) {
         this.interventionSheetService = interventionSheetService;
         this.interventionService = interventionService;
         this.caserneService = caserneService;
-        this.equipeService = equipeService;
         this.tokenUtils = tokenUtils;
+        this.dailyProgramService = dailyProgramService;
         this.mappingIntervention = mappingIntervention;
     }
 
@@ -103,7 +103,7 @@ public class InterventionSheetController {
                 return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(response), HttpStatus.OK) : ResponseEntity.noContent().build();
             }
             else {
-                Optional<Equipe> equipe =  this.equipeService.findActiveEquipeById(equipeId.get());
+                Optional<DailyTeam> equipe =  this.dailyProgramService.findActiveDailyTeamById(equipeId.get());
                 if(equipe.isEmpty()) return ResponseEntity.notFound().build();
                 else{
                     response = this.interventionSheetService.findMessagesByInterventionSheetAndTeam(interventionSheet.get(), equipe.get());

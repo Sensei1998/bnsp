@@ -5,14 +5,8 @@ import bf.bnsp.api.account.dto.form.AgentLoginForm;
 import bf.bnsp.api.account.dto.form.AgentUpdateForm;
 import bf.bnsp.api.account.dto.response.AgentLoginResponse;
 import bf.bnsp.api.account.dto.response.partialData.LoginAgentInfo;
-import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.model.Fonction;
-import bf.bnsp.api.account.model.FonctionKeys;
-import bf.bnsp.api.account.model.Grade;
-import bf.bnsp.api.account.repository.AgentRepository;
-import bf.bnsp.api.account.repository.FonctionRepository;
-import bf.bnsp.api.account.repository.FonctionTypeRepository;
-import bf.bnsp.api.account.repository.GradeRepository;
+import bf.bnsp.api.account.model.*;
+import bf.bnsp.api.account.repository.*;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.security.JwtUtils;
 import bf.bnsp.api.security.PasswordEncryption;
@@ -45,7 +39,7 @@ public class AgentService implements AgentServiceInterface{
     private FonctionTypeRepository fonctionTypeRepository;
 
     @Autowired
-    private FonctionRepository fonctionRepository;
+    private DailyTeamMemberRepository dailyTeamMemberRepository;
 
     JwtUtils jwtUtils;
 
@@ -74,8 +68,8 @@ public class AgentService implements AgentServiceInterface{
         if(!authentication.isAuthenticated() || user == null){
             return Optional.empty();
         }
-        Optional<Fonction> ruleFromDailyProgram = this.fonctionRepository.findByKeys(new FonctionKeys(LocalDate.now(), user.getUser()));
-        EFonction agentRule = ruleFromDailyProgram.isPresent() ? ruleFromDailyProgram.get().getFunction().getRule() : user.getUser().getDefaultFonction().getRule();
+        Optional<DailyTeamMember> ruleFromDailyProgram = this.dailyTeamMemberRepository.findByAgentAndDateAndHiddenFalse(user.getUser(), LocalDate.now());
+        EFonction agentRule = ruleFromDailyProgram.isPresent() ? ruleFromDailyProgram.get().getFonction().getRule() : user.getUser().getDefaultFonction().getRule();
 
         AgentLoginResponse response = new AgentLoginResponse("Success", token, Optional.of(new LoginAgentInfo(user.getUser().getId(), user.getUser().getMatricule(), user.getUser().getFirstname(), user.getUser().getLastname(), user.getUser().getEmail(), List.of(user.getUser().getPhoneNumber().split(";")), user.getUser().getGrade().getGrade().name(), agentRule.name(), user.getUser().getCaserne().getId())));
         return Optional.of(response);

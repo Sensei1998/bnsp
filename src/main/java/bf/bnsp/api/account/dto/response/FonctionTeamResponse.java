@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FonctionTeamResponse {
 
-    private int teamId;
+    private long teamId;
 
     private String teamType;
 

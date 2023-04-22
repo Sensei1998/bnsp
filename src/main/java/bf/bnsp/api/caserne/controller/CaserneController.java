@@ -1,7 +1,11 @@
 package bf.bnsp.api.caserne.controller;
 
+import bf.bnsp.api.caserne.dto.form.AffiliationCreateForm;
+import bf.bnsp.api.caserne.dto.form.AffiliationListForm;
 import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
+import bf.bnsp.api.caserne.model.Affiliation;
+import bf.bnsp.api.caserne.model.AffiliationLink;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
 import org.springframework.http.HttpStatus;
@@ -26,11 +30,12 @@ public class CaserneController {
     public ResponseEntity<?> createBrigade(@RequestBody CaserneCreationForm caserneForm){
         Optional<Caserne> response;
         if(caserneForm.getIdCaserneType() < 1 || caserneForm.getIdCaserneType() > 3) return ResponseEntity.notFound().build();
-        else if (caserneForm.getIdCaserneParent() > 0){
-            Optional<Caserne> caserneParent = this.caserneService.findActiveCaserneById(caserneForm.getIdCaserneParent());
+        else if (caserneForm.getIdCaserneParent().isPresent() && caserneForm.getIdCaserneParent().get() > 0){
+            Optional<Caserne> caserneParent = this.caserneService.findActiveCaserneById(caserneForm.getIdCaserneParent().get());
             if(caserneParent.isEmpty()) return ResponseEntity.notFound().build();
             else {
                 response = this.caserneService.createCaserne(caserneForm, caserneParent);
+                this.caserneService.setAffiliationLink(caserneForm.getIdAffiliation(), caserneParent.get(), response.get());
                 return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
         }
@@ -45,11 +50,12 @@ public class CaserneController {
         Optional<Caserne> targetBrigade = this.caserneService.findActiveCaserneById(caserneForm.getId());
         Optional<Caserne> response;
         if(targetBrigade.isEmpty() || caserneForm.getIdCaserneType() < 1 || caserneForm.getIdCaserneType() > 3) return ResponseEntity.notFound().build();
-        else if (caserneForm.getIdCaserneParent() > 0){
-            Optional<Caserne> caserneParent = this.caserneService.findActiveCaserneById(caserneForm.getIdCaserneParent());
+        else if (caserneForm.getIdCaserneParent().isPresent() && caserneForm.getIdCaserneParent().get() > 0){
+            Optional<Caserne> caserneParent = this.caserneService.findActiveCaserneById(caserneForm.getIdCaserneParent().get());
             if(caserneParent.isEmpty()) return ResponseEntity.notFound().build();
             else {
                 response = this.caserneService.updateCaserne(caserneForm, caserneParent, targetBrigade.get());
+                this.caserneService.setAffiliationLink(caserneForm.getIdAffiliation(), caserneParent.get(), response.get());
                 return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
         }
@@ -63,6 +69,22 @@ public class CaserneController {
     public ResponseEntity<?> getActiveBrigadeById(@PathVariable("id") int id){
         Optional<Caserne> response = this.caserneService.findActiveCaserneById(id);
         return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/{id}/parent")
+    public ResponseEntity<?> getParentAffiliation(@PathVariable("id") int id, @RequestParam("affiliation") Optional<Integer> affiliationId){
+        Optional<Caserne> response = this.caserneService.findActiveCaserneById(id);
+        if(response.isEmpty()) return ResponseEntity.notFound().build();
+        response = this.caserneService.findParentAffiliationCaserne(affiliationId, response.get());
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/{id}/children")
+    public ResponseEntity<?> getChildrenAffiliation(@PathVariable("id") int id, @RequestParam("affiliation") Optional<Integer> affiliationId){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(id);
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        List<Caserne> response = this.caserneService.findChildrenAffiliationCaserne(affiliationId, caserne.get());
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = {"", "/"})
@@ -85,16 +107,6 @@ public class CaserneController {
         }
     }
 
-    @GetMapping(value = "/affiliation/{id}")
-    public ResponseEntity<?> getActiveCaserneByAffiliation(@PathVariable("id") int affiliation){
-        Optional<Caserne> targetBrigade = this.caserneService.findActiveCaserneById(affiliation);
-        if(targetBrigade.isEmpty()) return ResponseEntity.notFound().build();
-        else{
-            List<Caserne> response = this.caserneService.findActiveCaserneByAffiliation(targetBrigade.get());
-            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-    }
-
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteBrigadeById(@PathVariable("id") int id){
         Optional<Caserne> targetBrigade = this.caserneService.findActiveCaserneById(id);
@@ -103,5 +115,65 @@ public class CaserneController {
             Optional<Caserne> response = this.caserneService.deleteCaserne(targetBrigade.get());
             return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @PostMapping(value = "/affiliation/create")
+    public ResponseEntity<?> createAffiliation(@RequestBody AffiliationCreateForm affiliationCreateForm){
+        Optional<Affiliation> response = this.caserneService.createAffiliation(affiliationCreateForm);
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @PutMapping(value = "/affiliation/{id}/default")
+    public ResponseEntity<?> updateDefaultAffiliation(@PathVariable("id") int id){
+        Optional<Affiliation> response = this.caserneService.findActiveAffiliationById(id);
+        if(response.isPresent()) response = this.caserneService.setActiveAffiliationDefault(response.get());
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @GetMapping(value = {"/affiliation/", "/affiliation"})
+    public ResponseEntity<?> getAllActiveAffiliation(){
+        List<Affiliation> response = this.caserneService.findAllActiveAffiliation();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/affiliation/default")
+    public ResponseEntity<?> getDefaultAffiliation(){
+        Optional<Affiliation> response = this.caserneService.findDefaultAffiliation();
+        return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/affiliation/{id}")
+    public ResponseEntity<?> getAffiliationById(@PathVariable("id") int id){
+        Optional<Affiliation> response = this.caserneService.findActiveAffiliationById(id);
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(value = "/affiliation/{id}")
+    public ResponseEntity<?> deleteAffiliationById(@PathVariable("id") int id){
+        Optional<Affiliation> response = this.caserneService.findActiveAffiliationById(id);
+        if(response.isPresent()) response = this.caserneService.deleteAffiliation(response.get());
+        return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(value = "/affiliation//link/create")
+    public ResponseEntity<?> setAffiliationLink(@RequestBody AffiliationListForm listForm){
+        List<AffiliationLink> response = this.caserneService.setAffiliationListLink(listForm);
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @GetMapping(value = "/affiliation/link/{linkId}")
+    public ResponseEntity<?> getAffiliationLinkById(@PathVariable("linkId") int id){
+        Optional<AffiliationLink> response = this.caserneService.findAffiliationLinkById(id);
+        return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(value = "/affiliation//link/{linkId}")
+    public ResponseEntity<?> deleteAffiliationLinkById(@PathVariable("linkId") int id){
+        Optional<AffiliationLink> response = this.caserneService.findAffiliationLinkById(id);
+        if (response.isPresent()){
+            response = this.caserneService.deleteAffiliationLink(response.get());
+            return new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

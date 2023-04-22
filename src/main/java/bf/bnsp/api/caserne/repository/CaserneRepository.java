@@ -19,6 +19,4 @@ public interface CaserneRepository extends JpaRepository<Caserne, Integer> {
     @Transactional
     List<Caserne> findByCaserneTypeAndHiddenFalse(CaserneType caserneType);
 
-    @Transactional
-    List<Caserne> findByAffiliationAndHiddenFalse(Caserne caserne);
 }

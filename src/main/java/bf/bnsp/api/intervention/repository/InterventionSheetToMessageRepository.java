@@ -1,6 +1,6 @@
 package bf.bnsp.api.intervention.repository;
 
-import bf.bnsp.api.account.model.Equipe;
+import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.intervention.model.InterventionSheet;
 import bf.bnsp.api.intervention.model.InterventionSheetToMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +14,5 @@ public interface InterventionSheetToMessageRepository extends JpaRepository<Inte
     List<InterventionSheetToMessage> findByInterventionSheet(InterventionSheet interventionSheet);
 
     @Transactional
-    List<InterventionSheetToMessage> findByInterventionSheetAndEquipe(InterventionSheet interventionSheet, Equipe equipe);
+    List<InterventionSheetToMessage> findByInterventionSheetAndEquipe(InterventionSheet interventionSheet, DailyTeam equipe);
 }

@@ -8,6 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FonctionAgentResponse {
 
+    private long linkId;
+
     private int agentId;
 
     private String fonctionType;

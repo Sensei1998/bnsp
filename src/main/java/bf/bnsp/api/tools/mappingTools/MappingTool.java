@@ -4,8 +4,9 @@ import bf.bnsp.api.account.dto.response.*;
 import bf.bnsp.api.account.dto.response.partialData.EnginInfo;
 import bf.bnsp.api.account.dto.response.partialData.TeamInfo;
 import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.model.Equipe;
-import bf.bnsp.api.account.model.Fonction;
+import bf.bnsp.api.account.model.DailyProgram;
+import bf.bnsp.api.account.model.DailyTeam;
+import bf.bnsp.api.account.model.DailyTeamMember;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.model.Engin;
 import org.springframework.stereotype.Service;
@@ -17,33 +18,28 @@ import java.util.Optional;
 @Service
 public class MappingTool {
 
-    public DailyProgramResponse mappingDailyProgram(List<Fonction> fonctions){
+   public DailyProgramResponse mappingDailyProgram(DailyProgram dailyProgram){
         List<FonctionAgentResponse> agentList = new ArrayList<>();
         List<FonctionTeamResponse> teamList = new ArrayList<>();
-        int tmpTeam = -1;
-        Agent tmpAgent;
-        FonctionTeamResponse tmpTeamResponse;
-
-        for (Fonction fonction: fonctions) {
-            if(tmpTeam == -1) {
-                tmpTeam = fonction.getEquipe().getId();
+        for (DailyTeam dailyTeam: dailyProgram.getTeams()) {
+            for(DailyTeamMember member : dailyTeam.getMembers()){
+                agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
             }
-            else if(fonction.getEquipe().getId() != tmpTeam){
-                tmpTeamResponse = new FonctionTeamResponse(tmpTeam, fonction.getEquipe().getEquipeType().getEquipeType().name(), fonction.getEquipe().getDesignation(), agentList);
-                teamList.add(tmpTeamResponse);
-                tmpTeam = fonction.getEquipe().getId();
-                agentList.clear();
-            }
-            tmpAgent = fonction.getKeys().getAgent();
-            agentList.add(new FonctionAgentResponse(tmpAgent.getId(), fonction.getFunction().getRule().name(), tmpAgent.getFirstname(), tmpAgent.getLastname(), tmpAgent.getGrade().getGrade().name()));
+            teamList.add(new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), new ArrayList<>(agentList)));
+            agentList.clear();
         }
-        Equipe lastTeam = fonctions.get(fonctions.size() - 1).getEquipe();
-        tmpTeamResponse = new FonctionTeamResponse(lastTeam.getId(), lastTeam.getEquipeType().getEquipeType().name(), lastTeam.getDesignation(), agentList);
-        teamList.add(tmpTeamResponse);
-        return new DailyProgramResponse(fonctions.get(0).getKeys().getDate(), fonctions.get(0).getEquipe().getCaserne().getId(), fonctions.get(0).getEquipe().getCaserne().getName(), fonctions.get(0).getEquipe().getCaserne().getCity(), fonctions.get(0).getEquipe().getCaserne().getArea(), teamList);
+        return new DailyProgramResponse(dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea(), teamList);
     }
 
-    public List<TeamResponse> mappingTeam(List<Equipe> equipes){
+    public FonctionTeamResponse mappingDailyTeam(DailyTeam dailyTeam){
+       List<FonctionAgentResponse> agentList = new ArrayList<>();
+       for(DailyTeamMember member : dailyTeam.getMembers()){
+            agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
+        }
+        return new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), agentList);
+    }
+
+     /*public List<TeamResponse> mappingTeam(List<Equipe> equipes){
         List<TeamResponse> teamResponses = new ArrayList<>();
         List<TeamInfo> tmpTeam = new ArrayList<>();
         TeamInfo tmpTeamResponse;
@@ -71,5 +67,5 @@ public class MappingTool {
 
     public List<DailyProgramResponseList> mappingDailyProgramList(List<Fonction> fonctions){
     return null;
-    }
+    }*/
 }

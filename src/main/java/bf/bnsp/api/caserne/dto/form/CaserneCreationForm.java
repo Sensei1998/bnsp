@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +14,9 @@ public class CaserneCreationForm {
 
     private int idCaserneType;
 
-    private int idCaserneParent = 0;
+    private Optional<Integer> idCaserneParent = Optional.empty();
+
+    private Optional<Integer> idAffiliation = Optional.empty();
 
     private String name;
 

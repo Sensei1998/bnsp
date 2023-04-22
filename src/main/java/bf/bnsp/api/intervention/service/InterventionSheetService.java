@@ -1,10 +1,8 @@
 package bf.bnsp.api.intervention.service;
 
 import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.model.Equipe;
-import bf.bnsp.api.account.service.EquipeService;
-import bf.bnsp.api.caserne.model.Caserne;
-import bf.bnsp.api.caserne.model.Engin;
+import bf.bnsp.api.account.model.DailyTeam;
+import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
 import bf.bnsp.api.intervention.dto.form.IncidentInformationUpdateForm;
 import bf.bnsp.api.intervention.dto.form.InterventionSheetMessageForm;
@@ -40,19 +38,18 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
     private SinisterRepository sinisterRepository;
 
     @Autowired
-    private EquipeService equipeService;
+    private DailyProgramService dailyProgramService;
 
     @Override
     public List<InterventionSheetToTeam> updateInterventionSheet(InterventionSheetConfigOutForm interventionForm, InterventionSheet interventionSheet, Agent agent) {
         List<InterventionSheetToTeam> teamConfigList = new ArrayList<>();
         InterventionSheetToTeam tmpTeamConfig;
-        Optional<Equipe> targetedEquipe;
+        Optional<DailyTeam> targetedEquipe;
         for(InterventionSheetOut element: interventionForm.getInterventionSheet()){
-            targetedEquipe = this.equipeService.findActiveEquipeById(element.getEquipeId());
+            targetedEquipe = this.dailyProgramService.findActiveDailyTeamById(element.getEquipeId());
             if(targetedEquipe.isEmpty()) return new ArrayList<>();
             else{
                 tmpTeamConfig = new InterventionSheetToTeam(interventionSheet, targetedEquipe.get());
-                if(targetedEquipe.get().getEngin() != null) tmpTeamConfig.setEngin(targetedEquipe.get().getEngin());
                 if(element.getDeparture().isPresent()) tmpTeamConfig.setDeparture(element.getDeparture().get());
                 if(element.getPresentation().isPresent()) tmpTeamConfig.setDeparture(element.getPresentation().get());
                 teamConfigList.add(tmpTeamConfig);
@@ -67,8 +64,8 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
 
     @Override
     public Optional<InterventionSheetToMessage> createInterventionMessage(InterventionSheetMessageForm messageForm, InterventionSheet interventionSheet) {
-        Optional<Equipe> targetedEquipe;
-        targetedEquipe = this.equipeService.findActiveEquipeById(messageForm.getEquipeId());
+        Optional<DailyTeam> targetedEquipe;
+        targetedEquipe = this.dailyProgramService.findActiveDailyTeamById(messageForm.getEquipeId());
         if(targetedEquipe.isEmpty()) return Optional.empty();
         else {
             InterventionSheetToMessage message = new InterventionSheetToMessage(interventionSheet, targetedEquipe.get(), messageForm.getMessage());
@@ -160,7 +157,7 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
     }
 
     @Override
-    public List<InterventionSheetToMessage> findMessagesByInterventionSheetAndTeam(InterventionSheet interventionSheet, Equipe equipe) {
+    public List<InterventionSheetToMessage> findMessagesByInterventionSheetAndTeam(InterventionSheet interventionSheet, DailyTeam equipe) {
         return this.interventionSheetToMessageRepository.findByInterventionSheetAndEquipe(interventionSheet, equipe);
     }
 
