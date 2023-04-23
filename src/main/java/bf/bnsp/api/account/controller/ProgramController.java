@@ -10,10 +10,12 @@ import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
 import bf.bnsp.api.tools.controleForm.TokenUtils;
 import bf.bnsp.api.tools.mappingTools.MappingTool;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,14 +76,14 @@ public class ProgramController {
     }
 
     @GetMapping(value = "/search")
-    public ResponseEntity<?> getDailyProgramByDateAndCaserne(@RequestBody DailyProgramSearchForm searchForm, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> getDailyProgramByDateAndCaserne(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date, @RequestParam("caserne") Optional<Integer> caserneId, @RequestHeader("Authorization") String token){
         Optional<Caserne> caserne = Optional.empty();
-        if(searchForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
-        else caserne = this.caserneService.findActiveCaserneById(searchForm.getCaserneId().get());
+        if(caserneId.isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
+        else caserne = this.caserneService.findActiveCaserneById(caserneId.get());
 
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
-            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(searchForm.getDate(), caserne.get());
+            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(date, caserne.get());
             return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
     }
@@ -113,14 +115,14 @@ public class ProgramController {
     }
 
     @GetMapping(value = "/team/search")
-    public ResponseEntity<?> getDailyTeamByDateAndCaserne(@RequestBody DailyProgramSearchForm searchForm, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> getDailyTeamByDateAndCaserne(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date, @RequestParam("caserne") Optional<Integer> caserneId, @RequestHeader("Authorization") String token){
         Optional<Caserne> caserne = Optional.empty();
-        if(searchForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
-        else caserne = this.caserneService.findActiveCaserneById(searchForm.getCaserneId().get());
+        if(caserneId.isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
+        else caserne = this.caserneService.findActiveCaserneById(caserneId.get());
 
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
-            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(searchForm.getDate(), caserne.get());
+            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(date, caserne.get());
             return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()).getTeams(), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
     }
