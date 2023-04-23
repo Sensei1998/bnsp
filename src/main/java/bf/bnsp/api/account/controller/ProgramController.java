@@ -1,6 +1,8 @@
 package bf.bnsp.api.account.controller;
 
 import bf.bnsp.api.account.dto.form.*;
+import bf.bnsp.api.account.dto.response.DailyProgramMinResponse;
+import bf.bnsp.api.account.dto.response.DailyProgramResponse;
 import bf.bnsp.api.account.model.DailyProgram;
 import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.account.service.DailyProgramService;
@@ -12,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,6 +47,30 @@ public class ProgramController {
 
         Optional<DailyProgram> response = this.dailyProgramService.createDailyProgram(dailyProgramForm, caserne.get());
         return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = {"/", ""})
+    public ResponseEntity<?> getAllActiveDailyProgram(){
+        List<DailyProgram> program = this.dailyProgramService.findAllActiveDailyProgram();
+        List<DailyProgramMinResponse> response = new ArrayList<>();
+        for (DailyProgram element: program) {
+            response.add(this.mappingTool.mappingDailyProgramMin(element));
+        }
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/caserne/{id}")
+    public ResponseEntity<?> getAllActiveDailyProgramByCaserne(@PathVariable("id") int id){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(id);
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            List<DailyProgram> program = this.dailyProgramService.findAllActiveDailyProgramByCaserne(caserne.get());
+            List<DailyProgramMinResponse> response = new ArrayList<>();
+            for (DailyProgram element: program) {
+                response.add(this.mappingTool.mappingDailyProgramMin(element));
+            }
+            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping(value = "/search")

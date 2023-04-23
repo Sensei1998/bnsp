@@ -226,6 +226,16 @@ public class DailyProgramService implements DailyProgramServiceInterface{
     }
 
     @Override
+    public List<DailyProgram> findAllActiveDailyProgram() {
+        return this.dailyProgramRepository.findByHiddenFalse();
+    }
+
+    @Override
+    public List<DailyProgram> findAllActiveDailyProgramByCaserne(Caserne caserne) {
+        return this.dailyProgramRepository.findByCaserneAndHiddenFalse(caserne);
+    }
+
+    @Override
     public Optional<DailyProgram> findActiveDailyProgramByDateAndCaserne(LocalDate date, Caserne caserne) {
         return this.dailyProgramRepository.findByDateAndCaserneAndHiddenFalse(date, caserne);
     }

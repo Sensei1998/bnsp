@@ -33,6 +33,10 @@ public class MappingTool {
         return new DailyProgramResponse(dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea(), teamList);
     }
 
+    public DailyProgramMinResponse mappingDailyProgramMin(DailyProgram dailyProgram){
+        return new DailyProgramMinResponse(dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea());
+    }
+
     public FonctionTeamResponse mappingDailyTeam(DailyTeam dailyTeam){
        List<FonctionAgentResponse> agentList = new ArrayList<>();
        for(DailyTeamMember member : dailyTeam.getMembers()){

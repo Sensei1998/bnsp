@@ -11,6 +11,7 @@ import bf.bnsp.api.account.model.FonctionType;
 import bf.bnsp.api.caserne.model.Caserne;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface DailyProgramServiceInterface {
@@ -26,6 +27,10 @@ public interface DailyProgramServiceInterface {
     Optional<DailyTeam> deleteDailyTeam(DailyTeam dailyTeam);
 
     Optional<DailyProgram> findActiveDailyProgramById(long id);
+
+    List<DailyProgram> findAllActiveDailyProgram();
+
+    List<DailyProgram> findAllActiveDailyProgramByCaserne(Caserne caserne);
 
     Optional<DailyProgram> findActiveDailyProgramByDateAndCaserne(LocalDate date, Caserne caserne);
 

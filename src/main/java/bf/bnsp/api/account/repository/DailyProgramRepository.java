@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface DailyProgramRepository extends JpaRepository<DailyProgram, Long> {
@@ -15,4 +16,10 @@ public interface DailyProgramRepository extends JpaRepository<DailyProgram, Long
 
     @Transactional
     Optional<DailyProgram> findByDateAndCaserneAndHiddenFalse(LocalDate date, Caserne caserne);
+
+    @Transactional
+    List<DailyProgram> findByHiddenFalse();
+
+    @Transactional
+    List<DailyProgram> findByCaserneAndHiddenFalse(Caserne caserne);
 }
