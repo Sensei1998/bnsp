@@ -53,6 +53,7 @@ public class DailyProgramService implements DailyProgramServiceInterface{
         Optional<EquipeType> tmpTeamType;
         Optional<Engin> tmpEngin;
         DailyTeam tmpTeam;
+        DailyTeamMember tmpMember;
         for (DailyTeamForm teamForm: programForm.getEquipes()) {
             tmpTeamType = this.equipeTypeRepository.findById(teamForm.getTypeId());
             if(tmpTeamType.isEmpty()) return Optional.empty();
@@ -60,7 +61,10 @@ public class DailyProgramService implements DailyProgramServiceInterface{
                 tmpAgent = this.agentService.findActiveAgentByIdAndCasernce(memberForm.getAgentId(), caserne);
                 tmpFonctionType = this.fonctionTypeRepository.findById(memberForm.getFonctionId());
                 if(tmpAgent.isEmpty() || tmpFonctionType.isEmpty()) return Optional.empty();
-                members.add(new DailyTeamMember(programForm.getDate(), tmpAgent.get(), tmpFonctionType.get()));
+                tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgent.get(), tmpFonctionType.get());
+                if(memberForm.getRemplacant().isPresent()) tmpMember.setSubstitute(memberForm.getRemplacant().get());
+                members.add(tmpMember);
+
             }
             tmpTeam = new DailyTeam(programForm.getDate(), tmpTeamType.get(), teamForm.getDesignation());
             tmpTeam.setMembers(new ArrayList<>(members));
@@ -88,6 +92,7 @@ public class DailyProgramService implements DailyProgramServiceInterface{
         Optional<EquipeType> tmpTeamType;
         Optional<Engin> tmpEngin;
         DailyTeam tmpTeam;
+        DailyTeamMember tmpMember;
 
         tmpTeamType = this.equipeTypeRepository.findById(teamForm.getTypeId());
         if(tmpTeamType.isEmpty()) return Optional.empty();
@@ -95,7 +100,10 @@ public class DailyProgramService implements DailyProgramServiceInterface{
             tmpAgent = this.agentService.findActiveAgentByIdAndCasernce(memberForm.getAgentId(), dailyProgram.getCaserne());
             tmpFonctionType = this.fonctionTypeRepository.findById(memberForm.getFonctionId());
             if(tmpAgent.isEmpty() || tmpFonctionType.isEmpty()) return Optional.empty();
-            members.add(new DailyTeamMember(dailyProgram.getDate(), tmpAgent.get(), tmpFonctionType.get()));
+
+            tmpMember = new DailyTeamMember(dailyProgram.getDate(), tmpAgent.get(), tmpFonctionType.get());
+            if(memberForm.getRemplacant().isPresent()) tmpMember.setSubstitute(memberForm.getRemplacant().get());
+            members.add(tmpMember);
         }
 
         tmpTeam = new DailyTeam(dailyProgram.getDate(), tmpTeamType.get(), teamForm.getDesignation());
@@ -123,6 +131,8 @@ public class DailyProgramService implements DailyProgramServiceInterface{
         Optional<Agent> tmpAgent;
         Optional<FonctionType> tmpFonctionType;
         Optional<DailyTeamMember> targetedMember;
+        DailyTeamMember tmpMember;
+
         int index;
 
         for(DailyTeamMember element: dailyTeam.getMembers()){
@@ -166,7 +176,11 @@ public class DailyProgramService implements DailyProgramServiceInterface{
                 tmpAgent = this.agentService.findActiveAgentById(member.getAgentId());
                 tmpFonctionType = this.fonctionTypeRepository.findById(member.getFonctionId());
                 if(tmpAgent.isEmpty() || tmpFonctionType.isEmpty()) return Optional.empty();
-                else dailyMembers.add(new DailyTeamMember(dailyTeam.getDate(), tmpAgent.get(), tmpFonctionType.get()));
+                else {
+                    tmpMember = new DailyTeamMember(dailyTeam.getDate(), tmpAgent.get(), tmpFonctionType.get());
+                    if(member.getRemplacant().isPresent()) tmpMember.setSubstitute(member.getRemplacant().get());
+                    dailyMembers.add(tmpMember);
+                }
             }
             else if(updatedList.contains(member.getAgentId())){
                 targetedMember = this.dailyTeamRepository.findActiveDailyMemberByDailyTeamIdAndAgentId(dailyTeam.getId(), member.getAgentId());

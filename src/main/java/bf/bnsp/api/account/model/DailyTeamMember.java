@@ -34,6 +34,8 @@ public class DailyTeamMember {
     @NonNull
     private FonctionType fonction;
 
+    private boolean substitute = false;
+
     private boolean active = false;
 
     private boolean hidden = false;

@@ -14,6 +14,8 @@ public class FonctionAgentResponse {
 
     private String fonctionType;
 
+    private boolean substitution;
+
     private String firstname;
 
     private String lastname;

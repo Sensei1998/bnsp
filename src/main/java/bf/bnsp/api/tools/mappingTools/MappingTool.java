@@ -24,7 +24,7 @@ public class MappingTool {
         for (DailyTeam dailyTeam: dailyProgram.getTeams()) {
             if(!dailyProgram.isHidden()){
                 for(DailyTeamMember member : dailyTeam.getMembers()){
-                    if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
+                    if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.isSubstitute(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
                 }
                 teamList.add(new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), new ArrayList<>(agentList)));
                 agentList.clear();
@@ -36,7 +36,7 @@ public class MappingTool {
     public FonctionTeamResponse mappingDailyTeam(DailyTeam dailyTeam){
        List<FonctionAgentResponse> agentList = new ArrayList<>();
        for(DailyTeamMember member : dailyTeam.getMembers()){
-           if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
+           if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.isSubstitute(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
         }
         return new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), agentList);
     }
