@@ -4,17 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyMemberForm {
+public class DailyInitMemberForm {
 
-    private int principalId;
+    private int principal;
 
-    private int remplacantId;
-
-    private int fonctionId;
-
+    private int remplacant;
 }

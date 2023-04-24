@@ -13,15 +13,23 @@ public class FonctionAgentResponse {
 
     private long linkId;
 
-    private int agentId;
+    private int principalId;
+
+    private String principalFirstname;
+
+    private String principalLastname;
+
+    private String principalGgrade;
+
+    private int secondId;
+
+    private String secondFirstname;
+
+    private String secondLastname;
+
+    private String secondGgrade;
 
     private String fonctionType;
 
-    private boolean substitution;
 
-    private String firstname;
-
-    private String lastname;
-
-    private String grade;
 }

@@ -17,5 +17,5 @@ public interface DailyTeamMemberRepository extends JpaRepository<DailyTeamMember
     Optional<DailyTeamMember> findByIdAndHiddenFalse(long id);
 
     @Transactional
-    Optional<DailyTeamMember> findByAgentAndDateAndHiddenFalse(Agent agent, LocalDate date);
+    Optional<DailyTeamMember> findByPrincipalOrSecondaryAndDateAndHiddenFalse(Agent principal, Agent secondary, LocalDate date);
 }

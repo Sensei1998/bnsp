@@ -8,6 +8,7 @@ import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.service.AgentService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
+import bf.bnsp.api.tools.controleForm.TokenUtils;
 import bf.bnsp.api.tools.dataType.EGrade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,12 @@ public class AgentController {
 
     private final CaserneService caserneService;
 
-    public AgentController(AgentService agentService, CaserneService caserneService) {
+    private final TokenUtils tokenUtils;
+
+    public AgentController(AgentService agentService, CaserneService caserneService, TokenUtils tokenUtils) {
         this.agentService = agentService;
         this.caserneService = caserneService;
+        this.tokenUtils = tokenUtils;
     }
 
     @PostMapping(value = "/create")
@@ -72,6 +76,12 @@ public class AgentController {
     public final ResponseEntity<?> getAllActiveUsers(){
         List<Agent> response = this.agentService.findAllActiveAgent();
         return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/profil")
+    public final ResponseEntity<?> getUserProfil(@RequestHeader("Authorization") String token){
+        Optional<Agent> agent = this.tokenUtils.getAgentFromToken(token);
+        return agent.isEmpty() ? new ResponseEntity<>(HttpStatus.UNAUTHORIZED) : new ResponseEntity<>(agent.get(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

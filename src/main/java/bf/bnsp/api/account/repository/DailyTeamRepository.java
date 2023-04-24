@@ -14,10 +14,10 @@ import java.util.Optional;
  */
 public interface DailyTeamRepository extends JpaRepository<DailyTeam, Long> {
 
-    @Query("SELECT dtm.id FROM DailyTeam dt JOIN dt.members dtm WHERE dt.id = ?1 AND dtm.agent.id = ?2 AND dtm.hidden = false")
+    @Query("SELECT dtm.id FROM DailyTeam dt JOIN dt.members dtm WHERE dt.id = ?1 AND (dtm.principal.id = ?2 OR dtm.secondary.id = ?2) AND dtm.hidden = false")
     Optional<Integer> findActiveDailyMemberIdByDailyTeamIdAndAgentId(long dailyTeamId, int agentId);
 
-    @Query("SELECT dtm FROM DailyTeam dt JOIN dt.members dtm WHERE dt.id = ?1 AND dtm.agent.id = ?2 AND dtm.hidden = false")
+    @Query("SELECT dtm FROM DailyTeam dt JOIN dt.members dtm WHERE dt.id = ?1 AND (dtm.principal.id = ?2 OR dtm.secondary.id = ?2) AND dtm.hidden = false")
     Optional<DailyTeamMember> findActiveDailyMemberByDailyTeamIdAndAgentId(long dailyTeamId, int agentId);
 
     @Transactional

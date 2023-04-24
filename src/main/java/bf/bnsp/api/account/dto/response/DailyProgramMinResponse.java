@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DailyProgramMinResponse {
 
+    private long id;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 

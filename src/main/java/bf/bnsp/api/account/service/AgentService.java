@@ -71,7 +71,7 @@ public class AgentService implements AgentServiceInterface{
         if(!authentication.isAuthenticated() || user == null){
             return Optional.empty();
         }
-        Optional<DailyTeamMember> ruleFromDailyProgram = this.dailyTeamMemberRepository.findByAgentAndDateAndHiddenFalse(user.getUser(), LocalDate.now());
+        Optional<DailyTeamMember> ruleFromDailyProgram = this.dailyTeamMemberRepository.findByPrincipalOrSecondaryAndDateAndHiddenFalse(user.getUser(), user.getUser(), LocalDate.now());
         EFonction agentRule = ruleFromDailyProgram.isPresent() ? ruleFromDailyProgram.get().getFonction().getRule() : user.getUser().getDefaultFonction().getRule();
 
         AgentLoginResponse response = new AgentLoginResponse("Success", token, Optional.of(new LoginAgentInfo(user.getUser().getId(), user.getUser().getMatricule(), user.getUser().getFirstname(), user.getUser().getLastname(), user.getUser().getEmail(), List.of(user.getUser().getPhoneNumber().split(";")), user.getUser().getGrade().getGrade().name(), agentRule.name(), user.getUser().getCaserne().getId())));

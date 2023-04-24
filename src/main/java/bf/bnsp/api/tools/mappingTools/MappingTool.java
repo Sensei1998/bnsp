@@ -22,23 +22,23 @@ public class MappingTool {
         for (DailyTeam dailyTeam: dailyProgram.getTeams()) {
             if(!dailyProgram.isHidden()){
                 for(DailyTeamMember member : dailyTeam.getMembers()){
-                    if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.isSubstitute(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
+                    if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getPrincipal().getId(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getPrincipal().getGrade().getGrade().name(), member.getSecondary().getId(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getSecondary().getGrade().getGrade().name(), member.getFonction().getRule().name()));
                 }
                 teamList.add(new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), new ArrayList<>(agentList)));
                 agentList.clear();
             }
         }
-        return new DailyProgramResponse(dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea(), teamList);
+        return new DailyProgramResponse(dailyProgram.getId(), dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea(), teamList);
     }
 
     public DailyProgramMinResponse mappingDailyProgramMin(DailyProgram dailyProgram){
-        return new DailyProgramMinResponse(dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea());
+        return new DailyProgramMinResponse(dailyProgram.getId(), dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea());
     }
 
     public FonctionTeamResponse mappingDailyTeam(DailyTeam dailyTeam){
        List<FonctionAgentResponse> agentList = new ArrayList<>();
        for(DailyTeamMember member : dailyTeam.getMembers()){
-           if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getAgent().getId(), member.getFonction().getRule().name(), member.isSubstitute(), member.getAgent().getFirstname(), member.getAgent().getLastname(), member.getAgent().getGrade().getGrade().name()));
+           if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getPrincipal().getId(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getPrincipal().getGrade().getGrade().name(), member.getSecondary().getId(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getSecondary().getGrade().getGrade().name(), member.getFonction().getRule().name()));
         }
         return new FonctionTeamResponse(dailyTeam.getId(), dailyTeam.getType().getEquipeType().name(), dailyTeam.getDesignation(), agentList);
     }

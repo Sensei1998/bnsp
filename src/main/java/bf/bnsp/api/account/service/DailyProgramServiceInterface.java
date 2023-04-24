@@ -1,5 +1,6 @@
 package bf.bnsp.api.account.service;
 
+import bf.bnsp.api.account.dto.form.DailyProgramCreationForm;
 import bf.bnsp.api.account.dto.form.DailyProgramInitForm;
 import bf.bnsp.api.account.dto.form.DailyTeamAddForm;
 import bf.bnsp.api.account.dto.form.DailyTeamUpdateForm;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public interface DailyProgramServiceInterface {
 
     Optional<DailyProgram> createDailyProgram(DailyProgramInitForm programForm, Caserne caserne);
+
+    Optional<DailyProgram> createDailyProgramWithMainAgent(DailyProgramCreationForm programForm, Caserne caserne);
 
     Optional<DailyProgram> addTeamToDailyProgram(DailyTeamAddForm teamForm, DailyProgram dailyProgram);
 

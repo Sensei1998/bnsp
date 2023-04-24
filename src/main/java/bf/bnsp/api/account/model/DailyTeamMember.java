@@ -31,13 +31,15 @@ public class DailyTeamMember {
 
     @ManyToOne
     @NonNull
-    private Agent agent;
+    private Agent principal;
+
+    @ManyToOne
+    @NonNull
+    private Agent secondary;
 
     @ManyToOne
     @NonNull
     private FonctionType fonction;
-
-    private boolean substitute = false;
 
     private boolean active = false;
 

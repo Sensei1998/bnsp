@@ -14,6 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DailyProgramResponse {
 
+    private long id;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 

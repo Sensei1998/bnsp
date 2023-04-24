@@ -43,7 +43,7 @@ public class ProgramController {
         this.mappingTool = mappingTool;
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create/default")
     public ResponseEntity<?> createDailyProgram(@RequestBody DailyProgramInitForm dailyProgramForm, @RequestHeader("Authorization") String token){
         Optional<Caserne> caserne = Optional.empty();
         if(dailyProgramForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
@@ -51,6 +51,17 @@ public class ProgramController {
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
 
         Optional<DailyProgram> response = this.dailyProgramService.createDailyProgram(dailyProgramForm, caserne.get());
+        return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<?> createDailyProgramWithMember(@RequestBody DailyProgramCreationForm dailyProgramForm, @RequestHeader("Authorization") String token){
+        Optional<Caserne> caserne = Optional.empty();
+        if(dailyProgramForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
+        else caserne = this.caserneService.findActiveCaserneById(dailyProgramForm.getCaserneId().get());
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+
+        Optional<DailyProgram> response = this.dailyProgramService.createDailyProgramWithMainAgent(dailyProgramForm, caserne.get());
         return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
     }
 

@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Agent> response = this.agentRepository.findByEmailAndHiddenFalse(username);
         Optional<DailyTeamMember> dailyTeamMember;
         Optional<EFonction> fonction = Optional.empty();
-        dailyTeamMember = response.isPresent() ? this.dailyTeamMemberRepository.findByAgentAndDateAndHiddenFalse(response.get(), LocalDate.now()) : Optional.empty();
+        dailyTeamMember = response.isPresent() ? this.dailyTeamMemberRepository.findByPrincipalOrSecondaryAndDateAndHiddenFalse(response.get(), response.get(), LocalDate.now()) : Optional.empty();
         if(dailyTeamMember.isPresent()) fonction = Optional.of(dailyTeamMember.get().getFonction().getRule());
         Agent user = response.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
         UserDetailsImpl userDetails = new UserDetailsImpl(user, fonction);
