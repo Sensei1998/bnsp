@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * @author Berickal
+ */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor

@@ -9,6 +9,9 @@ import bf.bnsp.api.caserne.model.EnginType;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface EnginServiceInterface {
 
     Optional<Engin> createEngin(EnginCreationForm enginForm, Caserne caserne);

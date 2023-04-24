@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * @author Berickal
+ */
 public interface SinisterRepository extends JpaRepository<Sinister, Integer> {
 
     @Transactional

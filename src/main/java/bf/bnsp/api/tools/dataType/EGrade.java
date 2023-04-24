@@ -1,5 +1,8 @@
 package bf.bnsp.api.tools.dataType;
 
+/**
+ * @author Berickal
+ */
 public enum EGrade {
 
     //SAPEUR POMPIER VOLONTAIRE OU PROFESSIONEL : HOMME DE RANG

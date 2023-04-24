@@ -10,6 +10,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface AffiliationRepository extends JpaRepository<Affiliation, Integer> {
 
     @Transactional

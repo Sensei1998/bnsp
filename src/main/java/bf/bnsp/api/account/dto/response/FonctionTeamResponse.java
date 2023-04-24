@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * @author Berickal
+ */
 @Data
 @AllArgsConstructor
 public class FonctionTeamResponse {

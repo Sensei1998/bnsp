@@ -3,6 +3,9 @@ package bf.bnsp.api.security;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * @author Berickal
+ */
 public class PasswordEncryption implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {

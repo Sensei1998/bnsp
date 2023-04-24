@@ -1,5 +1,8 @@
 package bf.bnsp.api.tools.dataType;
 
+/**
+ * @author Berickal
+ */
 public enum EFonction {
     ROLE_SUPERVISOR,
     ROLE_ADMINISTRATEUR,

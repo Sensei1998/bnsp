@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Berickal
+ */
 @Data
 @AllArgsConstructor
 @Setter

@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Berickal
+ */
 public interface InterventionSheetRepository extends JpaRepository<InterventionSheet, InterventionFollowedKey> {
 
     @Query("SELECT intsh.key.caserne.id FROM InterventionSheet intsh WHERE intsh.key.intervention = ?1")

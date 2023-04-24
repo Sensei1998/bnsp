@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Setter;
 
+/**
+ * @author Berickal
+ */
 @Data
 @AllArgsConstructor
 @Setter

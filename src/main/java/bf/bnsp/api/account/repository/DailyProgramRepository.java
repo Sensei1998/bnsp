@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface DailyProgramRepository extends JpaRepository<DailyProgram, Long> {
 
     @Transactional

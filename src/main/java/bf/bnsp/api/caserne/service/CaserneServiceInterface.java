@@ -9,6 +9,9 @@ import bf.bnsp.api.caserne.model.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface CaserneServiceInterface {
 
     Optional<Caserne> createCaserne(CaserneCreationForm caserneForm, Optional<Caserne> caserneParent);

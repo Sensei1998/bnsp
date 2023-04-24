@@ -8,6 +8,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface DailyTeamMemberRepository extends JpaRepository<DailyTeamMember, Long> {
 
     @Transactional

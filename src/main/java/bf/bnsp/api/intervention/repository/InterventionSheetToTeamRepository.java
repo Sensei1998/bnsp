@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface InterventionSheetToTeamRepository extends JpaRepository<InterventionSheetToTeam, Integer> {
 
     @Transactional

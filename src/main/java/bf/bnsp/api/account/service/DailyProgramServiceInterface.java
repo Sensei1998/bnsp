@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface DailyProgramServiceInterface {
 
     Optional<DailyProgram> createDailyProgram(DailyProgramInitForm programForm, Caserne caserne);

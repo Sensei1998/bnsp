@@ -11,6 +11,9 @@ import bf.bnsp.api.caserne.model.Caserne;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface AgentServiceInterface {
 
     Optional<Agent> createAgent(AgentCreationForm agentForm, Caserne caserne);

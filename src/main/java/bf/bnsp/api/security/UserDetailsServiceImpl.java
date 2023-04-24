@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 

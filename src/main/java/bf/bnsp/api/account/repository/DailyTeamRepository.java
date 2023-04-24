@@ -9,6 +9,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 public interface DailyTeamRepository extends JpaRepository<DailyTeam, Long> {
 
     @Query("SELECT dtm.id FROM DailyTeam dt JOIN dt.members dtm WHERE dt.id = ?1 AND dtm.agent.id = ?2 AND dtm.hidden = false")

@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * @author Berickal
+ */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor

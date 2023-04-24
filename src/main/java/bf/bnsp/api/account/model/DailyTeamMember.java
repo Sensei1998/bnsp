@@ -10,6 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * @author Berickal
+ */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor

@@ -23,6 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 @Service
 @Log4j2
 public class CaserneService implements CaserneServiceInterface {

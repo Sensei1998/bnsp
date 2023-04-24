@@ -1,9 +1,7 @@
 package bf.bnsp.api.intervention.controller;
 
-import bf.bnsp.api.account.dto.form.AgentCreationForm;
 import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.service.AgentService;
-import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.form.InterventionInitAdvancedForm;
 import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
@@ -12,7 +10,6 @@ import bf.bnsp.api.intervention.model.CategoryIncident;
 import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
 import bf.bnsp.api.intervention.service.InterventionService;
-import bf.bnsp.api.tools.dataType.EGrade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Berickal
+ */
 @RestController
 @RequestMapping("/intervention")
 @CrossOrigin

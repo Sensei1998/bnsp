@@ -8,6 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.List;
 
+/**
+ * @author Berickal
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * @author Berickal
+ */
 @Component
 public class JwtUtils {
 
