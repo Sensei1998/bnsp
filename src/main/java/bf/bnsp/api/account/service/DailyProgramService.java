@@ -100,11 +100,6 @@ public class DailyProgramService implements DailyProgramServiceInterface{
             tmpAgentMain = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getPrincipal(), caserne);
             tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getRemplacant(), caserne);
             if(tmpAgentMain.isEmpty() || tmpAgentSecond.isEmpty()) return Optional.empty();
-            else members.add(new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(5).get()));
-
-            tmpAgentMain = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getPrincipal(), caserne);
-            tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getRemplacant(), caserne);
-            if(tmpAgentMain.isEmpty() || tmpAgentSecond.isEmpty()) return Optional.empty();
             else {
                 tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(5).get());
                 members.add(tmpMember);
@@ -114,16 +109,11 @@ public class DailyProgramService implements DailyProgramServiceInterface{
             teams.add(tmpTeam);
             members.clear();
 
-            tmpAgentMain = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getPrincipal(), caserne);
-            tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getRemplacant(), caserne);
-            if(tmpAgentMain.isEmpty() || tmpAgentSecond.isEmpty()) return Optional.empty();
-            else members.add(new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(6).get()));
-
-            tmpAgentMain = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getPrincipal(), caserne);
-            tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getCaporal().get().getRemplacant(), caserne);
+            tmpAgentMain = this.agentService.findActiveAgentByIdAndCasernce(programForm.getSergent().get().getPrincipal(), caserne);
+            tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getSergent().get().getRemplacant(), caserne);
             if(tmpAgentMain.isEmpty() || tmpAgentSecond.isEmpty()) return Optional.empty();
             else {
-                tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(6).get());
+                tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(7).get());
                 members.add(tmpMember);
             }
             tmpTeam = new DailyTeam(programForm.getDate(), this.equipeTypeRepository.findById(3).get(), "Sergent du jour");

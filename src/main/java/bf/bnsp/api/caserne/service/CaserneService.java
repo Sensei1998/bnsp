@@ -55,10 +55,11 @@ public class CaserneService implements CaserneServiceInterface {
     public Optional<Caserne> createCaserne(CaserneCreationForm caserneForm, Optional<Caserne> caserneParent) {
         Optional<CaserneType> caserneType = this.caserneTypeRepository.findById(caserneForm.getIdCaserneType());
         if(caserneType.isEmpty()) return Optional.empty();
-        else if (!this.controlFormCaserne.controleCaserneHierarchy(caserneType.get(), caserneParent)) return Optional.empty();
         else{
+            if(caserneParent.isPresent()){
+                if(!this.checkAffiliationRules(caserneForm.getIdAffiliation(), caserneParent.get().getCaserneType(), caserneType.get())) return Optional.empty();
+            }
             Caserne caserne = new Caserne( caserneType.get(), caserneForm.getName(), caserneForm.getCity(), caserneForm.getArea(), String.join(";", caserneForm.getTelephone()), caserneForm.getEmail());
-            //if(caserneParent.isPresent()) caserne.setAffiliation(caserneParent.get());
             this.caserneRepository.save(caserne);
             return Optional.of(caserne);
         }
@@ -68,18 +69,23 @@ public class CaserneService implements CaserneServiceInterface {
     public Optional<Caserne> updateCaserne(CaserneUpdateForm caserneForm, Optional<Caserne> caserneParent, Caserne caserne) {
         Optional<CaserneType> caserneType = this.caserneTypeRepository.findById(caserneForm.getIdCaserneType());
         if(caserneType.isEmpty()) return Optional.empty();
-        else if (!this.controlFormCaserne.controleCaserneHierarchy(caserneType.get(), caserneParent)) return Optional.empty();
-        else{
-            caserne.setCaserneType(caserneType.get());
-            caserne.setName(caserneForm.getName());
-            caserne.setCity(caserneForm.getCity());
-            caserne.setArea(caserneForm.getArea());
-            caserne.setEmail(caserneForm.getEmail());
-            caserne.setPhoneNumber(String.join(";", caserneForm.getTelephone()));
-            //if(caserneParent.isPresent()) caserne.setAffiliation(caserneParent.get());
-            this.caserneRepository.save(caserne);
-            return Optional.of(caserne);
+        else {
+            if(caserneParent.isPresent()){
+                if(!this.checkAffiliationRules(caserneForm.getIdAffiliation(), caserneParent.get().getCaserneType(), caserneType.get())) return Optional.empty();
+            }
+            else{
+                caserne.setCaserneType(caserneType.get());
+                caserne.setName(caserneForm.getName());
+                caserne.setCity(caserneForm.getCity());
+                caserne.setArea(caserneForm.getArea());
+                caserne.setEmail(caserneForm.getEmail());
+                caserne.setPhoneNumber(String.join(";", caserneForm.getTelephone()));
+                //if(caserneParent.isPresent()) caserne.setAffiliation(caserneParent.get());
+                this.caserneRepository.save(caserne);
+                return Optional.of(caserne);
+            }
         }
+        return Optional.of(caserne);
     }
 
     @Override
