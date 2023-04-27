@@ -113,10 +113,10 @@ public class DailyProgramService implements DailyProgramServiceInterface{
             tmpAgentSecond = this.agentService.findActiveAgentByIdAndCasernce(programForm.getSergent().get().getRemplacant(), caserne);
             if(tmpAgentMain.isEmpty() || tmpAgentSecond.isEmpty()) return Optional.empty();
             else {
-                tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(7).get());
+                tmpMember = new DailyTeamMember(programForm.getDate(), tmpAgentMain.get(), tmpAgentSecond.get(), this.fonctionTypeRepository.findById(6).get());
                 members.add(tmpMember);
             }
-            tmpTeam = new DailyTeam(programForm.getDate(), this.equipeTypeRepository.findById(3).get(), "Sergent du jour");
+            tmpTeam = new DailyTeam(programForm.getDate(), this.equipeTypeRepository.findById(4).get(), "Sergent du jour");
             tmpTeam.setMembers(new ArrayList<>(members));
             teams.add(tmpTeam);
 
