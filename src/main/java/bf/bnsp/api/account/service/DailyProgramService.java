@@ -133,6 +133,29 @@ public class DailyProgramService implements DailyProgramServiceInterface{
     }
 
     @Override
+    public Optional<DailyProgram> createDefaultEmptyProgram(Caserne caserne) {
+        List<DailyTeam> dailyTeams = new ArrayList<>();
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(3).get(), "Caporal du jour"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(4).get(), "Sergent du jour"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(6).get(), "Premier Secours"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(7).get(), "Fougon"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(8).get(), "PSR 1"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(8).get(), "PSR 2"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(8).get(), "PSR 3"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(9).get(), "V.I.D"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(11).get(), "Echelle"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(10).get(), "Vehicule Desinc"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(12).get(), "CSL"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(13).get(), "Citerne"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(5).get(), "Garde Remise"));
+        dailyTeams.add(new DailyTeam(LocalDate.now(), this.equipeTypeRepository.findById(2).get(), "Plantons"));
+        DailyProgram dailyProgram = new DailyProgram(caserne, LocalDate.now());
+        dailyProgram.setTeams(dailyTeams);
+        this.dailyProgramRepository.save(dailyProgram);
+        return Optional.of(dailyProgram);
+    }
+
+    @Override
     public Optional<DailyProgram> addTeamToDailyProgram(DailyTeamAddForm teamForm, DailyProgram dailyProgram) {
         List<DailyTeamMember> members = new ArrayList<>();
         Optional<Agent> tmpAgentMain;

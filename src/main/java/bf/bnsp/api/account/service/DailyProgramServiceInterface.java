@@ -24,6 +24,8 @@ public interface DailyProgramServiceInterface {
 
     Optional<DailyProgram> createDailyProgramWithMainAgent(DailyProgramCreationForm programForm, Caserne caserne);
 
+    Optional<DailyProgram> createDefaultEmptyProgram(Caserne caserne);
+
     Optional<DailyProgram> addTeamToDailyProgram(DailyTeamAddForm teamForm, DailyProgram dailyProgram);
 
     Optional<DailyTeam> updateTeamComposition(DailyTeamUpdateForm teamForm, DailyTeam dailyTeam);

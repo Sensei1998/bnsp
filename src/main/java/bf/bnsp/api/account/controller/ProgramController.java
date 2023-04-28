@@ -44,14 +44,20 @@ public class ProgramController {
     }
 
     @PostMapping(value = "/create/default")
-    public ResponseEntity<?> createDailyProgram(@RequestBody DailyProgramInitForm dailyProgramForm, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?> createDailyProgram(@RequestParam("caserne") Optional<Integer> caserneId, @RequestHeader("Authorization") String token){
         Optional<Caserne> caserne = Optional.empty();
-        if(dailyProgramForm.getCaserneId().isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
-        else caserne = this.caserneService.findActiveCaserneById(dailyProgramForm.getCaserneId().get());
-        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        if(caserneId.isEmpty()) caserne = this.tokenUtils.getCaserneFromToken(token);
+        else caserne = this.caserneService.findActiveCaserneById(caserneId.get());
 
-        Optional<DailyProgram> response = this.dailyProgramService.createDailyProgram(dailyProgramForm, caserne.get());
-        return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(LocalDate.now(), caserne.get());
+            if(response.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            else{
+                response = this.dailyProgramService.createDefaultEmptyProgram(caserne.get());
+                return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.notFound().build();
+            }
+        }
     }
 
     @PostMapping(value = "/create")
@@ -62,7 +68,7 @@ public class ProgramController {
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
 
         Optional<DailyProgram> response = this.dailyProgramService.createDailyProgramWithMainAgent(dailyProgramForm, caserne.get());
-        return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.noContent().build();
+        return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = {"/", ""})
