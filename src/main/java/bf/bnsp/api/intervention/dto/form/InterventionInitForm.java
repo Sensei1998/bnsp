@@ -1,11 +1,13 @@
 package bf.bnsp.api.intervention.dto.form;
 
+import bf.bnsp.api.intervention.dto.form.partialData.InterventionIncidentInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 /**
  * @author Berickal
@@ -35,4 +37,6 @@ public class InterventionInitForm {
     private float latitude;
 
     private String precision;
+
+    private Optional<InterventionIncidentInfo> incident;
 }

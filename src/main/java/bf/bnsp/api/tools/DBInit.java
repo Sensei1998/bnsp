@@ -116,7 +116,7 @@ public class DBInit implements CommandLineRunner {
         CategoryIncident tmpIncident;
         for (ECategoryIncident element: ECategoryIncident.values()) {
             if(element.getCategory() != tmpCategory){
-                tmpIncident = new CategoryIncident(element.getCategory());
+                tmpIncident = new CategoryIncident(tmpCategory);
                 tmpIncident.setTypes(new ArrayList<>(incidentTypes));
                 categoryIncidents.add(tmpIncident);
                 incidentTypes.clear();

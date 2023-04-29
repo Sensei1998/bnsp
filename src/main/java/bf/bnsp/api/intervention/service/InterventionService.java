@@ -53,6 +53,13 @@ public class InterventionService implements InterventionServiceInterface{
         CallerInfo callerInfo = new CallerInfo(interventionForm.getProvenance(), interventionForm.getPhoneNumber(), interventionForm.getName(), interventionForm.getAddress(), new Localisation(interventionForm.getLongitude(), interventionForm.getLatitude(), interventionForm.getPrecision()));
         Intervention intervention = new Intervention(agent, callerInfo);
         intervention.setDate(LocalDateTime.of(interventionForm.getDate(), interventionForm.getTime()));
+        if(interventionForm.getIncident().isPresent()){
+            Optional<IncidentType> incidentType = this.findIncidentTypeById(interventionForm.getIncident().get().getIncidentTypeId());
+            Optional<CategoryIncident> categoryIncident = this.incidentTypeRepository.findCategoryIncidentByIncidentType(interventionForm.getIncident().get().getIncidentTypeId());
+            if(incidentType.isEmpty()) return Optional.empty();
+            Incident incident = new Incident(categoryIncident.get().getCategory(), incidentType.get().getDesignation(), interventionForm.getIncident().get().getComments());
+            intervention.setIncident(incident);
+        }
         this.interventionRepository.save(intervention);
         return Optional.of(intervention);
     }
@@ -61,7 +68,7 @@ public class InterventionService implements InterventionServiceInterface{
     public Optional<Intervention> createAdvancedIntervention(InterventionInitAdvancedForm interventionForm, Agent agent) {
         List<Caserne> casernes = new ArrayList<>();
         Optional<Caserne> targetedCaserne;
-        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(interventionForm.getIncident().getCategoryId());
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(interventionForm.getIncident().getCategoryId().get());
         Optional<IncidentType> incidentType = this.findIncidentTypeById(interventionForm.getIncident().getIncidentTypeId());
         if(categoryIncident.isEmpty() || incidentType.isEmpty()) return Optional.empty();
 
