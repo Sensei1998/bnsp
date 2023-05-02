@@ -85,8 +85,9 @@ public class InterventionService implements InterventionServiceInterface{
         InterventionSheet interventionSheet;
         for (Caserne element: casernes) {
             interventionSheet = new InterventionSheet(new InterventionFollowedKey(intervention, element));
-            if(interventionForm.getCasernes().get(index).getMessage().isPresent()) interventionSheet.setMessage(interventionForm.getCasernes().get(index).getMessage().get());
+            interventionSheet.setMessage(interventionForm.getCasernes().get(index).getMessage());
             this.interventionSheetRepository.save(interventionSheet);
+            index++;
         }
         return Optional.of(intervention);
     }
@@ -107,7 +108,7 @@ public class InterventionService implements InterventionServiceInterface{
     @Override
     public Optional<Intervention> updateInterventionGeneralInfo(InterventionUpdateGeneralForm interventionForm, Agent agent, Intervention intervention) {
 
-        HashMap<Integer, Optional<String>> interventionCaserne = new HashMap<>();
+        HashMap<Integer, String> interventionCaserne = new HashMap<>();
         List<Integer> registeredCaserne = this.interventionSheetRepository.findCaserneIdByIntervention(intervention);
         List<InterventionCaserne> interventionCasernes = interventionForm.getCasernes();
         List<Integer> addedCaserne = new ArrayList<>();
@@ -142,7 +143,7 @@ public class InterventionService implements InterventionServiceInterface{
         InterventionSheet interventionSheet;
         for (Caserne element: casernes) {
             interventionSheet = new InterventionSheet(new InterventionFollowedKey(intervention, element));
-            if(interventionCaserne.get(element.getId()).isPresent()) interventionSheet.setMessage(interventionCaserne.get(element.getId()).get());
+            interventionSheet.setMessage(interventionCaserne.get(element.getId()));
             this.interventionSheetRepository.save(interventionSheet);
         }
         return Optional.of(intervention);

@@ -13,5 +13,5 @@ public class InterventionCaserne {
 
     private int caserneId;
 
-    private Optional<String> message;
+    private String message;
 }

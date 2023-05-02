@@ -7,6 +7,7 @@ import bf.bnsp.api.intervention.dto.response.InterventionResponse;
 import bf.bnsp.api.intervention.dto.response.MessageResponse;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetCaserneData;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetData;
+import bf.bnsp.api.intervention.dto.response.partialData.InterventionCaserneData;
 import bf.bnsp.api.intervention.model.Intervention;
 import bf.bnsp.api.intervention.model.InterventionSheet;
 import bf.bnsp.api.intervention.model.InterventionSheetToMessage;
@@ -68,9 +69,9 @@ public class MappingIntervention {
         else{
             Intervention intervention = interventionSheets.get(0).getKey().getIntervention();
             InterventionResponse interventionResponse = new InterventionResponse(intervention.getId(), intervention.getDate().toLocalDate(), intervention.getDate().toLocalTime(), intervention.getCaller().getProvenance(), intervention.getCaller().getPhoneNumber(), intervention.getCaller().getName(), intervention.getCaller().getAddress(), intervention.getCaller().getLocalisation().getLongitude(), intervention.getCaller().getLocalisation().getLatitude(), intervention.getCaller().getLocalisation().getPrecision(), intervention.getIncident(), new ArrayList<>());
-            List<Caserne> casernes = new ArrayList<>();
+            List<InterventionCaserneData> casernes = new ArrayList<>();
             for(InterventionSheet element : interventionSheets){
-                casernes.add(element.getKey().getCaserne());
+                casernes.add(new InterventionCaserneData(element.getKey().getCaserne().getId(), element.getKey().getCaserne().getName(), element.getMessage()));
             }
             interventionResponse.setCasernes(casernes);
             return Optional.of(interventionResponse);

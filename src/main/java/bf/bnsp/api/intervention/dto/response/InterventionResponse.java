@@ -2,6 +2,7 @@ package bf.bnsp.api.intervention.dto.response;
 
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.form.partialData.InterventionIncidentInfo;
+import bf.bnsp.api.intervention.dto.response.partialData.InterventionCaserneData;
 import bf.bnsp.api.intervention.model.additional.Incident;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,5 +44,5 @@ public class InterventionResponse {
 
     private Incident incident;
 
-    private List<Caserne> casernes = new ArrayList<>();
+    private List<InterventionCaserneData> casernes = new ArrayList<>();
 }
