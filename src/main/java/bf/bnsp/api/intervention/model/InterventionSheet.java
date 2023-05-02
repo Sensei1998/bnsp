@@ -25,6 +25,8 @@ public class InterventionSheet {
     @NonNull
     private InterventionFollowedKey key;
 
+    private String message;
+
     @ManyToOne
     private Agent agentBCOT;
 

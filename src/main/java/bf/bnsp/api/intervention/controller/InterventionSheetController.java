@@ -92,7 +92,7 @@ public class InterventionSheetController {
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
             List<InterventionSheet> response = this.interventionSheetService.findActiveInterventionSheetByCaserne(caserne.get());
-            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 

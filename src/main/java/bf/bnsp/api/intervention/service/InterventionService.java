@@ -7,6 +7,7 @@ import bf.bnsp.api.intervention.dto.form.InterventionInitAdvancedForm;
 import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateLocationForm;
+import bf.bnsp.api.intervention.dto.form.partialData.InterventionCaserne;
 import bf.bnsp.api.intervention.model.CategoryIncident;
 import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
@@ -23,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Berickal
@@ -77,14 +75,18 @@ public class InterventionService implements InterventionServiceInterface{
         Incident incident = new Incident(categoryIncident.get().getCategory(), incidentType.get().getDesignation(), interventionForm.getIncident().getComments());
         intervention.setIncident(incident);
         intervention.setDate(LocalDateTime.of(interventionForm.getDate(), interventionForm.getTime()));
-        for (Integer element: interventionForm.getCasernes()) {
-            targetedCaserne = caserneService.findActiveCaserneById(element);
+        for (InterventionCaserne element: interventionForm.getCasernes()) {
+            targetedCaserne = caserneService.findActiveCaserneById(element.getCaserneId());
             if(targetedCaserne.isPresent()) casernes.add(targetedCaserne.get());
             else return Optional.empty();
         }
         this.interventionRepository.save(intervention);
+        int index = 0;
+        InterventionSheet interventionSheet;
         for (Caserne element: casernes) {
-            this.interventionSheetRepository.save(new InterventionSheet(new InterventionFollowedKey(intervention, element)));
+            interventionSheet = new InterventionSheet(new InterventionFollowedKey(intervention, element));
+            if(interventionForm.getCasernes().get(index).getMessage().isPresent()) interventionSheet.setMessage(interventionForm.getCasernes().get(index).getMessage().get());
+            this.interventionSheetRepository.save(interventionSheet);
         }
         return Optional.of(intervention);
     }
@@ -105,13 +107,22 @@ public class InterventionService implements InterventionServiceInterface{
     @Override
     public Optional<Intervention> updateInterventionGeneralInfo(InterventionUpdateGeneralForm interventionForm, Agent agent, Intervention intervention) {
 
+        HashMap<Integer, Optional<String>> interventionCaserne = new HashMap<>();
         List<Integer> registeredCaserne = this.interventionSheetRepository.findCaserneIdByIntervention(intervention);
-        HashSet<Integer> addedCaserne = interventionForm.getCaserneId();
+        List<InterventionCaserne> interventionCasernes = interventionForm.getCasernes();
+        List<Integer> addedCaserne = new ArrayList<>();
+        List<Integer> tmpAddedCaserne = new ArrayList<>();
         List<InterventionSheet> deletedInterventionSheet = new ArrayList<>();
         List<Caserne> casernes = new ArrayList<>();
         Optional<Caserne> targetedCaserne;
+
+        for(InterventionCaserne element: interventionCasernes){
+            tmpAddedCaserne.add(element.getCaserneId());
+            interventionCaserne.put(element.getCaserneId(), element.getMessage());
+        }
+        addedCaserne = new ArrayList<>(tmpAddedCaserne);
         addedCaserne.removeAll(registeredCaserne);
-        registeredCaserne.removeAll(interventionForm.getCaserneId());
+        registeredCaserne.removeAll(tmpAddedCaserne);
         for(int deletedCaserne : registeredCaserne){
             deletedInterventionSheet.add(this.interventionSheetRepository.findById(new InterventionFollowedKey(intervention, this.caserneService.findActiveCaserneById(deletedCaserne).get())).get());
         }
@@ -128,8 +139,11 @@ public class InterventionService implements InterventionServiceInterface{
             }
             else this.interventionSheetRepository.delete(element);
         }
+        InterventionSheet interventionSheet;
         for (Caserne element: casernes) {
-            this.interventionSheetRepository.save(new InterventionSheet(new InterventionFollowedKey(intervention, element)));
+            interventionSheet = new InterventionSheet(new InterventionFollowedKey(intervention, element));
+            if(interventionCaserne.get(element.getId()).isPresent()) interventionSheet.setMessage(interventionCaserne.get(element.getId()).get());
+            this.interventionSheetRepository.save(interventionSheet);
         }
         return Optional.of(intervention);
     }
