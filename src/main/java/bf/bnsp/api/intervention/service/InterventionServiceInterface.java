@@ -27,6 +27,8 @@ public interface InterventionServiceInterface {
 
     Optional<Intervention> findActiveInterventionById(int id);
 
+    List<Intervention> findAllActiveIntervention();
+
     List<CategoryIncident> findAllCategoryIncident();
 
     List<IncidentType> findAllIncidentType();

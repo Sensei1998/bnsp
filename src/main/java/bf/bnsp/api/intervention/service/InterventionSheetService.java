@@ -3,6 +3,7 @@ package bf.bnsp.api.intervention.service;
 import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.account.service.DailyProgramService;
+import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
 import bf.bnsp.api.intervention.dto.form.IncidentInformationUpdateForm;
 import bf.bnsp.api.intervention.dto.form.InterventionSheetMessageForm;
@@ -125,6 +126,16 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
     @Override
     public Optional<InterventionSheet> findActiveInterventionSheetById(InterventionFollowedKey id) {
         return this.interventionSheetRepository.findById(id);
+    }
+
+    @Override
+    public List<InterventionSheet> findActiveInterventionSheetByCaserne(Caserne caserne) {
+        return this.interventionSheetRepository.findInterventionSheetByCaserne(caserne);
+    }
+
+    @Override
+    public List<InterventionSheet> findActiveInterventionSheetByIntervention(Intervention intervention) {
+        return this.interventionSheetRepository.findInterventionSheetByIntervention(intervention);
     }
 
     @Override

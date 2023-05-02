@@ -6,14 +6,20 @@ import bf.bnsp.api.intervention.dto.form.InterventionInitAdvancedForm;
 import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateLocationForm;
+import bf.bnsp.api.intervention.dto.response.InterventionResponse;
 import bf.bnsp.api.intervention.model.CategoryIncident;
 import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
+import bf.bnsp.api.intervention.model.InterventionSheet;
 import bf.bnsp.api.intervention.service.InterventionService;
+import bf.bnsp.api.intervention.service.InterventionSheetService;
+import bf.bnsp.api.tools.controleForm.TokenUtils;
+import bf.bnsp.api.tools.mappingTools.MappingIntervention;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,16 +35,25 @@ public class InterventionController {
 
     private final InterventionService interventionService;
 
-    public InterventionController(AgentService agentService, InterventionService interventionService) {
+    private final InterventionSheetService interventionSheetService;
+
+    private final MappingIntervention mappingIntervention;
+
+    private final TokenUtils tokenUtils;
+
+    public InterventionController(AgentService agentService, InterventionService interventionService, InterventionSheetService interventionSheetService, MappingIntervention mappingIntervention, TokenUtils tokenUtils) {
         this.agentService = agentService;
         this.interventionService = interventionService;
+        this.interventionSheetService = interventionSheetService;
+        this.mappingIntervention = mappingIntervention;
+        this.tokenUtils = tokenUtils;
     }
 
     @PostMapping(value = "/create/partial")
-    public ResponseEntity<?> createPartialIntervention(@RequestBody InterventionInitForm interventionForm){
+    public ResponseEntity<?> createPartialIntervention(@RequestBody InterventionInitForm interventionForm, @RequestHeader("Authorization") String token){
         Optional<Intervention> response;
-        Optional<Agent> agent = this.agentService.findActiveAgentById(interventionForm.getCctoId());
-        if(agent.isEmpty()) return ResponseEntity.notFound().build();
+        Optional<Agent> agent = this.tokenUtils.getAgentFromToken(token);
+        if(agent.isEmpty()) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         else {
             response = this.interventionService.createBasicIntervention(interventionForm, agent.get());
             return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -46,10 +61,10 @@ public class InterventionController {
     }
 
     @PostMapping(value = "/create/complete")
-    public ResponseEntity<?> createCompleteIntervention(@RequestBody InterventionInitAdvancedForm interventionForm){
+    public ResponseEntity<?> createCompleteIntervention(@RequestBody InterventionInitAdvancedForm interventionForm, @RequestHeader("Authorization") String token){
         Optional<Intervention> response;
-        Optional<Agent> agent = this.agentService.findActiveAgentById(interventionForm.getCctoId());
-        if(agent.isEmpty()) return ResponseEntity.notFound().build();
+        Optional<Agent> agent = this.tokenUtils.getAgentFromToken(token);
+        if(agent.isEmpty()) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         else {
             response = this.interventionService.createAdvancedIntervention(interventionForm, agent.get());
             return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
@@ -92,6 +107,26 @@ public class InterventionController {
     public ResponseEntity<?> getIncidentType(@PathVariable("typeId") int typeId){
         Optional<IncidentType> response = this.interventionService.findIncidentTypeById(typeId);
         return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "")
+    public ResponseEntity<?> getIncident(@RequestParam("id") Optional<Integer> interventionId){
+        if(interventionId.isEmpty()){
+            List<Intervention> intervention = this.interventionService.findAllActiveIntervention();
+            List<Optional<InterventionResponse>> responses = new ArrayList<>();
+            List<InterventionSheet> sheets = new ArrayList<>();
+            for(Intervention element : intervention){
+                sheets = this.interventionSheetService.findActiveInterventionSheetByIntervention(element);
+                responses.add(this.mappingIntervention.mappingIntervention(sheets));
+            }
+            return responses.size() > 0 ? new ResponseEntity<>(responses, HttpStatus.OK) : ResponseEntity.noContent().build();
+        }
+        else{
+            Optional<Intervention> intervention = this.interventionService.findActiveInterventionById(interventionId.get());
+            if(intervention.isEmpty()) return ResponseEntity.notFound().build();
+            List<InterventionSheet> response = this.interventionSheetService.findActiveInterventionSheetByIntervention(intervention.get());
+            return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingIntervention(response), HttpStatus.OK) : ResponseEntity.noContent().build();
+        }
     }
 
 }

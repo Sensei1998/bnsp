@@ -2,6 +2,7 @@ package bf.bnsp.api.intervention.model.additional;
 
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.model.Intervention;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,6 @@ public class InterventionFollowedKey implements Serializable {
     private Intervention intervention;
 
     @ManyToOne
+    @JsonIgnore
     private Caserne caserne;
 }

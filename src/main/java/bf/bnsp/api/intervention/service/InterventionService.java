@@ -139,6 +139,11 @@ public class InterventionService implements InterventionServiceInterface{
     }
 
     @Override
+    public List<Intervention> findAllActiveIntervention() {
+        return this.interventionRepository.findAll();
+    }
+
+    @Override
     public List<CategoryIncident> findAllCategoryIncident() {
         return this.categoryIncidentRepository.findAll();
     }

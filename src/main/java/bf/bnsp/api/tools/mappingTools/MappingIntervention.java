@@ -1,16 +1,21 @@
 package bf.bnsp.api.tools.mappingTools;
 
+import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseMultiCaserne;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseOneCaserne;
+import bf.bnsp.api.intervention.dto.response.InterventionResponse;
 import bf.bnsp.api.intervention.dto.response.MessageResponse;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetCaserneData;
 import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetData;
+import bf.bnsp.api.intervention.model.Intervention;
+import bf.bnsp.api.intervention.model.InterventionSheet;
 import bf.bnsp.api.intervention.model.InterventionSheetToMessage;
 import bf.bnsp.api.intervention.model.Sinister;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Berickal
@@ -56,5 +61,19 @@ public class MappingIntervention {
             response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getSentAt(), element.getMessage()));
         }
         return response;
+    }
+
+    public Optional<InterventionResponse> mappingIntervention(List<InterventionSheet> interventionSheets){
+        if(interventionSheets.size() == 0) return Optional.empty();
+        else{
+            Intervention intervention = interventionSheets.get(0).getKey().getIntervention();
+            InterventionResponse interventionResponse = new InterventionResponse(intervention.getId(), intervention.getDate().toLocalDate(), intervention.getDate().toLocalTime(), intervention.getCaller().getProvenance(), intervention.getCaller().getPhoneNumber(), intervention.getCaller().getName(), intervention.getCaller().getAddress(), intervention.getCaller().getLocalisation().getLongitude(), intervention.getCaller().getLocalisation().getLatitude(), intervention.getCaller().getLocalisation().getPrecision(), intervention.getIncident(), new ArrayList<>());
+            List<Caserne> casernes = new ArrayList<>();
+            for(InterventionSheet element : interventionSheets){
+                casernes.add(element.getKey().getCaserne());
+            }
+            interventionResponse.setCasernes(casernes);
+            return Optional.of(interventionResponse);
+        }
     }
 }

@@ -86,6 +86,16 @@ public class InterventionSheetController {
         }
     }
 
+    @GetMapping("/caserne/{caserneId}")
+    public ResponseEntity<?> findInterventionSheetByCaserne(@PathVariable("caserneId") int caserneId){
+        Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(caserneId);
+        if(caserne.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            List<InterventionSheet> response = this.interventionSheetService.findActiveInterventionSheetByCaserne(caserne.get());
+            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     @GetMapping(value = "/message/{messageId}")
     public ResponseEntity<?> getMessageDetailById(@PathVariable("messageId") int messageId){
         Optional<InterventionSheetToMessage> response = this.interventionSheetService.findMessageById(messageId);
