@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * @author Berickal
@@ -15,12 +16,6 @@ import java.util.HashSet;
 public class InterventionUpdateGeneralForm {
 
     private int id;
-
-    private String category;
-
-    private String libelle;
-
-    private String comments;
 
     private HashSet<Integer> caserneId = new HashSet<>();
 

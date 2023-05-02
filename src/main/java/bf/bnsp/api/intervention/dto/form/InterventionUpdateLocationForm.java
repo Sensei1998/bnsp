@@ -1,8 +1,11 @@
 package bf.bnsp.api.intervention.dto.form;
 
+import bf.bnsp.api.intervention.dto.form.partialData.InterventionIncidentInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Optional;
 
 /**
  * @author Berickal
@@ -27,5 +30,7 @@ public class InterventionUpdateLocationForm {
     private float latitude;
 
     private String precision;
+
+    private Optional<InterventionIncidentInfo> incident;
 
 }

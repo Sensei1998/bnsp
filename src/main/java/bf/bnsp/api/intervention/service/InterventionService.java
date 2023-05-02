@@ -93,16 +93,17 @@ public class InterventionService implements InterventionServiceInterface{
     public Optional<Intervention> updateInterventionLocation(InterventionUpdateLocationForm interventionForm, Agent agent, Intervention intervention) {
         CallerInfo callerInfo = new CallerInfo(interventionForm.getProvenance(), interventionForm.getPhoneNumber(), interventionForm.getName(), interventionForm.getAddress(), new Localisation(interventionForm.getLongitude(), interventionForm.getLatitude(), interventionForm.getPrecision()));
         intervention.setCaller(callerInfo);
+
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(interventionForm.getIncident().get().getCategoryId().get());
+        Optional<IncidentType> incidentType = this.findIncidentTypeById(interventionForm.getIncident().get().getIncidentTypeId());
+        if(categoryIncident.isEmpty() || incidentType.isEmpty()) return Optional.empty();
+        intervention.setIncident(new Incident(categoryIncident.get().getCategory(), incidentType.get().getDesignation(), interventionForm.getIncident().get().getComments()));
         this.interventionRepository.save(intervention);
         return Optional.of(intervention);
     }
 
     @Override
     public Optional<Intervention> updateInterventionGeneralInfo(InterventionUpdateGeneralForm interventionForm, Agent agent, Intervention intervention) {
-        Incident incident = new Incident(interventionForm.getCategory(), interventionForm.getLibelle(), interventionForm.getComments());
-        intervention.setIncident(incident);
-        this.interventionRepository.save(intervention);
-
 
         List<Integer> registeredCaserne = this.interventionSheetRepository.findCaserneIdByIntervention(intervention);
         HashSet<Integer> addedCaserne = interventionForm.getCaserneId();
