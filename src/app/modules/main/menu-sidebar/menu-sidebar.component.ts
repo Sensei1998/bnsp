@@ -1,5 +1,7 @@
+import { Agent } from '@/model/AgentLongin.model';
 import {AppState} from '@/store/state';
 import {UiState} from '@/store/ui/state';
+import { HttpClient } from '@angular/common/http';
 import {Component, HostBinding, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppService} from '@services/app.service';
@@ -14,12 +16,15 @@ const BASE_CLASSES = 'main-sidebar elevation-4';
 export class MenuSidebarComponent implements OnInit {
     @HostBinding('class') classes: string = BASE_CLASSES;
     public ui: Observable<UiState>;
-    public user;
+    email: string;
     public menu = MENU;
+
+    id = Number(localStorage.getItem('id'));
 
     constructor(
         public appService: AppService,
-        private store: Store<AppState>
+        private store: Store<AppState>,
+        private http: HttpClient
     ) {}
 
     ngOnInit() {
@@ -27,8 +32,9 @@ export class MenuSidebarComponent implements OnInit {
         this.ui.subscribe((state: UiState) => {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
-        this.user = this.appService.user;
+       this.email = localStorage.getItem('email');
     }
+
 }
 
 export const MENU = [
@@ -84,7 +90,7 @@ export const MENU = [
             path: ['/c_engin']
           },
           {
-            name: 'Program',
+            name: 'Fiche de Garde',
             iconClasses: 'fas fa-clipboard',
             path: ['/c_program']
           },
@@ -95,4 +101,6 @@ export const MENU = [
         }
       ]
   }
+
+
 ];

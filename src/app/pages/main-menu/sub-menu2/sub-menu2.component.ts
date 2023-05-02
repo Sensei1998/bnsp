@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
 
 export type Option = {
@@ -31,9 +32,32 @@ export class SubMenu2Component implements OnInit {
 
   url ="http://localhost:8081/bnsp/api";
   caserne;
+  category;
+  libelle;
+  afficheCat;
+  afficheLib;
+  data = this.service.formData;
+
+
+  interventionForm: FormGroup = this.fb.group({
+    date: [[], Validators.required],
+    time:[[], Validators.required],
+    provenance : [[], Validators.required],
+    phoneNumber : [[], [Validators.required, Validators.minLength(8)]],
+    name : [[], Validators.required],
+    address : [[]],
+    longitude: [[]],
+    latitude: [[]],
+    precision: [[]],
+    categoryId:[[], Validators.required],
+    incidentTypeId:[[], Validators.required],
+    comments:[[]]
+  })
+
 
   constructor(private fb: FormBuilder,
-    private http: HttpClient){}
+    private http: HttpClient,
+    public service: ApiService){}
 
   ngOnInit(): void {
     this.CompagnieForm = this.fb.group({
@@ -46,6 +70,8 @@ export class SubMenu2Component implements OnInit {
   })
 
   this.getCaserne();
+  this.getCategory();
+  this.getLibelleBycategory(this.service.formData.incident.categoryId)
 
   }
 
@@ -76,6 +102,27 @@ export class SubMenu2Component implements OnInit {
 formatHeure(heure) {
   return DateTime.fromISO(heure).toFormat('hh : mm');
 }
+getLibelleBycategory(id: number){
+  const url = `http://localhost:8081/bnsp/api/intervention/types?category=${id}`;
+  return this.http.get(url).subscribe(
+    data => {
+      this.libelle = data;
+      this.libelle = this.libelle.find(lib => lib.id == this.service.formData.incident.incidentTypeId)
+      console.log(this.libelle)
+    }
+  )
+}
+
+getCategory(){
+  return this.http.get("http://localhost:8081/bnsp/api/intervention/types/category").subscribe(
+    data => {
+      this.category = data;
+      this.category = this.category.find(category => category.id == this.service.formData.incident.categoryId)
+      console.log(this.category)
+    }
+  )
+}
+
 
 
 }

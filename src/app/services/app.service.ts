@@ -2,14 +2,15 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Gatekeeper} from 'gatekeeper-client-sdk';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppService {
     public user: any = null;
-
-    constructor(private router: Router, private toastr: ToastrService) {}
+    id = Number(localStorage.getItem('id'));
+    constructor(private router: Router, private toastr: ToastrService, private http: HttpClient) {}
 
     async loginByAuth({email, password}) {
         try {
@@ -85,17 +86,29 @@ export class AppService {
 
     async getProfile() {
         try {
-            this.user = await Gatekeeper.getProfile();
+            this.http.get("http://localhost:8081/bnsp/api/users/" + this.id).subscribe(
+                agent =>{
+                  this.user = agent;
+                  localStorage.removeItem('id');
+                  console.log(this.user);
+                }
+              );
+
         } catch (error) {
             this.logout();
             throw error;
         }
     }
 
+    getToken(): string | null{
+      return localStorage.getItem('token');
+    }
+
     logout() {
         localStorage.removeItem('token');
-        localStorage.removeItem('gatekeeper_token');
-        this.user = null;
+        localStorage.removeItem('email');
+        localStorage.removeItem('fonction');
+        localStorage.removeItem('Caserne');
         this.router.navigate(['/login']);
     }
 }

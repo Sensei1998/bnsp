@@ -22,31 +22,57 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Liste des Engins</h4>
-        <div class="row" style="margin-left: 20%;">
-          <div class="col-md-6">
+        <div class="row" >
+          <div class="col-md-4">
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
-              <div class="col-sm-8">
+              <div class="col-sm-6">
                 <select class="form-control" [(ngModel)]="sort" >
-                  <option [ngValue]="0" >Tous les Vehicule</option>
+                  <option [ngValue]="0" >Tous </option>
                   <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
                 </select>
               </div>
-              <div class="col-md-2" style="margin-left: 84%;">
+              <div class="col-md-2" style="margin-left: 60%;">
                 <div class="form-group row">
                   <div >
                     <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
                     <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
+          <div class="col-md-4" style="margin-left: -5%;">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Trier par type</p>
+              <div class="col-sm-6">
+                <select class="form-control" [(ngModel)]="sort" >
+                  <option [ngValue]="0" >Tous </option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-2" style="margin-left: 60%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
+                    <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"  style="margin-left: -5%;">
+            <div class="form-group row">
+              <p class="col-sm-6 col-form-p">Trier par Immatriculation</p>
+              <div class="col-sm-6">
+                <input class="form-control" type="text" />
+              </div>
+
+            </div>
+          </div>
 
 
-
-            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 40%;">
+            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 5%;" >
               <i class="fa fa-plus"></i>
             </pf-button>
         </div>
@@ -65,7 +91,7 @@
                 <td>{{e.enginType.enginType}}</td>
                 <td>{{e.immatriculation}}</td>
                 <td> {{e.description}}</td>
-                <td class="row"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getEnginById(e.id)"></i>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getEnginById(e.id)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getEnginById(e.id)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getEnginById(e.id)" (click)="openSupp(content3)"></i></td>
 
@@ -145,8 +171,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
-      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+      <pf-button type="button"  (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>
@@ -226,8 +252,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
-      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>
@@ -309,7 +335,7 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+     <pf-button type="button"  style="margin-right:2%" (click)="modal.close('Close click')">OK</pf-button>
     </div>
   </ng-template>
 </section>
@@ -326,9 +352,8 @@
       <h3>Voulez-vous vraiment supprimer ce véhicule?</h3>
     </div>
     <div class="modal-footer">
-     <button type="submit"  style="margin-left: 25%;"  (click)="deleteEngin(engin.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
-     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
-
+     <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+     <button type="submit" style="margin-left: 1%;margin-right:2%"  (click)="deleteEngin(engin.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
     </div>
   </ng-template>
 </section>

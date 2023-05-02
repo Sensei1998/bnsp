@@ -3,7 +3,7 @@
   <div class="container-fluid">
       <div class="row mb-2">
           <div class="col-sm-6">
-              <h1>Programme</h1>
+              <h1>Fiche de garde</h1>
           </div>
           <!-- <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -21,18 +21,18 @@
   <div class="grid-margin stretch-card container-fluid">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Liste des Programmes</h4>
-        <div class="row" style="margin-left: 20%;">
+        <h4 class="card-title">Fiche</h4>
+        <div class="row" >
           <div class="col-md-6">
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
-              <div class="col-sm-8">
+              <div class="col-sm-6">
                 <select class="form-control" [(ngModel)]="sort" >
                   <option [ngValue]="0" >Tous les Vehicule</option>
                   <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
                 </select>
               </div>
-              <div class="col-md-2" style="margin-left: 84%;">
+              <div class="col-md-2" style="margin-left: 70%;">
                 <div class="form-group row">
                   <div >
                     <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
@@ -43,31 +43,69 @@
               </div>
             </div>
           </div>
+          <div class="col-md-6" style="margin-left:-10%">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Chercher par date</p>
+              <div class="col-sm-6">
+                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy"/>
+              </div>
+              <div class="col-md-2" style="margin-left: 70%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button  (click)="getProgram(date)">Triez</pf-button>
+                    <!-- <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button> -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="button-container" style="margin-left: -7%;" >
+            <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
+            <button class="btn btn-secondary prog" (click)="openCreate(content1)">Ajouter des Equipes</button>
+          </div>
 
 
 
-            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 40%;">
-              <i class="fa fa-plus"></i>
-            </pf-button>
         </div>
         <div class="table-responsive">
           <table class="table table-hover" >
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Immatriculation</th>
-                <th>Description</th>
+                <th>CAP Principale du jour</th>
+                <th>CAP Remplacant du jour</th>
+                <th>SGT Principale du jour</th>
+                <th>SGT Remplacant du jour</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody *ngFor="let e of engin">
-              <tr>
-                <td>{{e.enginType.enginType}}</td>
-                <td>{{e.immatriculation}}</td>
-                <td> {{e.description}}</td>
-                <td class="row"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getEnginById(e.id)"></i>
-                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getEnginById(e.id)" style="margin-left: 10%;"></i>
-                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getEnginById(e.id)" (click)="openSupp(content3)"></i></td>
+            <tbody >
+              <tr *ngIf="program === null">
+                <td> </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
+
+              </tr>
+              <tr *ngIf="program !== null" >
+                <td> {{program.date }} </td>
+                <td>{{ getTeamName('CAPORAL', 'PRINCIPAL')[0]  }}</td>
+                <td>{{ getTeamName('CAPORAL', 'REMPLACANT')[1]  }}</td>
+                <td>{{ getTeamName('SGT', 'PRINCIPAL')[0] }}</td>
+                <td>{{ getTeamName('SGT', 'REMPLACANT')[1]}}</td>
+                <!-- <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> -->
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
 
               </tr>
             </tbody>
@@ -79,136 +117,151 @@
 </section>
 
 
+
 <section>
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h3 class="modal-title">Formulaire de création d'un Vehicule</h3>
+      <h3 class="modal-title">Formulaire de création d'une Fiche</h3>
     </div>
     <div class="modal-body">
       <div class="card-body">
-        <form class="form-sample" [formGroup]="enginForm" (ngSubmit)="onSubmit()">
+        <form class="form-sample" [formGroup]="ficheForm" (ngSubmit)="onSubmit()">
           <p class="card-description">
-            <strong>Caserne Et Véhicule</strong>
+            <strong>Date</strong>
           </p>
           <div class="row" >
             <div class="col-md-6">
               <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Caserne</p>
+                <p class="col-sm-3 col-form-label">Date</p>
                 <div class="col-sm-9" >
-                  <select class="form-control" formControlName="caserneId" >
-                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Vehicule</p>
-                <div class="col-sm-9">
-                  <select class="form-control" formControlName="enginTypeId" >
-                    <option value=1>PREMIER_SECOURS</option>
-                    <option value=2>FOURGON</option>
-                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
-                    <option value=4>INTERVENTION_DIVERSE</option>
-                    <option value=5>DESINCARCERATION</option>
-                    <option value=6>ECHELLE</option>
-                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
-                    <option value=8>CITERNE</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="card-description ">
-            <strong>Information </strong>
-          </p>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Immatriculation</p>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control"formControlName="immatriculation" />
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Description</p>
-                <div class="col-sm-9">
-                  <textarea type="text" class="form-control" formControlName="description"></textarea>
+                  <input class="form-control" type="date" id="date" formControlName="date">
+                  <div *ngIf="ficheForm.get('date').invalid && (ficheForm.get('date').dirty || ficheForm.get('date').touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="ficheForm.get('date').errors.required">
+                      La date est requise.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </form>
-
+        <form class="form-sample" [formGroup]="CaporalForm" (ngSubmit)="onSubmit()">
+          <p class="card-description">
+            <strong>CAP du Jour</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Principale</p>
+                <div class="col-sm-9" >
+                  <!-- <input class="form-control" type="text" id="caporal-principal" formControlName="principal"> -->
+                  <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === true">
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === false">
+                    <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <div
+                    *ngIf="CaporalForm.get('principal').invalid && (CaporalForm.get('principal').dirty || CaporalForm.get('principal').touched)"
+                    class="alert alert-danger">
+                    Le caporal principal est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Remplaçant</p>
+                <div class="col-sm-9" >
+                  <!-- <input class="form-control" type="text" id="caporal-remplacant" formControlName="remplacant"> -->
+                  <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === true">
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === false">
+                    <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <div
+                    *ngIf="CaporalForm.get('remplacant').invalid && (CaporalForm.get('remplacant').dirty || CaporalForm.get('remplacant').touched)"
+                    class="alert alert-danger">
+                    Le caporal remplaçant est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form class="form-sample" [formGroup]="sergentForm" (ngSubmit)="onSubmit()">
+          <p class="card-description">
+            <strong>SGT du Jour</strong>
+          </p>
+          <div class="row" >
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Principale</p>
+                <div class="col-sm-9" >
+                  <!-- <input class="form-control" type="text" id="sergent-principal" formControlName="principal"> -->
+                  <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === true">
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === false">
+                    <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <div *ngIf="sergentForm.get('principal').invalid && (sergentForm.get('principal').dirty || sergentForm.get('principal').touched)" class="alert alert-danger">
+                    Le sergent principal est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Remplaçant</p>
+                <div class="col-sm-9" >
+                  <!-- <input class="form-control" type="text" id="sergent-remplacant" formControlName="remplacant"> -->
+                  <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === true">
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
+                  </select>
+                  <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === false">
+                    <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                  </select>
+                  <div
+                    *ngIf="sergentForm.get('remplacant').invalid && (sergentForm.get('remplacant').dirty || sergentForm.get('remplacant').touched)"
+                    class="alert alert-danger">
+                    Le sergent remplaçant est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
-      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
-    </div>
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit()"(click)="modal.close('Close click')"  class="btn btn-success">Enregister</button>
+     </div>
   </ng-template>
 </section>
-
 
 <section>
   <ng-template #content1 let-modal>
     <div class="modal-header">
-      <h3 class="modal-title">Formulaire d'édition d'engin</h3>
+      <h3 class="modal-title">Formulaire d'ajout d'Equipes</h3>
     </div>
     <div class="modal-body">
       <div class="card-body">
-        <form class="form-sample" [formGroup]="enginUdapteForm" (ngSubmit)="onSubmit2()">
+        <form class="form-sample" [formGroup]="addEquipe" (ngSubmit)="onSubmitEquipe()">
           <p class="card-description">
-            <strong>Caserne Et Véhicule</strong>
+            <strong>Equipe</strong>
           </p>
           <div class="row" >
-            <div class="col-md-6" hidden="true">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Id</p>
-                <div class="col-sm-9" >
-                  <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Caserne</p>
-                <div class="col-sm-9" >
-                  <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
-                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Vehicule</p>
-                <div class="col-sm-9">
-                  <select class="form-control" formControlName="enginTypeId"   [(ngModel)]="edit.enginType.id">
-                    <option value=1>PREMIER_SECOURS</option>
-                    <option value=2>FOURGON</option>
-                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
-                    <option value=4>INTERVENTION_DIVERSE</option>
-                    <option value=5>DESINCARCERATION</option>
-                    <option value=6>ECHELLE</option>
-                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
-                    <option value=8>CITERNE</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="card-description ">
-            <strong>Information </strong>
-          </p>
-          <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Immatriculation</p>
+                <p class="col-sm-3 col-form-label">Vehicule</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" />
+                  <select class="form-control" formControlName="typeId"  >
+                    <option *ngFor="let v of vehicule" value="{{v.id}}">{{v.enginType.enginType}}</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -216,19 +269,66 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Description</p>
                 <div class="col-sm-9">
-                  <textarea type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"></textarea>
+                  <textarea type="text" class="form-control" formControlName="designation" ></textarea>
                 </div>
               </div>
             </div>
+          </div>
+          <p class="card-description">
+            <strong>Membre</strong>
+          </p>
+          <div class="row" formArrayName="members">
+            <div style="margin-left: 2%;"  *ngFor="let m of member.controls; let i = index" >
+                <div class="form-group row"[formGroupName]="i">
+                  <p class="col-sm-2 col-form-p">Agent {{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;" >
+                    <!-- <input type="text" class="form-control" formControlName="principalId"  /> -->
+                    <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === true">
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                    <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === false">
+                      <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                  </div>
+                  <p class="col-sm-2 col-form-p">Remplacant {{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;">
+                    <!-- <input type="text" class="form-control" formControlName="remplacantId"  /> -->
+                    <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === true">
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                    <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === false">
+                      <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                  </div>
+                  <p class="col-sm-2 col-form-p">Fonction{{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;">
+                    <!-- <input type="text" class="form-control" formControlName="fonctionId"  /> -->
+                    <select class="form-control" formControlName="fonctionId" >
+                      <option value=7>ROLE_CA</option>
+                      <option value=8>ROLE_CH</option>
+                      <option value=9>ROLE_SVT</option>
+                      <option value=10>ROLE_HDL</option>
+                      <option value=11>ROLE_CONDUCTEUR</option>
+                      <option value=12>ROLE_SDA</option>
+                    </select>
+                  </div>
+                  <div class="row" style="margin-left:2%;">
+                    <i class="fa fa-plus" (click)="addmembers()" ></i>
+                    <i class="fa fa-trash" *ngIf="member.length > 1" style="margin-left: 2%;" (click)="deletemembers(i)" ></i>
+                  </div>
+                </div>
+              </div>
+
+
           </div>
         </form>
 
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit"  style="margin-left: 25%;" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
-      <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
-    </div>
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmitEquipe()"(click)="modal.close('Close click')"  class="btn btn-success">Enregister</button>
+     </div>
   </ng-template>
 </section>
 
@@ -309,7 +409,7 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+     <pf-button type="button"  style="margin-right: 5%;" (click)="modal.close('Close click')">OK</pf-button>
     </div>
   </ng-template>
 </section>
@@ -326,9 +426,8 @@
       <h3>Voulez-vous vraiment supprimer ce véhicule?</h3>
     </div>
     <div class="modal-footer">
-     <button type="submit"  style="margin-left: 25%;"  (click)="deleteEngin(engin.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
-     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
-
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>

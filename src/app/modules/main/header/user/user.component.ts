@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {AppService} from '@services/app.service';
 import {DateTime} from 'luxon';
@@ -8,13 +9,17 @@ import {DateTime} from 'luxon';
     styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-    public user;
-
-    constructor(private appService: AppService) {}
+    email:string;
+    id = Number(localStorage.getItem('id'));
+    url ="http://localhost:8081/bnsp/api";
+    constructor(private appService: AppService, private http: HttpClient) {}
 
     ngOnInit(): void {
-        this.user = this.appService.user;
+    this.email = localStorage.getItem('email');
+
     }
+
+
 
     logout() {
         this.appService.logout();

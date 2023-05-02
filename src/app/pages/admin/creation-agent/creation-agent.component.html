@@ -105,7 +105,8 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-p">Numero de telephone {{i + 1}}</p>
                 <div class="col-sm-8" >
-                  <input type="text" class="form-control" [formControlName]="i"  />
+                  <input type="text" class="form-control" [formControlName]="i"/>
+
                 </div>
                 <div class="row" style="margin-left:2%;">
                   <i class="fa fa-plus" (click)="addNumber()" ></i>
@@ -165,8 +166,8 @@
       </div>
     </div>
     <div class="modal-footer">
-     <button type="submit"  style="margin-left: 25%;"(click)="onSubmit()"(click)="modal.close('Close click')"  class="btn btn-success">Enregister</button>
-     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+     <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+     <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit()"(click)="modal.close('Close click')"  class="btn btn-success">Enregister</button>
     </div>
   </ng-template>
 </section>
@@ -298,8 +299,8 @@
       </div>
     </div>
     <div class="modal-footer">
-     <button type="submit"  style="margin-left: 25%;" (click)="onEdit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
-     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
+     <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+     <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onEdit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>
@@ -311,7 +312,7 @@
       <div class="card-body">
         <h4 class="card-title">Liste des agents</h4>
         <div class="row" style="margin-left: 20%;">
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="isAdmin === true">
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-8">
@@ -332,7 +333,7 @@
             </div>
           </div>
 
-          <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
+          <pf-button *ngIf="isAdmin === true" (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
             <i class="fa fa-plus"></i>
           </pf-button>
         </div>
@@ -345,27 +346,28 @@
               <tr>
                 <th>Matricule</th>
                 <th>Nom</th>
-                <th>Prenon</th>
-                <th>Email</th>
+                <th>Prenom</th>
                 <th>Numero</th>
                 <th>Fonction</th>
                 <th>Grade</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody *ngFor="let u of users">
+            <tbody *ngFor="let u of users; let i = index">
               <tr>
                 <td>{{u.matricule}}</td>
                 <td>{{u.lastname}}</td>
                 <td> {{u.firstname}}</td>
-                <td> {{u.email}} </td>
                 <td> {{u.phoneNumber}} </td>
                 <td> {{u.defaultFonction.rule}} </td>
                 <td>{{u.grade.grade}}</td>
-                <td  >
+                <td [width]="120" *ngIf="isAdmin === true">
                   <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>
+                </td>
+                <td [width]="120" *ngIf="isAdmin === false" >
+                  <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                 </td>
 
               </tr>
@@ -486,7 +488,7 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"  style="margin-left: 90%;" (click)="modal.close('Close click')">OK</pf-button>
+     <pf-button type="button"  style="margin-right:2%" (click)="modal.close('Close click')">OK</pf-button>
     </div>
   </ng-template>
 </section>
@@ -503,9 +505,8 @@
       <h3>Voulez-vous vraiment supprimer cet agent?</h3>
     </div>
     <div class="modal-footer">
-     <button type="submit"  style="margin-left: 25%;" (click)="deleteAgent(agent.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
-     <pf-button type="button"  style="margin-left: 5%;" (click)="modal.close('Close click')">Annuler</pf-button>
-
+     <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+     <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="deleteAgent(agent.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
     </div>
   </ng-template>
 </section>

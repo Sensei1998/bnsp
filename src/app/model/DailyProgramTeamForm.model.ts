@@ -1,7 +1,12 @@
-import { DailyProgramFunctionForm } from "./DailyProgramFunctionForm.model";
+import { DailyProgramAddEquipeForm } from "./DailyProgramAddEquipeForm.model";
 
 export interface DailyProgramTeamForm{
-  equipeId: number;
+  typeId: number;
 
-  functionList: DailyProgramFunctionForm[];
+  designation: string;
+
+  enginId:number;
+
+  members: DailyProgramAddEquipeForm[];
+
 }

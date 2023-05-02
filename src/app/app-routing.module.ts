@@ -19,13 +19,14 @@ import { CreationCaserneComponent } from '@pages/admin/creation-caserne/creation
 import { CreationEnginComponent } from '@pages/admin/creation-engin/creation-engin.component';
 import { CreationEquipeComponent } from '@pages/admin/creation-equipe/creation-equipe.component';
 import { CreationProgramComponent } from '@pages/admin/creation-program/creation-program.component';
+import { LoginGuard } from '@guards/login.guard';
 
 const routes: Routes = [
     {
         path: '',
         component: MainComponent,
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        canActivate: [LoginGuard],
+        canActivateChild: [LoginGuard],
         children: [
             {
                 path: 'profile',

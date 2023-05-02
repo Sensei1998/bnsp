@@ -1,3 +1,4 @@
+import { Agent } from '@/model/Agent.model';
 import { AgentCreationForm } from '@/model/AgentCreationForm.model';
 import { AgentUpdateForm } from '@/model/AgentUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
@@ -34,7 +35,7 @@ export class CreationAgentComponent implements OnInit{
   caserne;
   grade;
 
-  users;
+  users: Agent;
   agent;
 
   agentEditForm:FormGroup = this.formBuilder.group({
@@ -57,6 +58,9 @@ export class CreationAgentComponent implements OnInit{
   compagnie;
   numero = this.formBuilder.array([]);
 
+  role = localStorage.getItem('fonction');
+  isAdmin: boolean;
+
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
@@ -75,6 +79,15 @@ export class CreationAgentComponent implements OnInit{
     this.agentForm.get('confirmPassword').valueChanges.subscribe(() => {
       this.checkPasswordMatch();
     });
+
+
+    if(this.role === "ROLE_SUPERVISOR" || this.role === "ROLE_ADMINISTRATEUR"){
+       this.isAdmin = true;
+
+    } else{
+      this.isAdmin = false;
+    ;
+    }
   }
 
 
@@ -124,7 +137,7 @@ export class CreationAgentComponent implements OnInit{
 
   getAgentByCaserne(id: number){
       return this.http.get(this.url + "/users/caserne/" + id).subscribe(
-        user => {
+        (user: Agent) => {
           this.users = user
         }
       );
@@ -148,8 +161,11 @@ export class CreationAgentComponent implements OnInit{
 
   getAgent(){
     return this.http.get(this.url + "/users/").subscribe(
-      user =>{
+      (user: Agent) =>{
         this.users = user;
+
+        // let split = this.users.phoneNumber.split(';');
+        // this.users.phoneNumber = split;
       }
     );
   }
@@ -168,6 +184,7 @@ export class CreationAgentComponent implements OnInit{
           this.numero.push(this.formBuilder.control(phoneNumber));
           this.agentEditForm.setControl('telephone', this.formBuilder.array(split));
         });
+        console.log(this.agent);;
       }
     );
   }

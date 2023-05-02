@@ -4,7 +4,7 @@ import { AgentCreationForm } from '@/model/AgentCreationForm.model';
 import { AgentUpdateForm } from '@/model/AgentUpdateForm.model';
 import { EquipeCreationForm } from '@/model/EquipeCreationForm.model';
 import { EquipeUpdateForm } from '@/model/EquipeUpdateForm.model';
-import { DailyProgramCreationForm } from '@/model/DailyProgramCreationForm.model';
+
 import { CaserneCreationForm } from '@/model/CaserneCreationForm.model';
 import { CaserneUpdateForm } from '@/model/CaserneUpdateForm.model';
 import { EnginCreationForm } from '@/model/EnginCreationForm.model';
@@ -17,6 +17,7 @@ import { EnginUpdateOut } from '@/model/EnginUpdateOut.model';
 })
 export class ApiService {
     url: "http://localhost:8081/bnsp/api";
+    formData: any = {};
 
     constructor(private http: HttpClient) {}
 
@@ -76,17 +77,9 @@ export class ApiService {
       return this.http.delete(this.url + "/teams/" + id);
     }
 
-    createProgram(program: DailyProgramCreationForm){
-      return this.http.post<DailyProgramCreationForm>(this.url + "/programs/create" , program);
-    }
 
-    getProgram(){
-      return this.http.get(this.url + "/programs");
-    }
 
-    getProgramByCaserne(id: number){
-      return this.http.get(this.url + "/programs/caserne/" + id);
-    }
+
 
     createCaserne(caserne: CaserneCreationForm){
       return this.http.post<CaserneCreationForm>(this.url + "/casernes/create" , caserne);

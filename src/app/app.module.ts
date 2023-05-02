@@ -46,6 +46,7 @@ import { CreationEquipeComponent } from './pages/admin/creation-equipe/creation-
 import { CreationEnginComponent } from './pages/admin/creation-engin/creation-engin.component';
 import { CreationAgentComponent } from './pages/admin/creation-agent/creation-agent.component';
 import { CreationProgramComponent } from './pages/admin/creation-program/creation-program.component';
+import { TokenInterceptorProvider } from '@guards/token.interceptor';
 
 
 
@@ -102,9 +103,10 @@ registerLocaleData(localeEn, 'en-EN');
         CommonModule,
         NgSelectModule,
         NgbModule,
+        NgbModule,
 
     ],
-    providers: [NgbModalConfig, NgbModal],
+    providers: [NgbModalConfig, NgbModal, TokenInterceptorProvider],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

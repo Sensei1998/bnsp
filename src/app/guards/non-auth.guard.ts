@@ -24,10 +24,10 @@ export class NonAuthGuard implements CanActivate, CanActivateChild {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        if (!localStorage.getItem('token')) {
+        if (!this.islogged()) {
             return true;
         }
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
         return false;
     }
     canActivateChild(
@@ -39,5 +39,10 @@ export class NonAuthGuard implements CanActivate, CanActivateChild {
         | boolean
         | UrlTree {
         return this.canActivate(next, state);
+    }
+
+    islogged():boolean{
+      const token = localStorage.getItem('token')
+      return !! token;
     }
 }

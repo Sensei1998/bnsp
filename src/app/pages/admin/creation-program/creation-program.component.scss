@@ -1,0 +1,14 @@
+::ng-deep ngb-modal-backdrop {
+  z-index: 1050 !important;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.prog {
+  margin-bottom: 10px;
+  width: 100%;
+}

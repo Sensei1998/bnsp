@@ -1,90 +1,52 @@
 <div class="card card-outline card-primary">
     <div class="card-header text-center">
-        <a [routerLink]="['/']" class="h1"><b>BNSP</b>LTE</a>
+        <p class="h1"><b>BNSP</b>LTE</p>
     </div>
     <div class="card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Connectez-vous pour démarrer votre session</p>
 
         <form [formGroup]="loginForm" (ngSubmit)="loginByAuth()">
             <div class="input-group mb-3">
-                <input
-                    formControlName="email"
-                    type="email"
-                    class="form-control"
-                    placeholder="Email"
-                />
+                <input formControlName="email" type="email" class="form-control" placeholder="Email"/>
                 <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-envelope"></span>
-                    </div>
+                  <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                  </div>
                 </div>
-            </div>
-            <div class="input-group mb-3">
-                <input
-                    formControlName="password"
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-                />
+              </div>
+              <div *ngIf="loginForm.get('email').invalid && (loginForm.get('email').dirty || loginForm.get('email').touched)" class="text-danger">
+                <div *ngIf="loginForm.get('email').errors.required">L'Email est requis</div>
+                <div *ngIf="loginForm.get('email').errors.email">L'Email est invalide</div>
+              </div>
+              <div class="input-group mb-3">
+                <input formControlName="password" type="password" class="form-control" placeholder="Password" minlength="8"/>
                 <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
-                    </div>
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
                 </div>
-            </div>
+              </div>
+              <div *ngIf="loginForm.get('password').invalid && (loginForm.get('password').dirty || loginForm.get('password').touched)" class="text-danger">
+                <div *ngIf="loginForm.get('password').errors.required">Le Mot de passe est requis</div>
+                <div *ngIf="loginForm.get('password').errors.minlength">Le mot de passe doit comporter au moins 8 caractères</div>
+              </div>
             <div class="row">
-                <div class="col-7">
-                    <div class="icheck-primary">
-                        <input type="checkbox" id="remember" />
-                        <label for="remember"> Remember Me </label>
-                    </div>
-                </div>
+
                 <!-- /.col -->
-                <div class="col-5">
+                <div class="col-5" style="margin-left: 58%;">
                     <pf-button
                         [type]="'submit'"
                         [block]="true"
                         [loading]="isAuthLoading"
-                        [disabled]="isFacebookLoading || isGoogleLoading"
                     >
-                        Sign In
+                        Connexion
                     </pf-button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
 
-        <!-- <div class="social-auth-links text-center mb-3">
-            <pf-button
-                class="mb-2"
-                [block]="true"
-                [loading]="isFacebookLoading"
-                [disabled]="isAuthLoading || isGoogleLoading"
-                (click)="loginByFacebook()"
-            >
-                <i class="fab fa-facebook mr-2"></i>
-                Sign in using Facebook
-            </pf-button>
-            <pf-button
-                [block]="true"
-                [loading]="isGoogleLoading"
-                [disabled]="isAuthLoading || isFacebookLoading"
-                theme="danger"
-                (click)="loginByGoogle()"
-            >
-                <i class="fab fa-google mr-2"></i>
-                Sign in using Google+
-            </pf-button>
-        </div>
 
-        <p class="mb-1">
-            <a [routerLink]="['/forgot-password']">I forgot my password</a>
-        </p>
-        <p class="mb-0">
-            <a [routerLink]="['/register']" class="text-center">
-                Register a new membership
-            </a>
-        </p> -->
     </div>
     <!-- /.login-card-body -->
 </div>

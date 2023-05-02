@@ -14,6 +14,8 @@ import {AppService} from '@services/app.service';
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
+
+
     constructor(private router: Router, private appService: AppService) {}
 
     canActivate(
@@ -24,7 +26,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        return this.getProfile();
+          if (this.islogged()){
+            this.router.navigate([''])
+          }
+        return this.router.navigate(['/login']);
     }
 
     canActivateChild(
@@ -36,6 +41,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         | boolean
         | UrlTree {
         return this.canActivate(next, state);
+    }
+
+
+    islogged():boolean{
+      const token = localStorage.getItem('token')
+      return !! token;
     }
 
     async getProfile() {
