@@ -57,11 +57,11 @@ export const MENU = [
                 iconClasses: 'fas fa-file',
                 path: ['/sub-menu-2']
             },
-            {
-              name: 'Ajouter une Compagnie',
-              iconClasses: 'fas fa-list',
-              path: ['/sub-menu2']
-            },
+            // {
+            //   name: 'Ajouter une Compagnie',
+            //   iconClasses: 'fas fa-list',
+            //   path: ['/sub-menu2']
+            // },
             {
               name: 'suivie',
               iconClasses: 'fas fa-forward',

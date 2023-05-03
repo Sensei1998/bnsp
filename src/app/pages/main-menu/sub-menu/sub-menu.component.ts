@@ -7,10 +7,7 @@ import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 
-export type Option = {
-  id: string;
-  name: string;
-};
+
 @Component({
   selector: 'app-sub-menu',
   templateUrl: './sub-menu.component.html',
@@ -21,16 +18,7 @@ export class SubMenuComponent implements OnInit {
   model = 1;
   num = this.formatHeure(this.date);
   heure = this.formatHeure(this.date);
-  variableName: Array<Option>= [
-    {
-      'id': '1',
-      'name': 'Accident de la Route'
-    },
-    {
-      'id': '2',
-      'name': 'Incendit'
-    }
-  ]
+
 
   interventionForm: FormGroup = this.form.group({
     date: [[''], Validators.required],
@@ -81,7 +69,7 @@ export class SubMenuComponent implements OnInit {
   }
 
   formatHeure(heure) {
-    return DateTime.fromISO(heure).toFormat('hh:mm:ss');
+    return DateTime.fromISO(heure).toFormat('HH:mm:ss');
   }
 
   getProfil(){
@@ -93,14 +81,18 @@ export class SubMenuComponent implements OnInit {
   }
 
   createPartialIntervention(Incident : IncidentPartial){
-    return this.http.post<IncidentPartial>("http://localhost:8081/bnsp/api/intervention/create/partial", Incident).subscribe();
+    return this.http.post<IncidentPartial>("http://localhost:8081/bnsp/api/intervention/create/partial", Incident).subscribe(
+      (data: any) => {
+        this.service.id = data.id;
+      }
+    );
   }
 
   onSubmit(){
      if(this.interventionForm.valid){
       let intervention: IncidentPartial ={
         cctoId: this.profil.id,
-        date: this.formatDate(this.date),
+        date: this.formatDate(this.date).toString(),
         time: this.interventionForm.get('time').value,
         provenance: this.interventionForm.get('provenance').value,
         phoneNumber: this.interventionForm.get('phoneNumber').value,
@@ -116,7 +108,9 @@ export class SubMenuComponent implements OnInit {
         }
       }
       this.service.formData = intervention;
+      console.log(intervention);
       this.createPartialIntervention(intervention);
+      this.toastr.success('Information Enregistrer avec succès!');
       this.router.navigate(['/sub-menu2']);
     } else {
         this.toastr.error('Erreur lors de la création de l \'intervention Formulaire invalide ou incomplet');

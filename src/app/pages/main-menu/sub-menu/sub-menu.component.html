@@ -35,7 +35,7 @@
                   <tr >
                     <td>
                       <h3 class="card-title">Numéro Appelant:</h3>
-                      <input class="card-title" formControlName="phoneNumber" style="margin-left: 2%;"><br><br>
+                      <input type="text" class="card-title" formControlName="phoneNumber" style="margin-left: 2%;"><br><br>
                       <div
                         *ngIf="interventionForm.get('phoneNumber').invalid && (interventionForm.get('phoneNumber').dirty || interventionForm.get('phoneNumber').touched)"
                         class="text-danger">
@@ -49,7 +49,7 @@
                     </td>
                     <td>
                       <h3 class="card-title" >Heure:</h3>
-                      <input class="card-title" name="heure" [(ngModel)]="heure" formControlName="time" style="margin-left: 2%;"><br><br>
+                      <input type="text" class="card-title" name="heure" [(ngModel)]="heure" formControlName="time" style="margin-left: 2%;"><br><br>
                       <div style="margin-left: 25%;"
                         *ngIf="interventionForm.get('time').invalid && (interventionForm.get('time').dirty || interventionForm.get('time').touched)"
                         class="text-danger">
@@ -163,7 +163,7 @@
                         <div class="row row-sm mg-b-20 " >
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Nom</p>
-                            <input formControlName="name" class="form-control" required/>
+                            <input type="text" formControlName="name" class="form-control" required/>
                             <div
                             *ngIf="interventionForm.get('name').invalid && (interventionForm.get('name').dirty || interventionForm.get('name').touched)"
                             class="text-danger">
@@ -173,7 +173,7 @@
 
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Address</p>
-                            <input formControlName="address" class="form-control" />
+                            <input type="text" formControlName="address" class="form-control" />
                           </div>
                         </div>
                         <div>
@@ -182,17 +182,17 @@
                         <div class="row row-sm mg-b-20 " >
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Longitude</p>
-                            <input formControlName="longitude" class="form-control" />
+                            <input type="number" formControlName="longitude" class="form-control" />
                           </div>
 
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Latitude</p>
-                            <input formControlName="latitude" class="form-control" />
+                            <input type="number" formControlName="latitude" class="form-control" />
                           </div>
 
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Precision</p>
-                            <input formControlName="precision" class="form-control" />
+                            <input ttype="text" formControlName="precision" class="form-control" />
                           </div>
                         </div>
 

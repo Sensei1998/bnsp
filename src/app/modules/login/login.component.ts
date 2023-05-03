@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               password: this.loginForm.get('password').value
             }
             this.http.post("http://localhost:8081/bnsp/api/users/login", login).subscribe(
-              (data: Login) =>{
+              (data: Login) => {
                 this.saveToken(data.token);
                 this.saveFonction(data.agent.currentFunction);
                 this.saveCaserne(data.agent.caserneId);

@@ -1,13 +1,13 @@
+import { interventionCaserne } from '@/model/InterventionCaserne.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
+import { ToastrService } from 'ngx-toastr';
 
-export type Option = {
-  id: string;
-  name: string;
-};
+
 
 @Component({
   selector: 'app-sub-menu2',
@@ -16,19 +16,16 @@ export type Option = {
 })
 export class SubMenu2Component implements OnInit {
   date = DateTime.now();
-  CompagnieForm: FormGroup;
-  num = this.formatHeure(this.date);
-  heure = this.formatHeure(this.date);
-  variableName: Array<Option>= [
-    {
-      'id': '1',
-      'name': 'Accident de la Route'
-    },
-    {
-      'id': '2',
-      'name': 'Incendit'
-    }
-  ];
+  CompagnieForm: FormGroup = this.fb.group({
+    compagnie: this.fb.array([
+      this.fb.group({
+        id: [[], Validators.required],
+        comment:[[]]
+      })
+    ])
+  });
+
+
 
   url ="http://localhost:8081/bnsp/api";
   caserne;
@@ -39,35 +36,14 @@ export class SubMenu2Component implements OnInit {
   data = this.service.formData;
 
 
-  interventionForm: FormGroup = this.fb.group({
-    date: [[], Validators.required],
-    time:[[], Validators.required],
-    provenance : [[], Validators.required],
-    phoneNumber : [[], [Validators.required, Validators.minLength(8)]],
-    name : [[], Validators.required],
-    address : [[]],
-    longitude: [[]],
-    latitude: [[]],
-    precision: [[]],
-    categoryId:[[], Validators.required],
-    incidentTypeId:[[], Validators.required],
-    comments:[[]]
-  })
-
-
   constructor(private fb: FormBuilder,
     private http: HttpClient,
-    public service: ApiService){}
+    public service: ApiService,
+    private toastr: ToastrService,
+    private router: Router){}
 
   ngOnInit(): void {
-    this.CompagnieForm = this.fb.group({
-      compagnie: this.fb.array([
-      ]),
-  });
-  setTimeout(() => {
-    this.addCompagnie();
-  this.addCompagnie();
-  })
+
 
   this.getCaserne();
   this.getCategory();
@@ -92,7 +68,10 @@ export class SubMenu2Component implements OnInit {
   }
 
   addCompagnie(){
-    this.compagnie.push(new FormControl());
+    this.compagnie.push(this.fb.group({
+      id: [[], Validators.required],
+      comment:[[]]
+    }));
   }
 
   formatDate(date) {
@@ -107,8 +86,7 @@ getLibelleBycategory(id: number){
   return this.http.get(url).subscribe(
     data => {
       this.libelle = data;
-      this.libelle = this.libelle.find(lib => lib.id == this.service.formData.incident.incidentTypeId)
-      console.log(this.libelle)
+      this.libelle = this.libelle.find(lib => lib.id == this.service.formData.incident.incidentTypeId);
     }
   )
 }
@@ -118,9 +96,26 @@ getCategory(){
     data => {
       this.category = data;
       this.category = this.category.find(category => category.id == this.service.formData.incident.categoryId)
-      console.log(this.category)
     }
   )
+}
+
+addCaserneIntervention(Caserne: interventionCaserne){
+  return this.http.put<interventionCaserne>("http://localhost:8081/bnsp/api/intervention/update/info", Caserne).subscribe()
+}
+
+onSubmit(){
+  if(this.CompagnieForm.valid){
+    let compagnie: interventionCaserne = {
+      id: this.service.id,
+      casernes: this.CompagnieForm.getRawValue().compagnie
+    }
+    this.addCaserneIntervention(compagnie);
+    this.toastr.success('Compagnie ajouter avec succès!')
+    this.router.navigate(['sub-menu-2'])
+  }else {
+    this.toastr.error('Erreur information incomplete');
+  }
 }
 
 

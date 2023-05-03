@@ -19,7 +19,7 @@
 <!-- Main content -->
 <section class="content">
   <!-- Default box -->
-  <form [formGroup]="interventionForm">
+
     <div class="container-fluid">
       <div class="card">
         <div class="card-header">
@@ -310,45 +310,45 @@
               <h3  class="form-control" >{{service.formData.precision}} </h3>
             </div>
           </div>
-        </div>
-        <div class="card-body">
-          <!-- <form class="forms-sample" [formGroup]="CompagnieForm">
+          <form class="forms-sample" [formGroup]="CompagnieForm" (ngSubmit)="onSubmit()">
 
-            <div formArrayName="compagnie" *ngFor="let c of compagnie.controls; let i = index">
+            <div formArrayName="compagnie" >
+              <div *ngFor="let c of compagnie.controls; let i = index">
+                <div [formGroupName]="i">
               <div class="row row-sm mg-b-20 card-header">
                 <div class="col-lg-5 form-group ">
                   <label class="mg-b-10" for="Compagnie">Compagnie</label>
-                  <select class="form-control" formControlName="caserneId">
+                  <select class="form-control" formControlName="id">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
                 <div class="col-lg-5 form-group ">
                   <label for="commentaire">Commentaire</label>
                   <textarea class="form-control" id="exampleTextarea1" rows="4"
-                    formControlName="commentaire"></textarea>
+                    formControlName="comment"></textarea>
                 </div>
-                <div class="col-lg-1 form-group ">
-                  <pf-button [disabled]="i === 0" (click)="deleteCompagnie(i)">
-                    <i class="fa fa-trash"></i>
-                  </pf-button>
+                <div class="row" style="margin-left:2%; margin-top: 5%">
+                  <i class="fa fa-plus" (click)="addCompagnie()" ></i>
+                  <i class="fa fa-trash" *ngIf="compagnie.length > 1" style="margin-left: 2%;" (click)="deleteCompagnie(i)" ></i>
                 </div>
+
+              </div>
               </div>
             </div>
+          </div>
 
 
-
-          </form> -->
-
+          </form>
         </div>
+
         <!-- /.card-body -->
-        <div class="card-footer">
-          <button type="submit" class="btn btn-primary mr-2">submit</button>
-          <button class="btn btn-light">Cancel</button>
-        </div>
+        <div class="modal-footer">
+          <button type="submit" (click)="onSubmit()" class="btn btn-success">Enregistrer</button>
+          </div>
         <!-- /.card-footer-->
       </div>
     </div>
     <!-- /.card -->
-  </form>
+
 </section>
 <!-- /.content -->
