@@ -117,7 +117,7 @@ public class InterventionController {
             List<InterventionSheet> sheets = new ArrayList<>();
             for(Intervention element : intervention){
                 sheets = this.interventionSheetService.findActiveInterventionSheetByIntervention(element);
-                responses.add(this.mappingIntervention.mappingIntervention(sheets));
+                responses.add(this.mappingIntervention.mappingIntervention(sheets, Optional.of(element)));
             }
             return responses.size() > 0 ? new ResponseEntity<>(responses, HttpStatus.OK) : ResponseEntity.noContent().build();
         }
@@ -125,7 +125,7 @@ public class InterventionController {
             Optional<Intervention> intervention = this.interventionService.findActiveInterventionById(interventionId.get());
             if(intervention.isEmpty()) return ResponseEntity.notFound().build();
             List<InterventionSheet> response = this.interventionSheetService.findActiveInterventionSheetByIntervention(intervention.get());
-            return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingIntervention(response), HttpStatus.OK) : ResponseEntity.noContent().build();
+            return response.size() > 0 ? new ResponseEntity<>(this.mappingIntervention.mappingIntervention(response, intervention), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
     }
 

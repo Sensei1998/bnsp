@@ -64,8 +64,14 @@ public class MappingIntervention {
         return response;
     }
 
-    public Optional<InterventionResponse> mappingIntervention(List<InterventionSheet> interventionSheets){
-        if(interventionSheets.size() == 0) return Optional.empty();
+    public Optional<InterventionResponse> mappingIntervention(List<InterventionSheet> interventionSheets, Optional<Intervention> targetIntervention){
+        if(interventionSheets.size() == 0){
+            if(targetIntervention.isEmpty()) return Optional.empty();
+            else{
+                InterventionResponse interventionResponse = new InterventionResponse(targetIntervention.get().getId(), targetIntervention.get().getDate().toLocalDate(), targetIntervention.get().getDate().toLocalTime(), targetIntervention.get().getCaller().getProvenance(), targetIntervention.get().getCaller().getPhoneNumber(), targetIntervention.get().getCaller().getName(), targetIntervention.get().getCaller().getAddress(), targetIntervention.get().getCaller().getLocalisation().getLongitude(), targetIntervention.get().getCaller().getLocalisation().getLatitude(), targetIntervention.get().getCaller().getLocalisation().getPrecision(), targetIntervention.get().getIncident(), new ArrayList<>());
+                return Optional.of(interventionResponse);
+            }
+        }
         else{
             Intervention intervention = interventionSheets.get(0).getKey().getIntervention();
             InterventionResponse interventionResponse = new InterventionResponse(intervention.getId(), intervention.getDate().toLocalDate(), intervention.getDate().toLocalTime(), intervention.getCaller().getProvenance(), intervention.getCaller().getPhoneNumber(), intervention.getCaller().getName(), intervention.getCaller().getAddress(), intervention.getCaller().getLocalisation().getLongitude(), intervention.getCaller().getLocalisation().getLatitude(), intervention.getCaller().getLocalisation().getPrecision(), intervention.getIncident(), new ArrayList<>());
