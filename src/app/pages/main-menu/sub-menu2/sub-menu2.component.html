@@ -318,14 +318,14 @@
               <div class="row row-sm mg-b-20 card-header">
                 <div class="col-lg-5 form-group ">
                   <label class="mg-b-10" for="Compagnie">Compagnie</label>
-                  <select class="form-control" formControlName="id">
-                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  <select class="form-control" formControlName="caserneId">
+                    <option *ngFor="let d of caserne" value={{d.id}}>{{d.name}}</option>
                   </select>
                 </div>
                 <div class="col-lg-5 form-group ">
                   <label for="commentaire">Commentaire</label>
                   <textarea class="form-control" id="exampleTextarea1" rows="4"
-                    formControlName="comment"></textarea>
+                    formControlName="message"></textarea>
                 </div>
                 <div class="row" style="margin-left:2%; margin-top: 5%">
                   <i class="fa fa-plus" (click)="addCompagnie()" ></i>

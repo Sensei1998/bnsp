@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SubMenuComponent implements OnInit {
   date = DateTime.now();
   model = 1;
-  num = this.formatHeure(this.date);
+  date2 = this.formatDate(this.date);
   heure = this.formatHeure(this.date);
 
 
@@ -92,7 +92,7 @@ export class SubMenuComponent implements OnInit {
      if(this.interventionForm.valid){
       let intervention: IncidentPartial ={
         cctoId: this.profil.id,
-        date: this.formatDate(this.date).toString(),
+        date: this.interventionForm.get('date').value,
         time: this.interventionForm.get('time').value,
         provenance: this.interventionForm.get('provenance').value,
         phoneNumber: this.interventionForm.get('phoneNumber').value,
@@ -108,7 +108,6 @@ export class SubMenuComponent implements OnInit {
         }
       }
       this.service.formData = intervention;
-      console.log(intervention);
       this.createPartialIntervention(intervention);
       this.toastr.success('Information Enregistrer avec succès!');
       this.router.navigate(['/sub-menu2']);

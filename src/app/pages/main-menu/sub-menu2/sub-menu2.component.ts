@@ -19,8 +19,8 @@ export class SubMenu2Component implements OnInit {
   CompagnieForm: FormGroup = this.fb.group({
     compagnie: this.fb.array([
       this.fb.group({
-        id: [[], Validators.required],
-        comment:[[]]
+        caserneId: [[], Validators.required],
+        message:[[]]
       })
     ])
   });
@@ -68,9 +68,9 @@ export class SubMenu2Component implements OnInit {
   }
 
   addCompagnie(){
-    this.compagnie.push(this.fb.group({
-      id: [[], Validators.required],
-      comment:[[]]
+    this.compagnie.push( this.fb.group({
+      caserneId: [[], Validators.required],
+      message:[[]]
     }));
   }
 
@@ -111,8 +111,11 @@ onSubmit(){
       casernes: this.CompagnieForm.getRawValue().compagnie
     }
     this.addCaserneIntervention(compagnie);
-    this.toastr.success('Compagnie ajouter avec succès!')
-    this.router.navigate(['sub-menu-2'])
+    this.toastr.success('Compagnie ajouter avec succès!');
+    setTimeout(()=>{
+      this.router.navigate(['sub-menu-2']);
+    }, 2000)
+
   }else {
     this.toastr.error('Erreur information incomplete');
   }

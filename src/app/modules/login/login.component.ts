@@ -46,30 +46,34 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     async loginByAuth() {
-        if (this.loginForm.valid) {
-            this.isAuthLoading = true;
-            let login = {
-              identifier: this.loginForm.get('email').value,
-              password: this.loginForm.get('password').value
-            }
-            this.http.post("http://localhost:8081/bnsp/api/users/login", login).subscribe(
-              (data: Login) => {
-                this.saveToken(data.token);
-                this.saveFonction(data.agent.currentFunction);
-                this.saveCaserne(data.agent.caserneId);
-                this.saveEmail(data.agent.email);
+      if (this.loginForm.valid) {
+        this.isAuthLoading = true;
+        let login = {
+          identifier: this.loginForm.get('email').value,
+          password: this.loginForm.get('password').value
+        };
+        this.http.post("http://localhost:8081/bnsp/api/users/login", login).subscribe(
+          (data: Login) => {
+            this.saveToken(data.token);
+            this.saveFonction(data.agent.currentFunction);
+            this.saveCaserne(data.agent.caserneId);
+            this.saveEmail(data.agent.email);
 
-                this.router.navigate(['/']);
-                this.toastr.success('Login success');
-              }
-            )
-            //await this.appService.loginByAuth(this.loginForm.value);
+            this.router.navigate(['/']);
+            this.toastr.success('Login success');
+            this.isAuthLoading = false; // Déplacer cette ligne ici
+          },
+          error => {
+            this.toastr.error('Email ou mot de passe incorrect!');
             this.isAuthLoading = false;
-        } else {
-          window.location.reload();
-            this.toastr.error('Email ou Mot de passe incorrect!');
-        }
+          }
+        );
+      } else {
+        window.location.reload();
+        this.toastr.error('Email ou Mot de passe incorrect!');
+      }
     }
+
 
     // async loginByGoogle() {
     //     this.isGoogleLoading = true;

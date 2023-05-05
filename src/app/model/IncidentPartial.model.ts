@@ -1,8 +1,9 @@
+import { Time } from "@angular/common";
 
 export interface IncidentPartial {
   cctoId: number;
   date: Date;
-  time: string;
+  time: Time;
   provenance: string;
   phoneNumber: string;
   name: string;
