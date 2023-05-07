@@ -41,6 +41,8 @@ public class Intervention {
     @Embedded
     private Incident incident;
 
+    private String status = "Non attribué";
+
     private boolean done = false;
 
     @JsonIgnore

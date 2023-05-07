@@ -44,5 +44,7 @@ public class InterventionResponse {
 
     private Incident incident;
 
+    private String status;
+
     private List<InterventionCaserneData> casernes = new ArrayList<>();
 }

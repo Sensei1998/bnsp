@@ -146,6 +146,8 @@ public class InterventionService implements InterventionServiceInterface{
             interventionSheet.setMessage(interventionCaserne.get(element.getId()));
             this.interventionSheetRepository.save(interventionSheet);
         }
+        intervention.setStatus("En attente");
+        this.interventionRepository.save(intervention);
         return Optional.of(intervention);
     }
 

@@ -12,10 +12,7 @@ import bf.bnsp.api.intervention.dto.form.partialData.InterventionSheetOut;
 import bf.bnsp.api.intervention.dto.form.partialData.PersonInfo;
 import bf.bnsp.api.intervention.model.*;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
-import bf.bnsp.api.intervention.repository.InterventionSheetRepository;
-import bf.bnsp.api.intervention.repository.InterventionSheetToMessageRepository;
-import bf.bnsp.api.intervention.repository.InterventionSheetToTeamRepository;
-import bf.bnsp.api.intervention.repository.SinisterRepository;
+import bf.bnsp.api.intervention.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +34,9 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
 
     @Autowired
     private InterventionSheetToMessageRepository interventionSheetToMessageRepository;
+
+    @Autowired
+    private InterventionRepository interventionRepository;
 
     @Autowired
     private SinisterRepository sinisterRepository;
@@ -63,6 +63,9 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
         interventionSheet.setAgentBCOT(agent);
         this.interventionSheetRepository.save(interventionSheet);
         this.interventionSheetToTeamRepository.saveAll(teamConfigList);
+        Intervention intervention = interventionSheet.getKey().getIntervention();
+        intervention.setStatus("En cours");
+        this.interventionRepository.save(intervention);
         return teamConfigList;
     }
 
