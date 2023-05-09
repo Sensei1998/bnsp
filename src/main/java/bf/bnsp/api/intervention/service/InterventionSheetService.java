@@ -56,6 +56,14 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
                 tmpTeamConfig = new InterventionSheetToTeam(interventionSheet, targetedEquipe.get());
                 if(element.getDeparture().isPresent()) tmpTeamConfig.setDeparture(element.getDeparture().get());
                 if(element.getPresentation().isPresent()) tmpTeamConfig.setPresentation(element.getPresentation().get());
+                if(element.getAvailable().isPresent()){
+                    tmpTeamConfig.setAvailable(element.getAvailable().get());
+                    tmpTeamConfig.setActive(false);
+                }
+                if(element.getCheckIn().isPresent()){
+                    tmpTeamConfig.setCheckIn(element.getCheckIn().get());
+                    tmpTeamConfig.setActive(false);
+                }
                 teamConfigList.add(tmpTeamConfig);
             }
         }

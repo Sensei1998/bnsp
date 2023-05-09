@@ -22,4 +22,10 @@ public class InterventionSheetOut {
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Optional<LocalDateTime> departure = Optional.empty();
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Optional<LocalDateTime> available = Optional.empty();
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Optional<LocalDateTime> checkIn = Optional.empty();
+
 }
