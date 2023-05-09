@@ -13,7 +13,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class InterventionSheetOut {
 
-    private int interventionSheetId;
 
     private int equipeId;
 
