@@ -1,17 +1,16 @@
 package bf.bnsp.api.tools.mappingTools;
 
+import bf.bnsp.api.account.model.DailyTeamMember;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseMultiCaserne;
 import bf.bnsp.api.intervention.dto.response.IncidentResponseOneCaserne;
 import bf.bnsp.api.intervention.dto.response.InterventionResponse;
 import bf.bnsp.api.intervention.dto.response.MessageResponse;
-import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetCaserneData;
-import bf.bnsp.api.intervention.dto.response.partialData.IncidentSheetData;
-import bf.bnsp.api.intervention.dto.response.partialData.InterventionCaserneData;
-import bf.bnsp.api.intervention.model.Intervention;
-import bf.bnsp.api.intervention.model.InterventionSheet;
-import bf.bnsp.api.intervention.model.InterventionSheetToMessage;
-import bf.bnsp.api.intervention.model.Sinister;
+import bf.bnsp.api.intervention.dto.response.partialData.*;
+import bf.bnsp.api.intervention.model.*;
+import bf.bnsp.api.intervention.service.InterventionService;
+import bf.bnsp.api.intervention.service.InterventionSheetService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +22,9 @@ import java.util.Optional;
  */
 @Service
 public class MappingIntervention {
+
+    @Autowired
+    private InterventionSheetService interventionSheetService;
 
     public IncidentResponseOneCaserne mappingSinisterSheetOneCaserne(List<Sinister> sinisters){
         List<IncidentSheetData> incidentList = new ArrayList<>();
@@ -73,11 +75,23 @@ public class MappingIntervention {
             }
         }
         else{
+            List<InterventionSheetToTeam> teams;
+            List<InterventionTeamData> teamData = new ArrayList<>();
+            Optional<InterventionTeamEnginData> enginData;
+            List<InterventionTeamMemberData> memberData = new ArrayList<>();
             Intervention intervention = interventionSheets.get(0).getKey().getIntervention();
             InterventionResponse interventionResponse = new InterventionResponse(intervention.getId(), intervention.getDate().toLocalDate(), intervention.getDate().toLocalTime(), intervention.getCaller().getProvenance(), intervention.getCaller().getPhoneNumber(), intervention.getCaller().getName(), intervention.getCaller().getAddress(), intervention.getCaller().getLocalisation().getLongitude(), intervention.getCaller().getLocalisation().getLatitude(), intervention.getCaller().getLocalisation().getPrecision(), intervention.getIncident(), intervention.getStatus(), new ArrayList<>());
             List<InterventionCaserneData> casernes = new ArrayList<>();
             for(InterventionSheet element : interventionSheets){
-                casernes.add(new InterventionCaserneData(element.getKey().getCaserne().getId(), element.getKey().getCaserne().getName(), element.getMessage()));
+                teams = this.interventionSheetService.findInterventionTeamByInterventionSheet(element);
+                for(InterventionSheetToTeam team : teams){
+                    enginData = team.getEquipe().getEngin() != null ? Optional.of(new InterventionTeamEnginData(team.getEquipe().getEngin().getId(), team.getEquipe().getEngin().getEnginType().getEnginType().name(), team.getEquipe().getEngin().getImmatriculation())) : Optional.empty();
+                    for(DailyTeamMember member: team.getEquipe().getMembers()){
+                        memberData.add(new InterventionTeamMemberData(member.getPrincipal().getId(), member.getPrincipal().getMatricule(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getSecondary().getId(), member.getSecondary().getMatricule(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getFonction().getRule().name()));
+                    }
+                    teamData.add(new InterventionTeamData(team.getEquipe().getId(), team.getEquipe().getType().getEquipeType().name(), enginData, memberData));
+                }
+                casernes.add(new InterventionCaserneData(element.getKey().getCaserne().getId(), element.getKey().getCaserne().getName(), element.getMessage(), teamData));
             }
             interventionResponse.setCasernes(casernes);
             return Optional.of(interventionResponse);

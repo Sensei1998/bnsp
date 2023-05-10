@@ -32,6 +32,8 @@ public interface InterventionSheetServiceInteface {
 
     List<InterventionSheet> findActiveInterventionSheetByIntervention(Intervention intervention);
 
+    List<InterventionSheetToTeam> findInterventionTeamByInterventionSheet(InterventionSheet interventionSheet);
+
     List<Sinister> findAllActiveSinisterByInterventionSheet(InterventionSheet interventionSheet);
 
     List<Sinister> findAllActiveSinisterByIntervention(Intervention intervention);

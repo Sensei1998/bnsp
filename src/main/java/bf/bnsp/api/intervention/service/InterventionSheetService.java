@@ -150,6 +150,11 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
     }
 
     @Override
+    public List<InterventionSheetToTeam> findInterventionTeamByInterventionSheet(InterventionSheet interventionSheet) {
+        return this.interventionSheetToTeamRepository.findByInterventionSheetAndHiddenFalse(interventionSheet);
+    }
+
+    @Override
     public List<Sinister> findAllActiveSinisterByInterventionSheet(InterventionSheet interventionSheet) {
         return this.sinisterRepository.findByInterventionSheet(interventionSheet);
     }

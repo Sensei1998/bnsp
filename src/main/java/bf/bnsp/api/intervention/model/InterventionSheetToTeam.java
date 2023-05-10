@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "INTERVENTION_ENGIN")
 public class InterventionSheetToTeam {
