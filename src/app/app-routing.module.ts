@@ -49,7 +49,7 @@ const routes: Routes = [
               component: SubMenu2Component
             },
             {
-              path: 'suivi',
+              path: 'suivie/:id',
               component: SuiviComponent
             },
             {

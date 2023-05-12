@@ -16,265 +16,362 @@
   <!-- /.container-fluid -->
 </section>
 
+
 <!-- Main content -->
 <section class="content">
   <!-- Default box -->
-  <div class="container-fluid">
+
+    <div class="container-fluid">
       <div class="card">
-          <div class="card-header">
+        <div class="card-header">
+          <table style="width: 100%;">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <h3 class="card-title">Numéro Appelant:</h3>
+                  <h3 class="card-title"> {{service.formData.phoneNumber}} </h3>
+                </td>
+                <td>
+                  <h3 class="card-title " >Date:</h3>
+                  <h3 class="card-title" >{{ service.formData.date }}</h3>
+                </td>
+                <td>
+                  <h3 class="card-title" >Heure:</h3>
+                  <h3 class="card-title" > {{service.formData.time}} </h3>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div>
+            <h2><Strong>Provenance</Strong></h2>
+            <p class="mg-b-10">Origine</p>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Appel Verbal'">
+            <div class="form-check form-check-inline">
+              <input [checked]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label  class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'T.U'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === '18 ou 112'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Police'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Gendarmerie'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Radio'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label  class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
 
 
-              <h3 class="card-title ">Date:</h3>
-              <h3 class="card-title" style="padding-left: 1%;">{{ formatDate(date) }}</h3>
+          <div>
+            <h2><strong>Incident</strong></h2>
+          </div>
 
-              <h3 class="card-title" style="padding-left: 75%;">Heure:</h3>
-              <h3 class="card-title" style="padding-left: 1%;">{{ formatHeure(date) }}</h3><br><br>
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Category</p>
+              <h3  class="form-control" > {{service.formData.incident.category}}</h3>
 
-              <div>
-                <h2 ><Strong>Provenance</Strong></h2>
-              </div>
-              <div style="text-align: center;">
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio1"
-                    value="option1"
-                    [checked]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio2"
-                    value="option2"
-                    [disabled]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio2">    T.U</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio3"
-                    value="option3"
-                    [disabled]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio3"
-                    value="option3"
-                    [disabled]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio3">Police</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio3"
-                    value="option3"
-                    [disabled]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    mdbRadio
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio3"
-                    value="option3"
-                    [disabled]="true"
-                  />
-                  <label class="form-check-label" for="inlineRadio3">Radio</label>
-                </div>
-              </div><br>
+              <!-- <select class="form-control" [disabled]="true">
+                <option  value={{category.id}}> {{category.category}}</option>
+              </select> -->
 
-                    <div>
-                      <h2 ><strong>Incident</strong></h2>
-                    </div>
-                    <form class="forms-sample" (ngSubmit)="onSubmit()">
-                      <div class="row row-sm mg-b-20 " >
-                        <div class="col-lg-6 form-group ">
-                          <p class="mg-b-10">Category</p>
-                          <h3 class="card-title"> Accident</h3>
-                        </div>
-
-                        <div class="col-lg-6 form-group ">
-                          <p class="mg-b-10">Libele</p>
-                          <h3 class="card-title"> Accident</h3>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <h3 for="exampleTextarea1">Commentaire</h3>
-                        <h3 class="card-title"> Bléssé grave</h3>
-                      </div><br><br>
-                      <div>
-                        <h2 ><strong>Appelant</strong></h2>
-                      </div>
-                      <!-- <div class="form-group">
-                        <label for="exampleInputUsername1">Numero</label>
-                        <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Number">
-                      </div> -->
-                      <div class="rows">
-                        <div class="form-group">
-                          <h3 class="card-title">Appelant:</h3>
-             <h3 class="card-title" style="padding-left: 1%;">{{ formatDate(date) }}</h3>
-                        </div>
-                      <div class="form-group"  style="margin-left: 40%;">
-                        <h3 class="card-title" for="exampleInputEmail1">Address</h3>
-                        <h3 class="card-title" style="padding-left: 1%;">{{ formatDate(date) }}</h3>
-                      </div>
-                      <div class="form-group" style="margin-left: 70%;" >
-                      <h3 class="card-title" >Coordonnée:</h3>
-                      <h3 class="card-title"style="padding-left: 1%;">{{ date }}</h3>
-                      </div>
-                    </div>
-              <!-- <div class="card-tools">
-                  <button
-                      type="button"
-                      class="btn btn-tool"
-                      data-widget="collapse"
-                      data-toggle="tooltip"
-                      title="Collapse"
-                  >
-                      <i class="fa fa-minus"></i>
-                  </button>
-                  <button
-                      type="button"
-                      class="btn btn-tool"
-                      data-widget="remove"
-                      data-toggle="tooltip"
-                      title="Remove"
-                  >
-                      <i class="fa fa-times"></i>
-                  </button>
-              </div> -->
-                    </form>
             </div>
 
-          <div class="card-body">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Libele</p>
+              <h3  class="form-control" > {{service.formData.incident.type}}</h3>
+
+              <!-- <select class="form-control"   [disabled]="true">
+                <option  value={{libelle.id}}>{{libelle.designation}} </option>
+              </select> -->
+            </div>
+          </div>
+          <div class="form-group">
+            <p class="mg-b-10">Commentaire</p>
+            <h3 class="form-control"  > {{service.formData.incident.comments}} </h3>
+          </div>
+          <div>
+            <h2><strong>Appelant</strong></h2>
+          </div>
+          <!-- <div class="form-group">
+                            <label for="exampleInputUsername1">Numero</label>
+                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Number">
+                          </div> -->
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Nom</p>
+              <h3  class="form-control" > {{service.formData.name}}</h3>
+
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Address</p>
+              <h3  class="form-control" >{{service.formData.address}} </h3>
+            </div>
+          </div>
+          <div>
+            <h2><strong>Coordonnée</strong></h2>
+          </div>
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Longitude</p>
+              <h3  class="form-control">{{service.formData.longitude}} </h3>
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Latitude</p>
+              <h3  class="form-control" >{{service.formData.latitude}} </h3>
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Precision</p>
+              <h3  class="form-control" >{{service.formData.precision}} </h3>
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <!-- /.card-body -->
+
+        <!-- /.card-footer-->
+      </div>
+    </div>
+    <!-- /.card -->
+
+</section>
+
+<!-- Main content -->
+<section class="content" *ngFor="let intervention of service.formData.casernes">
+  <!-- Default box -->
+  <div class="container-fluid" >
+      <div class="card">
+        <div class="card-body">
             <div>
-              <h3 >Compagnie</h3>
-              <h5 >Commentaire</h5>
+              <h1 >{{intervention.caserneName}}</h1>
+              <h3 >{{intervention.message}}</h3>
             </div>
-                     <form>
-                      <div class="table-responsive">
-                        <table class="table table-hover">
-                          <thead>
-                            <tr>
-                              <th>Engin</th>
-                              <th>Heure de Départ</th>
-                              <th>Présentation</th>
-                              <th>Disponibilité</th>
-                              <th>Rentré</th>
-                              <th>
-                                <pf-button (click)="open(content)">
-                                  <i class="fa fa-plus"></i>
-                                </pf-button>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Fourgon</td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td class="row">
-                                <pf-button *ngIf="time===null">
-                                <i class="fa fa-trash" style="color: red;"></i>
-                              </pf-button>
-                              <pf-button style="margin-left: 1%;">
-                                <i class="fa fa-check" style="color: rgb(9, 255, 9);"></i>
-                              </pf-button>
-                            </td>
-                            </tr>
-                            <tr>
-                              <td>PSR1</td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td class="row">
-                                <pf-button *ngIf="time===null">
-                                <i class="fa fa-trash" style="color: red;"></i>
-                              </pf-button>
-                              <pf-button style="margin-left: 1%;">
-                                <i class="fa fa-check" style="color: rgb(9, 255, 9);"></i>
-                              </pf-button>
-                            </td>
-                            </tr>
-                            <tr>
-                              <td>Citerne</td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td class="row">
-                                <pf-button *ngIf="time===null" >
-                                <i class="fa fa-trash" style="color: red;"></i>
-                              </pf-button>
-                              <pf-button style="margin-left: 1%;">
-                                <i class="fa fa-check" style="color: rgb(9, 255, 9);"></i>
-                              </pf-button>
-                            </td>
-                            </tr>
-                            <tr>
-                              <td>PSR2</td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td class="row">
-                                <pf-button *ngIf="time===null">
-                                <i class="fa fa-trash" style="color: red;"></i>
-                              </pf-button>
-                              <pf-button style="margin-left: 1%;">
-                                <i class="fa fa-check" style="color: rgb(9, 255, 9);"></i>
-                              </pf-button>
-                            </td>
-                            </tr>
-                            <tr>
-                              <td>Premier Secours</td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td ><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td><input name="time" type="text" [(ngModel)]="time"></td>
-                              <td class="row">
-                                <pf-button *ngIf="time===null">
-                                <i class="fa fa-trash" style="color: red;"></i>
-                              </pf-button>
-                              <pf-button style="margin-left: 1%;">
-                                <i class="fa fa-check" style="color: rgb(9, 255, 9);"></i>
-                              </pf-button>
-                            </td>
-                            </tr>
+            <form [formGroup]="equipeForm" >
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Engin</th>
+                      <th>Heure de Départ</th>
+                      <th>Présentation</th>
+                      <th>Disponibilité</th>
+                      <th>Rentré</th>
+                      <th *ngIf="intervention.caserneId === id">
+                        <pf-button (click)="open(content)">
+                          <i class="fa fa-plus"></i>
+                        </pf-button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let i of intervention.teams">
+                    <tr>
+                      <!-- <td hidden="true"><input class="form-control" formControlName="equipeId" [value]=""></td> -->
+                      <td>{{i.type}}</td>
+                      <td><input class="form-control" formControlName="departure" type="time" step="1"></td>
+                      <td><input formControlName="presentation" type="time" class="form-control" step="1"></td>
+                      <td><input formControlName="available" type="time" class="form-control" step="1"></td>
+                      <td><input formControlName="checkIn" class="form-control" type="time" step="1"></td>
+                      <td class="row">
+                        <button class="btn"><i class="fa fa-trash" style="color: red;"></i></button>
+                        <button class="btn btn-secondary" type="submit" (click)="onSubmit(i.teamId)"><i class="fa fa-check" style="color: rgb(9, 255, 9);"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
 
-                          </tbody>
-                        </table>
-                      </div>
-
-                    </form>
 
           </div>
           <!-- /.card-body -->
@@ -292,7 +389,7 @@
                       <th>Texte du message</th>
                       <th>Heure de Réception</th>
 
-                      <th>
+                      <th *ngIf="intervention.caserneId === id">
                         <pf-button (click)="open(content)">
                           <i class="fa fa-plus"></i>
                         </pf-button>
@@ -306,7 +403,7 @@
                       <td><textarea></textarea></td>
                       <td ><input name="time" type="text" [(ngModel)]="time"></td>
 
-                      <td class="row">
+                      <td class="row" *ngIf="intervention.caserneId === id">
                         <pf-button *ngIf="time===null">
                         <i class="fa fa-trash" style="color: red;"></i>
                       </pf-button>
@@ -347,184 +444,20 @@
                 <tr>
                   <th>Choix</th>
                   <th>Voiture</th>
-                  <th>Fonction</th>
+                  <th>Nom</th>
+                  <!-- <th>Fonction</th>
                   <th>Nom</th>
                   <th>Grade</th>
                   <th>Remplacement </th>
-                  <th>Status</th>
+                  <th>Status</th> -->
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:150%; margin-left:25%"></pf-checkbox></td>
-                  <td>Premier Secours</td>
-                  <td>
-                    <p>CA</p>
-                    <p>CH</p>
-                    <p>SVT</p>
-                    <p>HDL</p>
-                    <p>Cond</p>
-                  </td>
-                  <td>
-                    <p>Oumarou BATIONO</p>
-                    <p>Christine BAMA</p>
-                    <p>Estelle DIBLONI</p>
-                    <p>Christian GREY</p>
-                    <p>John Doe</p>
-                  </td>
-                  <td>
-                    <p>Sergent</p>
-                    <p>Caporal</p>
-                    <p>Planton</p>
-                    <p>Colonel</p>
-                    <p>Sergent</p>
-                  </td>
-                  <td>
-                    <p>Oumarou BATIONO</p>
-                    <p>Christine BAMA</p>
-                    <p>Estelle DIBLONI</p>
-                    <p>Christian GREY</p>
-                    <p>Jane Doe</p>
-                  </td>
-                  <td>Disponible</td>
-
+                <tr *ngFor="let p of program">
+                  <td ><input type="checkbox" [(ngModel)]="p.selected" [ngModelOptions]="{standalone: true}"></td>
+                  <td >{{p.teamType}}</td>
+                  <td >{{p.teamName}}</td>
                 </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                  <td>Fourgon</td>
-                  <td>
-                    <p>SDA</p>
-                    <p>HDL</p>
-                    <p>1 CH</p>
-                    <p>1 SVT</p>
-                    <p>2 CH</p>
-                    <p>2 SVT</p>
-                    <p>2 SVT</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>PSR N°1</td>
-                  <td>
-                    <p>CHEF</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>PSR N°2</td>
-                  <td>
-                    <p>CHEF</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>PSR N°3</td>
-                  <td>
-                    <p>CHEF</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>V.I.D</td>
-                  <td>
-                    <p>CHEF</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>ECHELLE</td>
-                  <td>
-                    <p>CHEF</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                  <td>VEHICULE DESINC</td>
-                  <td>
-                    <p>CH.A</p>
-                    <p>1 CH</p>
-                    <p>1 SVT</p>
-                    <p>2 CH</p>
-                    <p>2 SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:200%; margin-left:25%"></pf-checkbox></td>
-                  <td>CSL</td>
-                  <td>
-                    <p>CH.A</p>
-                    <p>1 CH</p>
-                    <p>1 SVT</p>
-                    <p>2 CH</p>
-                    <p>2 SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-                <tr>
-                  <td><pf-checkbox style=" margin-top:90%; margin-left:25%"></pf-checkbox></td>
-                  <td>CITERNE</td>
-                  <td>
-                    <p>CH.A</p>
-                    <p>SVT</p>
-                    <p>Cond</p>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                </tr>
-
               </tbody>
             </table>
           </div>
@@ -534,8 +467,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</button>-->
-      <pf-button type="button" class="btn btn-light" (click)="modal.close('Close click')">save</pf-button>
-    </div>
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="transferSelectedItems()" (click)="modal.close('Close click')"  class="btn btn-success">Ajouter</button>
+     </div>
   </ng-template>
 </section>

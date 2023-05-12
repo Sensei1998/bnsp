@@ -109,6 +109,7 @@ export class AppService {
         localStorage.removeItem('email');
         localStorage.removeItem('fonction');
         localStorage.removeItem('Caserne');
+        localStorage.removeItem('idCaserne');
         this.router.navigate(['/login']);
     }
 }

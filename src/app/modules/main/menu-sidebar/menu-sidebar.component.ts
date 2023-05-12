@@ -62,11 +62,11 @@ export const MENU = [
             //   iconClasses: 'fas fa-list',
             //   path: ['/sub-menu2']
             // },
-            {
-              name: 'suivie',
-              iconClasses: 'fas fa-forward',
-              path: ['/suivi']
-          }
+          //   {
+          //     name: 'suivie',
+          //     iconClasses: 'fas fa-forward',
+          //     path: ['/suivi']
+          // }
         ]
     },
     {
