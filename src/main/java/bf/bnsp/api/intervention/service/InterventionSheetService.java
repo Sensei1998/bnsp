@@ -49,11 +49,41 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
         List<InterventionSheetToTeam> teamConfigList = new ArrayList<>();
         InterventionSheetToTeam tmpTeamConfig;
         Optional<DailyTeam> targetedEquipe;
-        for(InterventionSheetOut element: interventionForm.getInterventionSheet()){
-            targetedEquipe = this.dailyProgramService.findActiveDailyTeamById(element.getEquipeId());
+        Optional<InterventionSheetToTeam> targetedElement;
+
+        List<Long> registeredTeam = this.interventionSheetToTeamRepository.findTeamIdByInterventionSheet(interventionSheet);
+        List<Long> savedTeam;
+        List<Long> tmpAddedTeam = new ArrayList<>();
+        List<InterventionSheetToTeam> deletedTeam = new ArrayList<>();
+
+        for(InterventionSheetOut element : interventionForm.getInterventionSheet()) tmpAddedTeam.add((long) element.getEquipeId());
+
+        savedTeam = new ArrayList<>(tmpAddedTeam);
+        registeredTeam.removeAll(tmpAddedTeam);
+        savedTeam.removeAll(registeredTeam);
+        for(long deletedElement : registeredTeam){
+            targetedEquipe = this.dailyProgramService.findActiveDailyTeamById(deletedElement);
             if(targetedEquipe.isEmpty()) return new ArrayList<>();
-            else{
-                tmpTeamConfig = new InterventionSheetToTeam(interventionSheet, targetedEquipe.get());
+            else {
+                targetedElement = this.interventionSheetToTeamRepository.findByInterventionSheetAndEquipe(interventionSheet, targetedEquipe.get());
+                deletedTeam.add(targetedElement.get());
+            }
+        }
+
+        for (InterventionSheetToTeam element: deletedTeam){
+            if(element.isActive()){
+                element.setHidden(true);
+                this.interventionSheetToTeamRepository.save(element);
+            }
+            else this.interventionSheetToTeamRepository.delete(element);
+        }
+
+        for(InterventionSheetOut element : interventionForm.getInterventionSheet()){
+            if(savedTeam.contains((long) element.getEquipeId())){
+                targetedEquipe = this.dailyProgramService.findActiveDailyTeamById(element.getEquipeId());
+                if(targetedEquipe.isEmpty()) return new ArrayList<>();
+                targetedElement = this.interventionSheetToTeamRepository.findByInterventionSheetAndEquipe(interventionSheet, targetedEquipe.get());
+                tmpTeamConfig = targetedElement.isEmpty() ? new InterventionSheetToTeam(interventionSheet, targetedEquipe.get()) : targetedElement.get();
                 if(element.getDeparture().isPresent()) tmpTeamConfig.setDeparture(element.getDeparture().get());
                 if(element.getPresentation().isPresent()) tmpTeamConfig.setPresentation(element.getPresentation().get());
                 if(element.getAvailable().isPresent()){
@@ -64,6 +94,7 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
                     tmpTeamConfig.setCheckIn(element.getCheckIn().get());
                     tmpTeamConfig.setActive(false);
                 }
+                if(tmpTeamConfig.isHidden()) tmpTeamConfig.setHidden(false);
                 teamConfigList.add(tmpTeamConfig);
             }
         }
