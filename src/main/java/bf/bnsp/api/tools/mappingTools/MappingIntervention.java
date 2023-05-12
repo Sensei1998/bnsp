@@ -89,7 +89,7 @@ public class MappingIntervention {
                     for(DailyTeamMember member: team.getEquipe().getMembers()){
                         memberData.add(new InterventionTeamMemberData(member.getPrincipal().getId(), member.getPrincipal().getMatricule(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getSecondary().getId(), member.getSecondary().getMatricule(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getFonction().getRule().name()));
                     }
-                    teamData.add(new InterventionTeamData(team.getEquipe().getId(), team.getEquipe().getType().getEquipeType().name(), enginData, new ArrayList<>(memberData)));
+                    teamData.add(new InterventionTeamData(team.getEquipe().getId(), team.getEquipe().getType().getEquipeType().name(), enginData, Optional.ofNullable(team.getPresentation()), Optional.ofNullable(team.getDeparture()), Optional.ofNullable(team.getAvailable()), Optional.ofNullable(team.getCheckIn()), new ArrayList<>(memberData)));
                     memberData.clear();
                 }
                 casernes.add(new InterventionCaserneData(element.getKey().getCaserne().getId(), element.getKey().getCaserne().getName(), element.getMessage(), new ArrayList<>(teamData)));
