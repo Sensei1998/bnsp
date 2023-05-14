@@ -3,10 +3,7 @@ package bf.bnsp.api.intervention.service;
 import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.caserne.model.Caserne;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationUpdateForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetMessageForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetConfigOutForm;
+import bf.bnsp.api.intervention.dto.form.*;
 import bf.bnsp.api.intervention.model.*;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
 
@@ -33,6 +30,12 @@ public interface InterventionSheetServiceInteface {
     List<InterventionSheet> findActiveInterventionSheetByIntervention(Intervention intervention);
 
     List<InterventionSheetToTeam> findInterventionTeamByInterventionSheet(InterventionSheet interventionSheet);
+
+    Optional<InterventionSheetToTeam> updateInterventionTeam(InterventionTeamUpdate teamForm, InterventionSheetToTeam interventionTeam);
+
+    Optional<InterventionSheetToTeam> findInterventionTeamById(int id);
+
+    Optional<InterventionSheetToTeam> deleteInterventionTeam(InterventionSheetToTeam interventionSheetToTeam);
 
     List<Sinister> findAllActiveSinisterByInterventionSheet(InterventionSheet interventionSheet);
 

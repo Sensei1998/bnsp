@@ -4,10 +4,7 @@ import bf.bnsp.api.account.model.Agent;
 import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationUpdateForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetMessageForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetConfigOutForm;
+import bf.bnsp.api.intervention.dto.form.*;
 import bf.bnsp.api.intervention.dto.form.partialData.InterventionSheetOut;
 import bf.bnsp.api.intervention.dto.form.partialData.PersonInfo;
 import bf.bnsp.api.intervention.model.*;
@@ -183,6 +180,37 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
     @Override
     public List<InterventionSheetToTeam> findInterventionTeamByInterventionSheet(InterventionSheet interventionSheet) {
         return this.interventionSheetToTeamRepository.findByInterventionSheetAndHiddenFalse(interventionSheet);
+    }
+
+    @Override
+    public Optional<InterventionSheetToTeam> updateInterventionTeam(InterventionTeamUpdate teamForm, InterventionSheetToTeam interventionTeam) {
+        if(teamForm.getDeparture().isPresent()) interventionTeam.setDeparture(teamForm.getDeparture().get());
+        if(teamForm.getPresentation().isPresent()) interventionTeam.setPresentation(teamForm.getPresentation().get());
+        if(teamForm.getAvailable().isPresent()){
+            interventionTeam.setAvailable(teamForm.getAvailable().get());
+            interventionTeam.setActive(false);
+        }
+        if(teamForm.getCheckIn().isPresent()){
+            interventionTeam.setCheckIn(teamForm.getCheckIn().get());
+            interventionTeam.setActive(false);
+        }
+        this.interventionSheetToTeamRepository.save(interventionTeam);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<InterventionSheetToTeam> findInterventionTeamById(int id) {
+        return this.interventionSheetToTeamRepository.findByIdAndHiddenFalse(id);
+    }
+
+    @Override
+    public Optional<InterventionSheetToTeam> deleteInterventionTeam(InterventionSheetToTeam interventionSheetToTeam) {
+        if(interventionSheetToTeam.isActive()) this.interventionSheetToTeamRepository.delete(interventionSheetToTeam);
+        else{
+            interventionSheetToTeam.setHidden(true);
+            this.interventionSheetToTeamRepository.save(interventionSheetToTeam);
+        }
+        return Optional.of(interventionSheetToTeam);
     }
 
     @Override

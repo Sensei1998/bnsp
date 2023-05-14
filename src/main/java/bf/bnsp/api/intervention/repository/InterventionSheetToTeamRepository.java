@@ -23,4 +23,7 @@ public interface InterventionSheetToTeamRepository extends JpaRepository<Interve
 
     @Query("SELECT team.id FROM InterventionSheetToTeam ist JOIN ist.equipe team WHERE ist.interventionSheet = ?1")
     List<Long> findTeamIdByInterventionSheet(InterventionSheet interventionSheet);
+
+    @Transactional
+    Optional<InterventionSheetToTeam> findByIdAndHiddenFalse(int id);
 }
