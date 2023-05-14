@@ -15,6 +15,8 @@ import java.util.Optional;
 @Setter
 public class InterventionTeamData {
 
+    private int interventionTeamId;
+
     private long teamId;
 
     private String type;
@@ -32,6 +34,8 @@ public class InterventionTeamData {
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Optional<LocalDateTime> checkIn = Optional.empty();
+
+    private boolean availableBool;
 
     private List<InterventionTeamMemberData> members = new ArrayList<>();
 }
