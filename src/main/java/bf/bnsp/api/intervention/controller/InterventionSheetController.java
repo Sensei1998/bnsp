@@ -5,10 +5,7 @@ import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationForm;
-import bf.bnsp.api.intervention.dto.form.IncidentInformationUpdateForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetConfigOutForm;
-import bf.bnsp.api.intervention.dto.form.InterventionSheetMessageForm;
+import bf.bnsp.api.intervention.dto.form.*;
 import bf.bnsp.api.intervention.model.*;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
 import bf.bnsp.api.intervention.service.InterventionService;
@@ -71,6 +68,16 @@ public class InterventionSheetController {
         }
     }
 
+    @PutMapping(value = "/update/team")
+    public ResponseEntity<?> updateInterventionSheetTeam(@RequestBody InterventionTeamUpdate interventionForm){
+        Optional<InterventionSheetToTeam> team = this.interventionSheetService.findInterventionTeamById(interventionForm.getInterventionTeamId());
+        if(team.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            Optional<InterventionSheetToTeam> response = this.interventionSheetService.updateInterventionTeam(interventionForm, team.get());
+            return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     @PostMapping(value = "/message")
     public ResponseEntity<?> createInterventionSheetMessage(@RequestBody InterventionSheetMessageForm messageFormForm){
         Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(messageFormForm.getCaserneId());
@@ -83,6 +90,16 @@ public class InterventionSheetController {
                 Optional<InterventionSheetToMessage> response = this.interventionSheetService.createInterventionMessage(messageFormForm, interventionSheet.get());
                 return response.isPresent() ? new ResponseEntity<>(this.mappingIntervention.mappingMessage(Arrays.asList(response.get())).get(0), HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
+        }
+    }
+
+    @DeleteMapping(value = "/delete/team/{id}")
+    public ResponseEntity<?> deleteInterventionSheetTeam(@PathVariable("id") int teamId){
+        Optional<InterventionSheetToTeam> team = this.interventionSheetService.findInterventionTeamById(teamId);
+        if(team.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            Optional<InterventionSheetToTeam> response = this.interventionSheetService.deleteInterventionTeam(team.get());
+            return response.isPresent() ? new ResponseEntity<>(response, HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
 

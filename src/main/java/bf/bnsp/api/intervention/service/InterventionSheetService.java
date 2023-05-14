@@ -13,6 +13,8 @@ import bf.bnsp.api.intervention.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +83,7 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
                 if(targetedEquipe.isEmpty()) return new ArrayList<>();
                 targetedElement = this.interventionSheetToTeamRepository.findByInterventionSheetAndEquipe(interventionSheet, targetedEquipe.get());
                 tmpTeamConfig = targetedElement.isEmpty() ? new InterventionSheetToTeam(interventionSheet, targetedEquipe.get()) : targetedElement.get();
+                tmpTeamConfig.setCreateAt(LocalDateTime.now());
                 if(element.getDeparture().isPresent()) tmpTeamConfig.setDeparture(element.getDeparture().get());
                 if(element.getPresentation().isPresent()) tmpTeamConfig.setPresentation(element.getPresentation().get());
                 if(element.getAvailable().isPresent()){
@@ -195,7 +198,7 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
             interventionTeam.setActive(false);
         }
         this.interventionSheetToTeamRepository.save(interventionTeam);
-        return Optional.empty();
+        return Optional.of(interventionTeam);
     }
 
     @Override
