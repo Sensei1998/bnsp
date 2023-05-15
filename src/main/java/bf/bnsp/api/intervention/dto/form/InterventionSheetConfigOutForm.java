@@ -20,6 +20,6 @@ public class InterventionSheetConfigOutForm {
 
     private int caserneId;
 
-    List<InterventionSheetOut> interventionSheet;
+    List<Long> teamId;
 
 }
