@@ -20,4 +20,6 @@ public class FonctionTeamResponse {
     private String teamName;
 
     private List<FonctionAgentResponse> agents;
+
+    private boolean available;
 }
