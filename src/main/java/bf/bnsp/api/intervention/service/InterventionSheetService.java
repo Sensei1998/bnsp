@@ -70,6 +70,10 @@ public class InterventionSheetService implements InterventionSheetServiceIntefac
         Intervention intervention = interventionSheet.getKey().getIntervention();
         intervention.setStatus("En cours");
         this.interventionRepository.save(intervention);
+        for(InterventionSheetToTeam team: teamConfigList){
+            team.getEquipe().setActive(true);
+            this.dailyTeamRepository.save(team.getEquipe());
+        }
         return teamConfigList;
     }
 
