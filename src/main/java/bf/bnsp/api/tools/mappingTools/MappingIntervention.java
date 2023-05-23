@@ -61,7 +61,7 @@ public class MappingIntervention {
     public List<MessageResponse> mappingMessage(List<InterventionSheetToMessage> messages){
         List<MessageResponse> response = new ArrayList<>();
         for (InterventionSheetToMessage element: messages) {
-            response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getSentAt(), element.getMessage()));
+            response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getEquipe().getType().getEquipeType().name(), element.getEquipe().getDesignation(), element.getSentAt(), element.getMessage()));
         }
         return response;
     }
