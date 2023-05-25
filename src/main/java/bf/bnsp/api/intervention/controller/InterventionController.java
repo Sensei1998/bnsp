@@ -91,6 +91,16 @@ public class InterventionController {
         }
     }
 
+    @PutMapping(value = "/update/close/{interventionId}")
+    public ResponseEntity<?> closeIntervention(@PathVariable("interventionId") int id){
+        Optional<Intervention> response = this.interventionService.findActiveInterventionById(id);
+        if(response.isEmpty()) return ResponseEntity.notFound().build();
+        else{
+            response = this.interventionService.closeIntervention(response.get());
+            return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     @GetMapping(value = "/types/category")
     public ResponseEntity<?> getCategoriesIncident(){
         List<CategoryIncident> response = this.interventionService.findAllCategoryIncident();

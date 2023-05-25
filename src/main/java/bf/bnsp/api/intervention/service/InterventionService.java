@@ -8,18 +8,12 @@ import bf.bnsp.api.intervention.dto.form.InterventionInitForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateGeneralForm;
 import bf.bnsp.api.intervention.dto.form.InterventionUpdateLocationForm;
 import bf.bnsp.api.intervention.dto.form.partialData.InterventionCaserne;
-import bf.bnsp.api.intervention.model.CategoryIncident;
-import bf.bnsp.api.intervention.model.IncidentType;
-import bf.bnsp.api.intervention.model.Intervention;
-import bf.bnsp.api.intervention.model.InterventionSheet;
+import bf.bnsp.api.intervention.model.*;
 import bf.bnsp.api.intervention.model.additional.CallerInfo;
 import bf.bnsp.api.intervention.model.additional.Incident;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
 import bf.bnsp.api.intervention.model.additional.Localisation;
-import bf.bnsp.api.intervention.repository.CategoryIncidentRepository;
-import bf.bnsp.api.intervention.repository.IncidentTypeRepository;
-import bf.bnsp.api.intervention.repository.InterventionRepository;
-import bf.bnsp.api.intervention.repository.InterventionSheetRepository;
+import bf.bnsp.api.intervention.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +30,9 @@ public class InterventionService implements InterventionServiceInterface{
 
     @Autowired
     private InterventionSheetRepository interventionSheetRepository;
+
+    @Autowired
+    private InterventionSheetToTeamRepository interventionSheetToTeamRepository;
 
     @Autowired
     private CategoryIncidentRepository categoryIncidentRepository;
@@ -147,6 +144,21 @@ public class InterventionService implements InterventionServiceInterface{
             this.interventionSheetRepository.save(interventionSheet);
         }
         intervention.setStatus("En attente");
+        this.interventionRepository.save(intervention);
+        return Optional.of(intervention);
+    }
+
+    @Override
+    public Optional<Intervention> closeIntervention(Intervention intervention) {
+        List<InterventionSheet> interventionSheets = this.interventionSheetRepository.findInterventionSheetByIntervention(intervention);
+        List<InterventionSheetToTeam> teams;
+        for (InterventionSheet element: interventionSheets) {
+            teams = this.interventionSheetToTeamRepository.findByInterventionSheetAndHiddenFalse(element);
+            for (InterventionSheetToTeam team: teams) {
+                if(team.getEquipe().isActive()) return Optional.empty();
+            }
+        }
+        intervention.setStatus("Termine");
         this.interventionRepository.save(intervention);
         return Optional.of(intervention);
     }

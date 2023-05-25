@@ -25,6 +25,8 @@ public interface InterventionServiceInterface {
 
     Optional<Intervention> updateInterventionGeneralInfo(InterventionUpdateGeneralForm interventionForm, Agent agent, Intervention intervention);
 
+    Optional<Intervention> closeIntervention(Intervention intervention);
+
     Optional<Intervention> findActiveInterventionById(int id);
 
     List<Intervention> findAllActiveIntervention();
