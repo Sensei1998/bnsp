@@ -33,7 +33,10 @@ export class CreationEnginComponent implements OnInit{
   engin;
   edit;
   sort;
-
+  listeEngin:any[]=[];
+  page = 1; // Page actuelle
+  pageSize = 5; // Nombre d'éléments par page
+  collectionSize: number; // Taille totale de la collection
 
 
   constructor(private formBuilder: FormBuilder,
@@ -47,8 +50,15 @@ export class CreationEnginComponent implements OnInit{
   ngOnInit(): void {
     this.getCaserne();
     this.getEngin();
+    setTimeout(() => {
+      this.collectionSize = this.listeEngin.length;
+    }, 2000)
   }
 
+  get donneesPaginees() {
+    return this.listeEngin
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
 
 
   getCaserne(){
@@ -63,6 +73,7 @@ export class CreationEnginComponent implements OnInit{
     return this.http.get(this.url + "/engins").subscribe(
       engin => {
         this.engin = engin;
+        this.listeEngin.push(...this.engin);
       }
     );
   }

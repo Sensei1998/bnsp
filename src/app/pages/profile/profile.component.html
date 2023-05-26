@@ -34,11 +34,11 @@
                             ></pf-image>
                         </div>
 
-                        <h3 class="profile-username text-center">
+                        <!-- <h3 class="profile-username text-center">
                             Nina Mcintire
                         </h3>
 
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <p class="text-muted text-center">Software Engineer</p> -->
 
                        <!--  <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
@@ -61,154 +61,105 @@
                 </div>
                 <!-- /.card -->
                 <div class="col-12 grid-margin">
-                  <div class="card">
+                <div class="card">
                     <div class="card-body">
-                      <!-- <h4 class="card-title">Horizontal Two column</h4> -->
-                      <form class="form-sample">
-                        <p class="card-description">
-                          Personal info
+                      <form class="form-sample" [formGroup]="agentEditForm">
+                        <p class="card-description ">
+                          <strong>Information Personnelle</strong>
                         </p>
-                        <div class="row">
+                        <div class="row" hidden="true">
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">First Name</label>
+                              <p class="col-sm-3 col-form-p">id</p>
                               <div class="col-sm-9">
-                                <input type="text" class="form-control" />
+                                <p type="text" class="form-control"  > {{agent.id}} </p>
                               </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Last Name</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" />
-                              </div>
+
                             </div>
                           </div>
                         </div>
                         <div class="row">
+
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Gender</label>
+                              <p class="col-sm-3 col-form-p">Nom</p>
                               <div class="col-sm-9">
-                                <select class="form-control">
-                                  <option>Male</option>
-                                  <option>Female</option>
-                                </select>
+                                <p type="text" class="form-control" > {{agent.lastname}} </p>
                               </div>
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Date of Birth</label>
+                              <p class="col-sm-3 col-form-p">Prenom</p>
                               <div class="col-sm-9">
-                                <input class="form-control" placeholder="dd/mm/yyyy"/>
+                                <p type="text" class="form-control"  > {{agent.firstname}} </p>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <!-- <div class="row">
+
+                        <div class="row">
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Category</label>
+                              <p class="col-sm-3 col-form-p">Matricule</p>
                               <div class="col-sm-9">
-                                <select class="form-control">
-                                  <option>Category1</option>
-                                  <option>Category2</option>
-                                  <option>Category3</option>
-                                  <option>Category4</option>
-                                </select>
+                                <p type="text" class="form-control"  > {{agent.matricule}} </p>
                               </div>
+
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Membership</label>
-                              <div class="col-sm-4">
-                                <div class="form-check">
-                                  <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked>
-                                    Free
-                                    <i class="input-helper"></i>
-                                  </label>
-                                </div>
-                              </div>
-                              <div class="col-sm-5">
-                                <div class="form-check">
-                                  <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2">
-                                    Professional
-                                    <i class="input-helper"></i>
-                                  </label>
-                                </div>
+                              <p class="col-sm-3 col-form-p">Email</p>
+                              <div class="col-sm-9">
+                                <p type="text" class="form-control" > {{agent.email}} </p>
                               </div>
                             </div>
                           </div>
-                        </div> -->
+                          <div class="col-md-6" formArrayName="telephone" *ngFor="let e of number2.controls; let i = index" >
+                            <div class="form-group row" >
+                              <p class="col-sm-3 col-form-p">Numero de telephone {{i + 1}}</p>
+                              <div class="col-sm-8" >
+                                <p type="text" class="form-control" [formControlName]="i" > {{e.value}} </p>
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                              <p class="col-sm-3 col-form-p">Fonction</p>
+                              <div class="col-sm-9">
+                                <p class="form-control" >{{agent.defaultFonction.rule}}</p>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                         <p class="card-description">
-                          Address
+                          <strong>Caserne et Grade</strong>
                         </p>
-                        <div class="row">
+                        <div class="row" >
                           <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Address 1</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" />
+                            <div class="form-group row" >
+                              <p class="col-sm-3 col-form-label">Caserne</p>
+                              <div class="col-sm-9" >
+                                <p class="form-control" > {{agent.caserne.name}} </p>
                               </div>
                             </div>
                           </div>
                           <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">State</label>
+                            <div class="form-group row" >
+                              <p class="col-sm-3 col-form-label">Grade</p>
                               <div class="col-sm-9">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Address 2</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Postcode</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">City</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Country</label>
-                              <div class="col-sm-9">
-                                <select class="form-control">
-                                  <option>America</option>
-                                  <option>Italy</option>
-                                  <option>Russia</option>
-                                  <option>Britain</option>
-                                </select>
+                                <p class="form-control" > {{agent.grade.grade}} </p>
+
                               </div>
                             </div>
                           </div>
                         </div>
                       </form>
+
                     </div>
                   </div>
                 </div>

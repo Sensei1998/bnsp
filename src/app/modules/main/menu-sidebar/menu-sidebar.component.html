@@ -27,12 +27,12 @@
             ></pf-image>
         </div>
         <div class="info">
-            <!-- <a [routerLink]="['/profile']" class="d-block">
+            <a [routerLink]="['/profile']" class="d-block">
                 {{ email }}
-            </a> -->
-            <a  class="d-block">
+            </a>
+            <!-- <a  class="d-block">
               {{ email }}
-          </a>
+          </a> -->
         </div>
     </div>
 
@@ -48,10 +48,24 @@
             role="menu"
             data-accordion="false"
         >
-            <app-menu-item
+        <div *ngIf="isAdmin === true">
+             <app-menu-item
                 *ngFor="let item of menu"
                 [menuItem]="item"
             ></app-menu-item>
+        </div>
+        <div *ngIf="isAdmin === false && bcot === false">
+          <app-menu-item
+             *ngFor="let item of menu2"
+             [menuItem]="item"
+         ></app-menu-item>
+     </div>
+     <div *ngIf="bcot === true && isAdmin === false">
+      <app-menu-item
+         *ngFor="let item of menu3"
+         [menuItem]="item"
+     ></app-menu-item>
+ </div>
         </ul>
     </nav>
 </div>

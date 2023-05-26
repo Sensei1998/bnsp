@@ -20,6 +20,7 @@ import { CreationEnginComponent } from '@pages/admin/creation-engin/creation-eng
 import { CreationEquipeComponent } from '@pages/admin/creation-equipe/creation-equipe.component';
 import { CreationProgramComponent } from '@pages/admin/creation-program/creation-program.component';
 import { LoginGuard } from '@guards/login.guard';
+import { AjoutCompagnieComponent } from '@pages/main-menu/ajout-compagnie/ajout-compagnie.component';
 
 const routes: Routes = [
     {
@@ -37,16 +38,24 @@ const routes: Routes = [
                 component: BlankComponent
             },
             {
-                path: 'sub-menu-1',
+                path: 'crée-une-intervention',
                 component: SubMenuComponent
             },
             {
-                path: 'sub-menu-2',
+              path: 'crée-une-intervention/:numtel',
+              component: SubMenuComponent
+            },
+            {
+                path: 'listes-des-interventions',
                 component: BlankComponent
             },
             {
-              path: 'sub-menu2',
+              path: 'affecter-companie',
               component: SubMenu2Component
+            },
+            {
+              path: 'ajouter-compagnie',
+              component: AjoutCompagnieComponent
             },
             {
               path: 'suivie/:id',

@@ -4,7 +4,7 @@ import { AgentUpdateForm } from '@/model/AgentUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 
 
@@ -35,7 +35,8 @@ export class CreationAgentComponent implements OnInit{
   caserne;
   grade;
 
-  users: Agent;
+  users;
+  listUser:any[]=[];
   agent;
 
   agentEditForm:FormGroup = this.formBuilder.group({
@@ -60,13 +61,17 @@ export class CreationAgentComponent implements OnInit{
 
   role = localStorage.getItem('fonction');
   isAdmin: boolean;
+  page = 1; // Page actuelle
+  pageSize = 5; // Nombre d'éléments par page
+  collectionSize: number; // Taille totale de la collection
 
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
     config: NgbModalConfig, private modalService: NgbModal) {
     config.backdrop = 'static';
-		config.keyboard = false; }
+		config.keyboard = false;
+     }
 
   ngOnInit(): void {
     this.getCaserne();
@@ -88,6 +93,17 @@ export class CreationAgentComponent implements OnInit{
       this.isAdmin = false;
     ;
     }
+
+    setTimeout(() => {
+      this.collectionSize = this.listUser.length;
+    }, 2000)
+
+
+  }
+
+  get donneesPaginees() {
+    return this.listUser
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
 
@@ -163,11 +179,17 @@ export class CreationAgentComponent implements OnInit{
     return this.http.get(this.url + "/users/").subscribe(
       (user: Agent) =>{
         this.users = user;
+        this.listUser.push(...this.users);
 
         // let split = this.users.phoneNumber.split(';');
         // this.users.phoneNumber = split;
       }
     );
+  }
+
+  onPageChange(page: number) {
+    // Mettre à jour la page actuelle
+
   }
 
   updateAgent(agent: AgentUpdateForm){

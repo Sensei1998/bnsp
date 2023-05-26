@@ -19,7 +19,7 @@ import {ToastrModule} from 'ngx-toastr';
 import {MessagesComponent} from '@modules/main/header/messages/messages.component';
 import {NotificationsComponent} from '@modules/main/header/notifications/notifications.component';
 
-import {registerLocaleData} from '@angular/common';
+import {DatePipe, registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import {UserComponent} from '@modules/main/header/user/user.component';
 import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.component';
@@ -40,13 +40,14 @@ import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SubMenu2Component } from './pages/main-menu/sub-menu2/sub-menu2.component';
 import { SuiviComponent } from './pages/suivi/suivi.component';
-import { NgbModule, NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModalConfig, NgbModal, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CreationCaserneComponent } from './pages/admin/creation-caserne/creation-caserne.component';
 import { CreationEquipeComponent } from './pages/admin/creation-equipe/creation-equipe.component';
 import { CreationEnginComponent } from './pages/admin/creation-engin/creation-engin.component';
 import { CreationAgentComponent } from './pages/admin/creation-agent/creation-agent.component';
 import { CreationProgramComponent } from './pages/admin/creation-program/creation-program.component';
 import { TokenInterceptorProvider } from '@guards/token.interceptor';
+import { AjoutCompagnieComponent } from './pages/main-menu/ajout-compagnie/ajout-compagnie.component';
 
 
 
@@ -83,6 +84,7 @@ registerLocaleData(localeEn, 'en-EN');
         CreationEnginComponent,
         CreationAgentComponent,
         CreationProgramComponent,
+        AjoutCompagnieComponent,
 
     ],
     imports: [
@@ -106,7 +108,7 @@ registerLocaleData(localeEn, 'en-EN');
         NgbModule,
 
     ],
-    providers: [NgbModalConfig, NgbModal, TokenInterceptorProvider],
+    providers: [NgbModalConfig, NgbModal, TokenInterceptorProvider, DatePipe,NgbPaginationConfig],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

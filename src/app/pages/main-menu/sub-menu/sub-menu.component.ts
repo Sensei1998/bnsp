@@ -2,7 +2,7 @@ import { IncidentPartial } from '@/model/IncidentPartial.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
 import { ToastrService } from 'ngx-toastr';
@@ -27,9 +27,9 @@ export class SubMenuComponent implements OnInit {
     phoneNumber : [[''], [Validators.required, Validators.minLength(8)]],
     name : [[''], Validators.required],
     address : [['']],
-    longitude: [['']],
-    latitude: [['']],
-    precision: [['']],
+    longitude: [0],
+    latitude: [0],
+    precision: ['AML'],
     categoryId:[[''], Validators.required],
     incidentTypeId:[[''], Validators.required],
     comments:[['']]
@@ -38,13 +38,21 @@ export class SubMenuComponent implements OnInit {
   libelle;
   idCategory: number;
   profil;
-
+  numTel = "";
   constructor(private router: Router, private form: FormBuilder, private http : HttpClient,
-    private toastr: ToastrService,private service: ApiService) { }
+    private toastr: ToastrService,private service: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getCategory();
     this.getProfil();
+    this.route.paramMap.subscribe(param =>{
+      this.numTel = param.get('numtel')!;
+      console.log(this.numTel)
+      // if(param.get('numtel')){
+
+
+      // }
+    });
   }
 
   getCategory(){
@@ -110,7 +118,7 @@ export class SubMenuComponent implements OnInit {
       this.service.formData = intervention;
       this.createPartialIntervention(intervention);
       this.toastr.success('Information Enregistrer avec succès!');
-      this.router.navigate(['/sub-menu2']);
+      this.router.navigate(['/affecter-companie']);
     } else {
         this.toastr.error('Erreur lors de la création de l \'intervention Formulaire invalide ou incomplet');
     }

@@ -1,28 +1,21 @@
 import { interventionCaserne } from '@/model/InterventionCaserne.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
 import { ToastrService } from 'ngx-toastr';
 
-
-
 @Component({
-  selector: 'app-sub-menu2',
-  templateUrl: './sub-menu2.component.html',
-  styleUrls: ['./sub-menu2.component.scss']
+  selector: 'app-ajout-compagnie',
+  templateUrl: './ajout-compagnie.component.html',
+  styleUrls: ['./ajout-compagnie.component.scss']
 })
-export class SubMenu2Component implements OnInit {
+export class AjoutCompagnieComponent implements OnInit {
   date = DateTime.now();
   CompagnieForm: FormGroup = this.fb.group({
-    compagnie: this.fb.array([
-      this.fb.group({
-        caserneId: [[], Validators.required],
-        message:[[]]
-      })
-    ])
+    compagnie: this.fb.array([  ])
   });
 
 
@@ -34,7 +27,7 @@ export class SubMenu2Component implements OnInit {
   afficheCat;
   afficheLib;
   data = this.service.formData;
-
+  numero = this.fb.array([]);
 
   constructor(private fb: FormBuilder,
     private http: HttpClient,
@@ -47,8 +40,26 @@ export class SubMenu2Component implements OnInit {
 
   this.getCaserne();
   this.getCategory();
-  this.getLibelleBycategory(this.service.formData.incident.categoryId)
+  // let split = this.service.formData.casernes;
+  // console.log(split)
+  // split.forEach(compagnie => {
+  //   this.numero.push(this.fb.control(compagnie));
+  //   this.CompagnieForm.setControl('compagnie', this.fb.array(split));
+  // });
+  const casernes = this.service.formData.casernes;
+const compagnieArray = this.CompagnieForm.get('compagnie') as FormArray;
 
+if (casernes.length === 0) {
+  this.addCompagnie();
+} else {
+  casernes.forEach((caserne: any) => {
+    const compagnieGroup = this.fb.group({
+      caserneId: [caserne.caserneId, Validators.required],
+      message: [caserne.message]
+    });
+    compagnieArray.push(compagnieGroup);
+  });
+}
   }
 
   get compagnie(): FormArray{
@@ -62,7 +73,6 @@ export class SubMenu2Component implements OnInit {
       }
     );
   }
-
   deleteCompagnie(index: number){
     this.compagnie.removeAt(index);
     this.compagnie.markAsDirty()
@@ -102,13 +112,15 @@ getCategory(){
 }
 
 addCaserneIntervention(Caserne: interventionCaserne){
-  return this.http.put<interventionCaserne>("http://localhost:8081/bnsp/api/intervention/update/info", Caserne).subscribe()
+  return this.http.put<interventionCaserne>("http://localhost:8081/bnsp/api/intervention/update/info", Caserne).subscribe(
+    data => console.log(data)
+  )
 }
 
 onSubmit(){
   if(this.CompagnieForm.valid){
     let compagnie: interventionCaserne = {
-      id: this.service.id,
+      id: this.service.formData.interventionId,
       casernes: this.CompagnieForm.getRawValue().compagnie
     }
     this.addCaserneIntervention(compagnie);
@@ -121,7 +133,5 @@ onSubmit(){
     this.toastr.error('Erreur information incomplete');
   }
 }
-
-
 
 }

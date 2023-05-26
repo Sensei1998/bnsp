@@ -16,7 +16,7 @@ import { EnginUpdateOut } from '@/model/EnginUpdateOut.model';
     providedIn: 'root'
 })
 export class ApiService {
-    url: "http://localhost:8081/bnsp/api";
+    url= "http://localhost:8081/bnsp/api";
     formData: any = {};
     id:number;
     constructor(private http: HttpClient) {}

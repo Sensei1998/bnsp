@@ -44,7 +44,10 @@ export class CreationCaserneComponent implements OnInit {
   sort;
   sortaff;
   numero = this.formBuilder.array([]);
-
+  page = 1; // Page actuelle
+  pageSize = 5; // Nombre d'éléments par page
+  collectionSize: number; // Taille totale de la collection
+  listCaserne:any[]=[];
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
@@ -55,9 +58,15 @@ export class CreationCaserneComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCaserne();
-
+    setTimeout(() => {
+      this.collectionSize = this.listCaserne.length;
+    }, 2000)
   }
 
+  get donneesPaginees() {
+    return this.listCaserne
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
 
 
   get number(): FormArray{
@@ -91,7 +100,8 @@ export class CreationCaserneComponent implements OnInit {
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(
       caserne => {
-        this.caserne = caserne
+        this.caserne = caserne;
+        this.listCaserne.push(...this.caserne)
       }
     );
   }

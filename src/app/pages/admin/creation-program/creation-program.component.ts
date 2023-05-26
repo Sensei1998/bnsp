@@ -96,6 +96,7 @@ export class CreationProgramComponent implements OnInit{
     this.getEnginByCaserne(this.idCaserne);
     this.getProgram(this.formatDate(this.date));
     this.getAgentByCaserne(this.idCaserne);
+    //this.getProgramByCaserne(this.idCaserne);
 
     if(this.role === "ROLE_SUPERVISOR"){
       this.isAdmin = true;
@@ -236,6 +237,25 @@ export class CreationProgramComponent implements OnInit{
           }
     }
     return [principal, secondaire];
+  }
+
+  getProgramByCaserne(id:number){
+    return this.http.get("http://localhost:8081/bnsp/api/programs/caserne/"+id).subscribe(
+      (program:any) =>{
+        console.log(program)
+        try{
+          this.program = program;
+        this.t = this.program.teams;
+        // for(const team of this.t){
+        //   for (const agent of team.agents) {
+        //     this.t = agent;
+        //     console.log(this.t);
+        //   }
+        // }
+        } catch{
+          this.toastr.error('Aucune fiche actuellement')
+        }}
+    )
   }
 
 getProgram(date){

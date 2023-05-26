@@ -18,9 +18,13 @@ export class MenuSidebarComponent implements OnInit {
     public ui: Observable<UiState>;
     email: string;
     public menu = MENU;
+    public menu2 = MENU2;
+    public menu3 = MENU3
 
     id = Number(localStorage.getItem('id'));
-
+    role = localStorage.getItem('fonction');
+    isAdmin: boolean;
+    bcot: boolean;
     constructor(
         public appService: AppService,
         private store: Store<AppState>,
@@ -33,6 +37,20 @@ export class MenuSidebarComponent implements OnInit {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
        this.email = localStorage.getItem('email');
+       if(this.role === "ROLE_SUPERVISOR" || this.role === "ROLE_ADMINISTRATEUR"){
+        this.isAdmin = true;
+
+     } else{
+       this.isAdmin = false;
+     ;
+     }
+     if(this.role === "ROLE_BCTO"){
+      this.bcot = true;
+
+   } else{
+     this.bcot = false;
+   ;
+   }
     }
 
 }
@@ -50,12 +68,12 @@ export const MENU = [
             {
                 name: 'Créer une Intervention ',
                 iconClasses: 'far fa-address-book',
-                path: ['/sub-menu-1']
+                path: ['/crée-une-intervention']
             },
             {
                 name: 'Listes des interventions',
                 iconClasses: 'fas fa-file',
-                path: ['/sub-menu-2']
+                path: ['/listes-des-interventions']
             },
             // {
             //   name: 'Ajouter une Compagnie',
@@ -94,13 +112,82 @@ export const MENU = [
             iconClasses: 'fas fa-clipboard',
             path: ['/c_program']
           },
-          {
-            name: 'Equipe',
-            iconClasses: 'fas fa-users',
-            path: ['/c_equipe']
-        }
+        //   {
+        //     name: 'Equipe',
+        //     iconClasses: 'fas fa-users',
+        //     path: ['/c_equipe']
+        // }
       ]
   }
+];
 
 
+
+export const MENU2 = [
+  {
+      name: 'Dashboard',
+      iconClasses: 'fas fa-tachometer-alt',
+      path: ['/']
+  },
+  {
+      name: 'Listes des fiches',
+      iconClasses: 'fas fa-folder',
+      children: [
+          {
+              name: 'Créer une Intervention ',
+              iconClasses: 'far fa-address-book',
+              path: ['/crée-une-intervention']
+          },
+          {
+              name: 'Listes des interventions',
+              iconClasses: 'fas fa-file',
+              path: ['/listes-des-interventions']
+          },
+          // {
+          //   name: 'Ajouter une Compagnie',
+          //   iconClasses: 'fas fa-list',
+          //   path: ['/sub-menu2']
+          // },
+        //   {
+        //     name: 'suivie',
+        //     iconClasses: 'fas fa-forward',
+        //     path: ['/suivi']
+        // }
+      ]
+  }
+];
+
+
+export const MENU3 = [
+  {
+      name: 'Dashboard',
+      iconClasses: 'fas fa-tachometer-alt',
+      path: ['/']
+  },
+  {
+      name: 'Listes des fiches',
+      iconClasses: 'fas fa-folder',
+      children: [
+          // {
+          //     name: 'Créer une Intervention ',
+          //     iconClasses: 'far fa-address-book',
+          //     path: ['/crée-une-intervention']
+          // },
+          {
+              name: 'Listes des interventions',
+              iconClasses: 'fas fa-file',
+              path: ['/listes-des-interventions']
+          },
+          // {
+          //   name: 'Ajouter une Compagnie',
+          //   iconClasses: 'fas fa-list',
+          //   path: ['/sub-menu2']
+          // },
+        //   {
+        //     name: 'suivie',
+        //     iconClasses: 'fas fa-forward',
+        //     path: ['/suivi']
+        // }
+      ]
+  }
 ];

@@ -35,7 +35,7 @@
                   <tr >
                     <td>
                       <h3 class="card-title">Numéro Appelant:</h3>
-                      <input type="text" class="card-title" formControlName="phoneNumber" style="margin-left: 2%;" minlength="8" maxlength="8"><br><br>
+                      <input type="text" class="card-title" formControlName="phoneNumber" [ngModel]="numTel" style="margin-left: 2%;" minlength="8" maxlength="8"><br><br>
                       <div
                         *ngIf="interventionForm.get('phoneNumber').invalid && (interventionForm.get('phoneNumber').dirty || interventionForm.get('phoneNumber').touched)"
                         class="text-danger">
