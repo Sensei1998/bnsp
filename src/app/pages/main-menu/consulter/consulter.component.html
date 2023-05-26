@@ -1,0 +1,414 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+              <h1>Consultation d'intervention</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Blank Page</li>
+              </ol>
+          </div> -->
+      </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <table style="width: 100%;">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <h3 class="card-title">Numéro Appelant:</h3>
+                  <h3 class="card-title"> {{service.formData.phoneNumber}} </h3>
+                </td>
+                <td>
+                  <h3 class="card-title " >Date:</h3>
+                  <h3 class="card-title" >{{ service.formData.date }}</h3>
+                </td>
+                <td>
+                  <h3 class="card-title" >Heure:</h3>
+                  <h3 class="card-title" > {{service.formData.time}} </h3>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div>
+            <h2><Strong>Provenance</Strong></h2>
+            <p class="mg-b-10">Origine</p>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Appel Verbal'">
+            <div class="form-check form-check-inline">
+              <input [checked]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label  class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'T.U'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === '18 ou 112'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Police'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Gendarmerie'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+          <div style="text-align: center;" *ngIf="service.formData.provenance === 'Radio'">
+            <div class="form-check form-check-inline">
+              <input [disabled]="true"  mdbRadio class="form-check-input" type="radio"  id="Appel Verbal"
+                value="Appel Verbal" />
+              <label class="form-check-label" for="inlineRadio1">Appel Verbal</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="T.U" value="T.U" />
+              <label  class="form-check-label" for="inlineRadio2"> T.U</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="18 ou 112"
+                value="18 ou 112" />
+              <label class="form-check-label" for="inlineRadio3">18 ou 112</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Police"
+                value="Police" />
+              <label class="form-check-label" for="inlineRadio3">Police</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [disabled]="true" mdbRadio class="form-check-input" type="radio"  id="Gendarmerie"
+                value="Gendarmerie" />
+              <label class="form-check-label" for="inlineRadio3">Gendarmerie</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input [checked]="true" mdbRadio class="form-check-input" type="radio"  id="inlineRadio3"
+                value="Radio" />
+              <label class="form-check-label" for="inlineRadio3">Radio</label>
+            </div>
+          </div>
+
+
+          <div>
+            <h2><strong>Incident</strong></h2>
+          </div>
+
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Category</p>
+              <h3  class="form-control" > {{service.formData.incident.category}}</h3>
+
+              <!-- <select class="form-control" [disabled]="true">
+                <option  value={{category.id}}> {{category.category}}</option>
+              </select> -->
+
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Libele</p>
+              <h3  class="form-control" > {{service.formData.incident.type}}</h3>
+
+              <!-- <select class="form-control"   [disabled]="true">
+                <option  value={{libelle.id}}>{{libelle.designation}} </option>
+              </select> -->
+            </div>
+          </div>
+          <div class="form-group">
+            <p class="mg-b-10">Commentaire</p>
+            <h3 class="form-control"  > {{service.formData.incident.comments}} </h3>
+          </div>
+          <div>
+            <h2><strong>Appelant</strong></h2>
+          </div>
+          <!-- <div class="form-group">
+                            <label for="exampleInputUsername1">Numero</label>
+                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Number">
+                          </div> -->
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Nom</p>
+              <h3  class="form-control" > {{service.formData.name}}</h3>
+
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Address</p>
+              <h3  class="form-control" >{{service.formData.address}} </h3>
+            </div>
+          </div>
+          <div>
+            <h2><strong>Coordonnée</strong></h2>
+          </div>
+          <div class="row row-sm mg-b-20 ">
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Longitude</p>
+              <h3  class="form-control">{{service.formData.longitude}} </h3>
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Latitude</p>
+              <h3  class="form-control" >{{service.formData.latitude}} </h3>
+            </div>
+
+            <div class="col-lg-6 form-group ">
+              <p class="mg-b-10">Precision</p>
+              <h3  class="form-control" >{{service.formData.precision}} </h3>
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <!-- /.card-body -->
+
+        <!-- /.card-footer-->
+      </div>
+    </div>
+    <!-- /.card -->
+
+</section>
+
+<!-- Main content -->
+<section class="content" *ngFor="let intervention of service.formData.casernes">
+  <!-- Default box -->
+  <div class="container-fluid" >
+      <div class="card">
+        <div class="card-body">
+            <div>
+              <h1 >{{intervention.caserneName}}</h1>
+              <h3 >{{intervention.message}}</h3>
+            </div>
+            <form [formGroup]="equipeForm" >
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Engin</th>
+                      <th>Heure de Départ</th>
+                      <th>Présentation</th>
+                      <th>Disponibilité</th>
+                      <th>Rentré</th>
+
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let i of intervention.teams">
+                    <tr>
+                      <td>{{ i.type }}</td>
+                      <td>
+                        <p class="form-control">{{(i.departure | date: 'dd/MM/yyyy à HH:mm:ss')}} </p>
+                      </td>
+                      <td>
+                        <p class="form-control">{{i.presentation| date: 'dd/MM/yyyy à HH:mm:ss'}}</p>
+                      </td>
+                      <td>
+                        <p class="form-control">{{i.available| date: 'dd/MM/yyyy à HH:mm:ss'}}</p>
+                      </td>
+                      <td>
+                        <p class="form-control">{{i.checkIn| date: 'dd/MM/yyyy à HH:mm:ss'}}</p>
+                      </td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </form>
+
+
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer" *ngIf="intervention.caserneId === id">
+            <div>
+              <h3 >Message</h3>
+            </div>
+            <form>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Equipe</th>
+                      <th>Heure d'émission</th>
+                      <th>Texte du message</th>
+
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let m of message">
+                    <tr>
+                      <td><p class="form-control">{{m.equipeType}}</p></td>
+                      <td><p class="form-control">{{m.sentAt | date: 'dd/MM/yyyy à HH:mm:ss'}}</p></td>
+                      <td><p class="form-control">{{m.message}}</p></td>
+
+                    </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+                <!-- <button type="submit" class="btn btn-primary mr-2" routerLink="['/sub-menu2']">Suivant</button>
+                <button class="btn btn-light">Cancel</button> -->
+            </form>
+          </div>
+          <!-- /.card-footer-->
+      </div>
+  </div>
+  <!-- /.card -->
+</section>

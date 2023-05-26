@@ -23,7 +23,7 @@ export class BlankComponent implements OnInit {
   bcot: boolean;
   ccot:boolean;
   page = 1; // Page actuelle
-  pageSize = 10; // Nombre d'éléments par page
+  pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
   collectionSize2: number; // Taille totale de la collection
   collectionSize3: number; // Taille totale de la collection
@@ -112,7 +112,7 @@ export class BlankComponent implements OnInit {
           this.listeIntervention = data;
           this.enAttente.push(...this.listeIntervention.filter(intervention => intervention.status === 'En attente' || intervention.status === 'Non attribué'));
           this.enCours.push(...this.listeIntervention.filter(intervention => intervention.status === 'En cours' ));
-          this.terminer.push(...this.listeIntervention.filter(intervention => intervention.status === 'Terminer'));
+          this.terminer.push(...this.listeIntervention.filter(intervention => intervention.status === 'Termine'));
         }else{
           this.toastr.error('Aucune intervention pour le moment!');
         }
@@ -136,6 +136,15 @@ export class BlankComponent implements OnInit {
     this.router.navigate(['/ajouter-compagnie']);
   }
 
-
+  closeIntervention(id: number) {
+    return this.http.put("http://localhost:8081/bnsp/api/intervention/update/close/" + id, '').subscribe(
+      (data: any) => {
+        window.location.reload();
+      },
+      (error) => {
+        this.toastr.error("Tous les véhicules de toute les Casernes ne sont pas encore rentrés.", "Erreur");
+      }
+    );
+  }
 
 }

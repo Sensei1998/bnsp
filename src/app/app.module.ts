@@ -48,6 +48,7 @@ import { CreationAgentComponent } from './pages/admin/creation-agent/creation-ag
 import { CreationProgramComponent } from './pages/admin/creation-program/creation-program.component';
 import { TokenInterceptorProvider } from '@guards/token.interceptor';
 import { AjoutCompagnieComponent } from './pages/main-menu/ajout-compagnie/ajout-compagnie.component';
+import { ConsulterComponent } from './pages/main-menu/consulter/consulter.component';
 
 
 
@@ -85,6 +86,7 @@ registerLocaleData(localeEn, 'en-EN');
         CreationAgentComponent,
         CreationProgramComponent,
         AjoutCompagnieComponent,
+        ConsulterComponent,
 
     ],
     imports: [

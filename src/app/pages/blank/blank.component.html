@@ -43,8 +43,8 @@
                 <td> {{ intervention.name }}</td>
                 <td>{{ intervention.phoneNumber }}</td>
                 <td>{{ intervention.status }}</td>
-                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true || isAdmin === true" >Affecter une Compagnie</button> </td>
-                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true || isAdmin === true">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button> </td>
+                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true " >Affecter une Compagnie</button> </td>
+                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true ">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button> </td>
                 <td class="button-container"  *ngIf="intervention.status === 'Terminer'"> <button class="btn btn-primary prog">Consulter</button></td>
               </tr>
             </tbody>
@@ -121,10 +121,10 @@
                 <td> {{ intervention.name }}</td>
                 <td>{{ intervention.phoneNumber }}</td>
                 <td>{{ intervention.status }}</td>
-                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true || isAdmin === true" >Affecter une Compagnie</button> </td>
-                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true || isAdmin === true">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button>
-                  <button class="btn btn-danger prog" *ngIf="bcot === true || isAdmin === true">Terminer</button></td>
-                <td class="button-container"  *ngIf="intervention.status === 'Terminer'"> <button class="btn btn-primary prog">Consulter</button></td>
+                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true " >Affecter une Compagnie</button> </td>
+                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true ">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button>
+                  <button class="btn btn-danger prog" *ngIf="bcot === true " (click)="closeIntervention(intervention.interventionId)">Terminer</button></td>
+                <td class="button-container"  *ngIf="intervention.status === 'Termine'"> <button class="btn btn-primary prog">Consulter</button></td>
               </tr>
             </tbody>
           </table>
@@ -200,9 +200,9 @@
                 <td> {{ intervention.name }}</td>
                 <td>{{ intervention.phoneNumber }}</td>
                 <td>{{ intervention.status }}</td>
-                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true || isAdmin === true" >Affecter une Compagnie</button> </td>
-                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true || isAdmin === true">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button> </td>
-                <td class="button-container"  *ngIf="intervention.status === 'Terminer'"> <button class="btn btn-primary prog">Consulter</button></td>
+                <td class="button-container" *ngIf="intervention.status === 'Non attribué'"> <button class="btn btn-primary" (click)="ajouterUneCaserne(intervention)" *ngIf=" ccot === true " >Affecter une Compagnie</button> </td>
+                <td class="button-container"  *ngIf="intervention.status === 'En attente' || intervention.status === 'En cours' "> <button class="btn btn-primary prog"(click)="ajouterUneCaserne(intervention)"*ngIf="ccot === true ">Affecter une Compagnie</button><button class="btn btn-secondary prog"  [routerLink]="['/suivie', intervention.interventionId ]"> Suivie</button> </td>
+                <td class="button-container"  *ngIf="intervention.status === 'Termine'"> <button class="btn btn-success prog" [routerLink]="['/consulter', intervention.interventionId ]">Consulter</button></td>
               </tr>
             </tbody>
           </table>

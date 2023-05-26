@@ -21,6 +21,7 @@ import { CreationEquipeComponent } from '@pages/admin/creation-equipe/creation-e
 import { CreationProgramComponent } from '@pages/admin/creation-program/creation-program.component';
 import { LoginGuard } from '@guards/login.guard';
 import { AjoutCompagnieComponent } from '@pages/main-menu/ajout-compagnie/ajout-compagnie.component';
+import { ConsulterComponent } from '@pages/main-menu/consulter/consulter.component';
 
 const routes: Routes = [
     {
@@ -60,6 +61,10 @@ const routes: Routes = [
             {
               path: 'suivie/:id',
               component: SuiviComponent
+            },
+            {
+              path: 'consulter/:id',
+              component: ConsulterComponent
             },
             {
               path: 'c_agent',
