@@ -361,12 +361,12 @@
                 <td> {{u.phoneNumber}} </td>
                 <td> {{u.defaultFonction.rule}} </td>
                 <td>{{u.grade.grade}}</td>
-                <td [width]="120" *ngIf="isAdmin === true">
+                <td [width]="120" *ngIf="isAdmin === true || supervisor === true">
                   <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>
                 </td>
-                <td [width]="120" *ngIf="isAdmin === false" >
+                <td [width]="120" *ngIf="isAdmin === false && supervisor === false" >
                   <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                 </td>
               </tr>

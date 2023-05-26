@@ -142,7 +142,7 @@ export class BlankComponent implements OnInit {
         window.location.reload();
       },
       (error) => {
-        this.toastr.error("Tous les véhicules de toute les Casernes ne sont pas encore rentrés.", "Erreur");
+        this.toastr.error("Tous les véhicules de toutes les casernes actifs sur l'intervention  ne sont pas encore disponibles.");
       }
     );
   }

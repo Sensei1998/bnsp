@@ -61,6 +61,7 @@ export class CreationAgentComponent implements OnInit{
 
   role = localStorage.getItem('fonction');
   isAdmin: boolean;
+  supervisor: boolean;
   page = 1; // Page actuelle
   pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
@@ -85,8 +86,15 @@ export class CreationAgentComponent implements OnInit{
       this.checkPasswordMatch();
     });
 
+    if( this.role === "ROLE_SUPERVISOR"){
+      this.supervisor = true;
 
-    if(this.role === "ROLE_SUPERVISOR" || this.role === "ROLE_ADMINISTRATEUR"){
+   } else{
+     this.supervisor = false;
+   ;
+   }
+
+    if( this.role === "ROLE_ADMINISTRATEUR"){
        this.isAdmin = true;
 
     } else{

@@ -347,7 +347,7 @@
                       <th>Présentation</th>
                       <th>Disponibilité</th>
                       <th>Rentré</th>
-
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let i of intervention.teams">
@@ -365,7 +365,11 @@
                       <td>
                         <p class="form-control">{{i.checkIn| date: 'dd/MM/yyyy à HH:mm:ss'}}</p>
                       </td>
-
+                      <td class="row" *ngIf="intervention.caserneId === id && bcot === true">
+                        <button class="btn btn-secondary" type="submit" (click)="open(content1)" (click)="edit(i.interventionTeamId, i.type, i.departure,i.presentation,i.available,i.checkIn)" >
+                          <i class="fa fa-edit" style="color: rgb(9, 255, 9);"></i>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
 
@@ -412,3 +416,57 @@
   </div>
   <!-- /.card -->
 </section>
+
+
+<section>
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Mise a jour des Horaires</h4>
+      <!-- <button type="button" class="fa fa-minus" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form [formGroup]="equipeForm">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Engin</th>
+                  <th>Heure de Départ</th>
+                  <th>Présentation</th>
+                  <th>Disponibilité</th>
+                  <th>Rentré</th>
+                </tr>
+              </thead>
+              <tbody >
+                <tr>
+                  <td hidden>{{interventionTeamId}}</td>
+                  <td>{{ type }}</td>
+                  <td>
+                    <p class="form-control" formControlName="departure" type="dateTime-local" step="1" [ngModel]="departure" >{{(departure | date: 'dd/MM/yyyy HH:mm:ss')}} </p>
+                  </td>
+                  <td>
+                    <p formControlName="presentation" type="dateTime-local" class="form-control" step="1" [ngModel]="presentation" >{{(presentation | date: 'dd/MM/yyyy HH:mm:ss')}} </p>
+                  </td>
+                  <td>
+                    <p formControlName="available" type="dateTime-local" class="form-control" step="1" [ngModel]="available"  >{{(available | date: 'dd/MM/yyyy HH:mm:ss')}} </p>
+                  </td>
+                  <td>
+                    <input formControlName="checkIn" class="form-control" type="dateTime-local" step="1" [ngModel]="checkIn">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit(interventionTeamId)"(click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+     </div>
+  </ng-template>
+</section>
+

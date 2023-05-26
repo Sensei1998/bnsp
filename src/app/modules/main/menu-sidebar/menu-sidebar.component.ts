@@ -19,12 +19,14 @@ export class MenuSidebarComponent implements OnInit {
     email: string;
     public menu = MENU;
     public menu2 = MENU2;
-    public menu3 = MENU3
+    public menu3 = MENU3;
+    public menu4 = MENU4;
 
     id = Number(localStorage.getItem('id'));
     role = localStorage.getItem('fonction');
     isAdmin: boolean;
     bcot: boolean;
+    supervisor: boolean;
     constructor(
         public appService: AppService,
         private store: Store<AppState>,
@@ -37,7 +39,15 @@ export class MenuSidebarComponent implements OnInit {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
        this.email = localStorage.getItem('email');
-       if(this.role === "ROLE_SUPERVISOR" || this.role === "ROLE_ADMINISTRATEUR"){
+       if( this.role === "ROLE_SUPERVISOR"){
+        this.supervisor = true;
+
+     } else{
+       this.supervisor = false;
+     ;
+     }
+
+       if( this.role === "ROLE_ADMINISTRATEUR"){
         this.isAdmin = true;
 
      } else{
@@ -57,7 +67,7 @@ export class MenuSidebarComponent implements OnInit {
 
 export const MENU = [
     {
-        name: 'Dashboard',
+        name: 'Tableau de Bord',
         iconClasses: 'fas fa-tachometer-alt',
         path: ['/']
     },
@@ -125,7 +135,7 @@ export const MENU = [
 
 export const MENU2 = [
   {
-      name: 'Dashboard',
+      name: 'Tableau de Bord',
       iconClasses: 'fas fa-tachometer-alt',
       path: ['/']
   },
@@ -160,7 +170,7 @@ export const MENU2 = [
 
 export const MENU3 = [
   {
-      name: 'Dashboard',
+      name: 'Tableau de Bord',
       iconClasses: 'fas fa-tachometer-alt',
       path: ['/']
   },
@@ -190,4 +200,72 @@ export const MENU3 = [
         // }
       ]
   }
+];
+
+
+
+export const MENU4 = [
+  {
+      name: 'Tableau de Bord',
+      iconClasses: 'fas fa-tachometer-alt',
+      path: ['/']
+  },
+  {
+      name: 'Listes des fiches',
+      iconClasses: 'fas fa-folder',
+      children: [
+          {
+              name: 'Créer une Intervention ',
+              iconClasses: 'far fa-address-book',
+              path: ['/crée-une-intervention']
+          },
+          {
+              name: 'Listes des interventions',
+              iconClasses: 'fas fa-file',
+              path: ['/listes-des-interventions']
+          },
+          // {
+          //   name: 'Ajouter une Compagnie',
+          //   iconClasses: 'fas fa-list',
+          //   path: ['/sub-menu2']
+          // },
+        //   {
+        //     name: 'suivie',
+        //     iconClasses: 'fas fa-forward',
+        //     path: ['/suivi']
+        // }
+      ]
+  },
+  {
+    name: 'Admin Fonction',
+    iconClasses: 'fas fa-folder',
+    children: [
+      // {
+      //       name: 'Caserne',
+      //       iconClasses: 'fas fa-home',
+      //       path: ['/c_caserne']
+      //   },
+        {
+            name: 'Agent ',
+            iconClasses: 'far fa-address-book',
+            path: ['/c_agent']
+        },
+
+        {
+          name: 'Engin',
+          iconClasses: 'fas fa-truck',
+          path: ['/c_engin']
+        },
+        {
+          name: 'Fiche de Garde',
+          iconClasses: 'fas fa-clipboard',
+          path: ['/c_program']
+        },
+      //   {
+      //     name: 'Equipe',
+      //     iconClasses: 'fas fa-users',
+      //     path: ['/c_equipe']
+      // }
+    ]
+}
 ];

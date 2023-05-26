@@ -82,6 +82,12 @@ export class CreationProgramComponent implements OnInit{
     ])
   })
 
+  program2;
+  listeProgram:any[]=[];
+  page = 1; // Page actuelle
+  pageSize = 5; // Nombre d'éléments par page
+  collectionSize: number; // Taille totale de la collection
+
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
@@ -96,7 +102,7 @@ export class CreationProgramComponent implements OnInit{
     this.getEnginByCaserne(this.idCaserne);
     this.getProgram(this.formatDate(this.date));
     this.getAgentByCaserne(this.idCaserne);
-    //this.getProgramByCaserne(this.idCaserne);
+    this.getProgramByCaserne(this.idCaserne);
 
     if(this.role === "ROLE_SUPERVISOR"){
       this.isAdmin = true;
@@ -242,10 +248,11 @@ export class CreationProgramComponent implements OnInit{
   getProgramByCaserne(id:number){
     return this.http.get("http://localhost:8081/bnsp/api/programs/caserne/"+id).subscribe(
       (program:any) =>{
-        console.log(program)
+        console.log(program);
         try{
-          this.program = program;
+          this.program2 = program;
         this.t = this.program.teams;
+
         // for(const team of this.t){
         //   for (const agent of team.agents) {
         //     this.t = agent;
@@ -261,6 +268,7 @@ export class CreationProgramComponent implements OnInit{
 getProgram(date){
     return this.http.get("http://localhost:8081/bnsp/api/programs/search?date=" +date).subscribe(
       (program:any) =>{
+        console.log(program)
         try{
           this.program = program;
         this.t = this.program.teams;
