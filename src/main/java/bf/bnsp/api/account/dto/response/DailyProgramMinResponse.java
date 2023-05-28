@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Berickal
@@ -27,4 +29,8 @@ public class DailyProgramMinResponse {
     private String caserneCity;
 
     private String caserneArea;
+
+    private Optional<FonctionTeamResponse> caporalTeam;
+
+    private Optional<FonctionTeamResponse> sergentTeam;
 }
