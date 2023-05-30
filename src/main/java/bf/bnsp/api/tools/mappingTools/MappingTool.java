@@ -56,11 +56,12 @@ public class MappingTool {
             }
             caporalTeamResponse = Optional.of(new FonctionTeamResponse(caporalTeam.get().getId(), caporalTeam.get().getType().getEquipeType().name(), caporalTeam.get().getDesignation(), new ArrayList<>(agentList), caporalTeam.get().isActive()));
         }
+        agentList.clear();
         if(sgtTeam.get().getMembers().size() > 0){
             for(DailyTeamMember member : sgtTeam.get().getMembers()){
                 if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getPrincipal().getId(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getPrincipal().getGrade().getGrade().name(), member.getSecondary().getId(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getSecondary().getGrade().getGrade().name(), member.getFonction().getRule().name()));
             }
-            caporalTeamResponse = Optional.of(new FonctionTeamResponse(sgtTeam.get().getId(), sgtTeam.get().getType().getEquipeType().name(), caporalTeam.get().getDesignation(), new ArrayList<>(agentList), sgtTeam.get().isActive()));
+            sgtTeamResponse = Optional.of(new FonctionTeamResponse(sgtTeam.get().getId(), sgtTeam.get().getType().getEquipeType().name(), caporalTeam.get().getDesignation(), new ArrayList<>(agentList), sgtTeam.get().isActive()));
         }
         return new DailyProgramMinResponse(dailyProgram.getId(), dailyProgram.getDate(), dailyProgram.getCaserne().getId(), dailyProgram.getCaserne().getName(), dailyProgram.getCaserne().getCity(), dailyProgram.getCaserne().getArea(), caporalTeamResponse, sgtTeamResponse);
     }
