@@ -87,6 +87,7 @@ export class CreationProgramComponent implements OnInit{
   page = 1; // Page actuelle
   pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
+  idprogram = 0;
 
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -100,7 +101,7 @@ export class CreationProgramComponent implements OnInit{
   ngOnInit(): void {
     this.getAgent();
     this.getEnginByCaserne(this.idCaserne);
-    this.getProgram(this.formatDate(this.date));
+    //this.getProgram(this.formatDate(this.date));
     this.getAgentByCaserne(this.idCaserne);
     this.getProgramByCaserne(this.idCaserne);
 
@@ -109,6 +110,25 @@ export class CreationProgramComponent implements OnInit{
    } else{
      this.isAdmin = false;
    }
+
+   setTimeout(() => {
+    this.collectionSize = this.listeProgram.length;
+  }, 2000)
+  }
+
+  get donneesPaginees() {
+    if (this.listeProgram === null) {
+      return [];
+    }
+
+    const sortedList = this.listeProgram.sort((a, b) => {
+      // Tri par ordre décroissant en utilisant la propriété "date"
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return sortedList.slice(startIndex, endIndex);
   }
 
   get member(): FormArray{
@@ -251,14 +271,7 @@ export class CreationProgramComponent implements OnInit{
         console.log(program);
         try{
           this.program2 = program;
-        this.t = this.program.teams;
-
-        // for(const team of this.t){
-        //   for (const agent of team.agents) {
-        //     this.t = agent;
-        //     console.log(this.t);
-        //   }
-        // }
+          this.listeProgram = program
         } catch{
           this.toastr.error('Aucune fiche actuellement')
         }}
@@ -266,12 +279,20 @@ export class CreationProgramComponent implements OnInit{
   }
 
 getProgram(date){
-    return this.http.get("http://localhost:8081/bnsp/api/programs/search?date=" +date).subscribe(
+  const dateObj = new Date(date);
+  const jour = dateObj.getDate();
+  const mois = dateObj.getMonth() + 1; // Les mois sont indexés à partir de 0, donc on ajoute 1
+  const annee = dateObj.getFullYear();
+
+  // Formater la date avec le format "dd-MM-yyyy"
+  const dateFormatee = `${jour.toString().padStart(2, '0')}-${mois.toString().padStart(2, '0')}-${annee}`;
+
+    return this.http.get("http://localhost:8081/bnsp/api/programs/search?date=" +dateFormatee).subscribe(
       (program:any) =>{
         console.log(program)
         try{
-          this.program = program;
-        this.t = this.program.teams;
+          this.listeProgram = program;
+       // this.t = this.program.teams;
         // for(const team of this.t){
         //   for (const agent of team.agents) {
         //     this.t = agent;
@@ -321,7 +342,7 @@ addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
   onSubmitEquipe(){
     if(this.addEquipe.valid){
       let equipe: DailyProgramAddEquipeForm = {
-        programId : this.program.id,
+        programId : this.idprogram,
         typeId: this.addEquipe.get('typeId').value,
         designation: this.addEquipe.get('designation').value,
         members: this.addEquipe.getRawValue().members
@@ -334,6 +355,11 @@ addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
         this.toastr.error('Formulaire invalide!');
       }
     }
+  }
+
+  changeidprogram(id: number){
+    this.idprogram = id
+    console.log(id)
   }
 
   onSubmit2(){

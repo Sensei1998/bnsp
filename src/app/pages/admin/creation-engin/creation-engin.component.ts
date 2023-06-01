@@ -56,10 +56,14 @@ export class CreationEnginComponent implements OnInit{
   }
 
   get donneesPaginees() {
-    return this.listeEngin
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
+    if (this.listeEngin === null) {
+      return [];
+    }
 
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.listeEngin.slice(startIndex, endIndex);
+  }
 
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(

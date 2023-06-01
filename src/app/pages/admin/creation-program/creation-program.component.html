@@ -62,7 +62,7 @@
           </div>
           <div class="button-container" style="margin-left: -7%;" >
             <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
-            <button class="btn btn-secondary prog" (click)="openCreate(content1)">Ajouter des Equipes</button>
+            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des Equipes</button>
           </div>
 
 
@@ -72,6 +72,7 @@
           <table class="table table-bordered table-hover" >
             <thead>
               <tr>
+                <th>Choix</th>
                 <th>Date</th>
                 <th>CAP Principale du jour</th>
                 <th>CAP Remplacant du jour</th>
@@ -80,7 +81,7 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody >
+            <tbody  *ngFor="let program of donneesPaginees">
               <tr *ngIf="program === null">
                 <td> </td>
                 <td></td>
@@ -92,17 +93,24 @@
                   <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
 
               </tr>
-              <tr *ngIf="program !== null" >
+              <!-- <tr *ngIf="program !== null" >
                 <td> {{program.date }} </td>
                 <td>{{ getTeamName('CAPORAL', 'PRINCIPAL')[0]  }}</td>
                 <td>{{ getTeamName('CAPORAL', 'REMPLACANT')[1]  }}</td>
                 <td>{{ getTeamName('SGT', 'PRINCIPAL')[0] }}</td>
                 <td>{{ getTeamName('SGT', 'REMPLACANT')[1]}}</td>
-                <!-- <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td> -->
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
+
+              </tr> -->
+              <tr *ngIf="program !== null">
+                <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
+                <td> {{program.date }} </td>
+                <td *ngFor="let t of program.caporalTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}} </td>
+                <td *ngFor="let t of program.caporalTeam.agents "> {{t.secondFirstname}} {{t.secondLastname}}</td>
+                <td *ngFor="let t of program.sergentTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}}</td>
+                <td *ngFor="let t of program.sergentTeam.agents ">{{t.secondFirstname}} {{t.secondLastname}}</td>
                 <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
@@ -110,6 +118,13 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="pagination-container" style="margin-left: 75%;">
+          <ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="collectionSize">
+</ngb-pagination>
         </div>
       </div>
     </div>

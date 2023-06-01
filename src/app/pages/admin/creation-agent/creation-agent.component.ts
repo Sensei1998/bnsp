@@ -110,8 +110,13 @@ export class CreationAgentComponent implements OnInit{
   }
 
   get donneesPaginees() {
-    return this.listUser
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    if (this.listUser === null) {
+      return [];
+    }
+
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.listUser.slice(startIndex, endIndex);
   }
 
 

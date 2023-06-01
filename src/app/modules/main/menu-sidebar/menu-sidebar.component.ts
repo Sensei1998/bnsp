@@ -20,7 +20,7 @@ export class MenuSidebarComponent implements OnInit {
     public menu = MENU;
     public menu2 = MENU2;
     public menu3 = MENU3;
-    public menu4 = MENU4;
+
 
     id = Number(localStorage.getItem('id'));
     role = localStorage.getItem('fonction');

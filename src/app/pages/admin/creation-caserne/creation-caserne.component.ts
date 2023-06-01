@@ -64,8 +64,13 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   get donneesPaginees() {
-    return this.listCaserne
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    if (this.listCaserne === null) {
+      return [];
+    }
+
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.listCaserne.slice(startIndex, endIndex);
   }
 
 
