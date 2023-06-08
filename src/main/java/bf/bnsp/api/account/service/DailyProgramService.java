@@ -324,6 +324,11 @@ public class DailyProgramService implements DailyProgramServiceInterface{
         return response.isPresent() ? Optional.of(response.get().getFonction()) : Optional.empty();
     }
 
+    @Override
+    public List<EquipeType> findAllTeamType() {
+        return this.equipeTypeRepository.findAll();
+    }
+
     private Optional<DailyTeamMember> findActiveDailyMemberById(int dailyTeamMemberId){
         return this.dailyTeamMemberRepository.findByIdAndHiddenFalse(dailyTeamMemberId);
     }

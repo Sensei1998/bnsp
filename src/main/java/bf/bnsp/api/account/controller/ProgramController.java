@@ -5,6 +5,7 @@ import bf.bnsp.api.account.dto.response.DailyProgramMinResponse;
 import bf.bnsp.api.account.dto.response.DailyProgramResponse;
 import bf.bnsp.api.account.model.DailyProgram;
 import bf.bnsp.api.account.model.DailyTeam;
+import bf.bnsp.api.account.model.EquipeType;
 import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
@@ -145,6 +146,12 @@ public class ProgramController {
             Optional<DailyProgram> response = this.dailyProgramService.findActiveDailyProgramByDateAndCaserne(date, caserne.get());
             return response.isPresent() ? new ResponseEntity<>(this.mappingTool.mappingDailyProgram(response.get()).getTeams(), HttpStatus.OK) : ResponseEntity.noContent().build();
         }
+    }
+
+    @GetMapping(value = "/team/types")
+    public ResponseEntity<?> getTeamType(){
+        List<EquipeType> response = this.dailyProgramService.findAllTeamType();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(value = "/team/{teamId}")

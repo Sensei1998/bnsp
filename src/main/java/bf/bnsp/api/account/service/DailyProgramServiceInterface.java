@@ -5,10 +5,7 @@ import bf.bnsp.api.account.dto.form.DailyProgramInitForm;
 import bf.bnsp.api.account.dto.form.DailyTeamAddForm;
 import bf.bnsp.api.account.dto.form.DailyTeamUpdateForm;
 import bf.bnsp.api.account.dto.form.partialData.DailyTeamForm;
-import bf.bnsp.api.account.model.Agent;
-import bf.bnsp.api.account.model.DailyProgram;
-import bf.bnsp.api.account.model.DailyTeam;
-import bf.bnsp.api.account.model.FonctionType;
+import bf.bnsp.api.account.model.*;
 import bf.bnsp.api.caserne.model.Caserne;
 
 import java.time.LocalDate;
@@ -43,4 +40,6 @@ public interface DailyProgramServiceInterface {
     Optional<DailyProgram> findActiveDailyProgramByDateAndCaserne(LocalDate date, Caserne caserne);
 
     Optional<FonctionType> findCurrentFonctionByAgent(Agent agent);
+
+    List<EquipeType> findAllTeamType();
 }
