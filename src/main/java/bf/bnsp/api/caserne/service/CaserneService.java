@@ -9,10 +9,7 @@ import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
 import bf.bnsp.api.caserne.dto.form.partialData.AffiliationList;
 import bf.bnsp.api.caserne.dto.form.partialData.AffiliationRulesData;
 import bf.bnsp.api.caserne.model.*;
-import bf.bnsp.api.caserne.repository.AffiliationLinkRepository;
-import bf.bnsp.api.caserne.repository.AffiliationRepository;
-import bf.bnsp.api.caserne.repository.CaserneRepository;
-import bf.bnsp.api.caserne.repository.CaserneTypeRepository;
+import bf.bnsp.api.caserne.repository.*;
 import bf.bnsp.api.tools.controleForm.ControlFormCaserne;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +48,22 @@ public class CaserneService implements CaserneServiceInterface {
     @Autowired
     private AgentService agentService;
 
+    @Autowired
+    private RegionRepository regionRepository;
+
+    @Autowired
+    private ZoneRepository zoneRepository;
+
     @Override
     public Optional<Caserne> createCaserne(CaserneCreationForm caserneForm, Optional<Caserne> caserneParent) {
         Optional<CaserneType> caserneType = this.caserneTypeRepository.findById(caserneForm.getIdCaserneType());
-        if(caserneType.isEmpty()) return Optional.empty();
+        Optional<Zone> zone = this.zoneRepository.findById(caserneForm.getCity());
+        if(caserneType.isEmpty() || zone.isEmpty()) return Optional.empty();
         else{
             if(caserneParent.isPresent()){
                 if(!this.checkAffiliationRules(caserneForm.getIdAffiliation(), caserneParent.get().getCaserneType(), caserneType.get())) return Optional.empty();
             }
-            Caserne caserne = new Caserne( caserneType.get(), caserneForm.getName(), caserneForm.getCity(), caserneForm.getArea(), String.join(";", caserneForm.getTelephone()), caserneForm.getEmail());
+            Caserne caserne = new Caserne( caserneType.get(), caserneForm.getName(), zone.get(), caserneForm.getArea(), String.join(";", caserneForm.getTelephone()), caserneForm.getEmail());
             this.caserneRepository.save(caserne);
             return Optional.of(caserne);
         }
@@ -68,7 +72,8 @@ public class CaserneService implements CaserneServiceInterface {
     @Override
     public Optional<Caserne> updateCaserne(CaserneUpdateForm caserneForm, Optional<Caserne> caserneParent, Caserne caserne) {
         Optional<CaserneType> caserneType = this.caserneTypeRepository.findById(caserneForm.getIdCaserneType());
-        if(caserneType.isEmpty()) return Optional.empty();
+        Optional<Zone> zone = this.zoneRepository.findById(caserneForm.getCity());
+        if(caserneType.isEmpty() || zone.isEmpty()) return Optional.empty();
         else {
             if(caserneParent.isPresent()){
                 if(!this.checkAffiliationRules(caserneForm.getIdAffiliation(), caserneParent.get().getCaserneType(), caserneType.get())) return Optional.empty();
@@ -76,7 +81,7 @@ public class CaserneService implements CaserneServiceInterface {
             else{
                 caserne.setCaserneType(caserneType.get());
                 caserne.setName(caserneForm.getName());
-                caserne.setCity(caserneForm.getCity());
+                caserne.setCity(zone.get());
                 caserne.setArea(caserneForm.getArea());
                 caserne.setEmail(caserneForm.getEmail());
                 caserne.setPhoneNumber(String.join(";", caserneForm.getTelephone()));
@@ -256,6 +261,16 @@ public class CaserneService implements CaserneServiceInterface {
             this.affiliationRepository.save(affiliation);
             return Optional.of(affiliation);
         }
+    }
+
+    @Override
+    public List<Region> findAllRegions() {
+        return this.regionRepository.findAll();
+    }
+
+    @Override
+    public List<Zone> findAllZones() {
+        return this.zoneRepository.findByOrderByZoneAsc();
     }
 
     private boolean checkAffiliationRules(Optional<Integer> affiliationId, CaserneType parent, CaserneType child){

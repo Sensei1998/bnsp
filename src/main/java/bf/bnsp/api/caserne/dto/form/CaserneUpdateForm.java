@@ -25,7 +25,7 @@ public class CaserneUpdateForm {
 
     private String name;
 
-    private String city;
+    private int city;
 
     private String area;
 

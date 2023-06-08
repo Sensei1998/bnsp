@@ -4,9 +4,7 @@ import bf.bnsp.api.caserne.dto.form.AffiliationCreateForm;
 import bf.bnsp.api.caserne.dto.form.AffiliationListForm;
 import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
-import bf.bnsp.api.caserne.model.Affiliation;
-import bf.bnsp.api.caserne.model.AffiliationLink;
-import bf.bnsp.api.caserne.model.Caserne;
+import bf.bnsp.api.caserne.model.*;
 import bf.bnsp.api.caserne.service.CaserneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -178,5 +176,17 @@ public class CaserneController {
             return new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/regions")
+    public ResponseEntity<?> getAllZonesByRegion(){
+        List<Region> response = this.caserneService.findAllRegions();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/zones")
+    public ResponseEntity<?> getAllZones(){
+        List<Zone> response = this.caserneService.findAllZones();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

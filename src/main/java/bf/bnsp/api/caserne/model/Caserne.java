@@ -30,7 +30,8 @@ public class Caserne {
     private String name;
 
     @NonNull
-    private String city;
+    @ManyToOne
+    private Zone city;
 
     @NonNull
     private String area;

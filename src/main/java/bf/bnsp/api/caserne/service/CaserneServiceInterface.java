@@ -51,4 +51,8 @@ public interface CaserneServiceInterface {
     List<Affiliation> findAllActiveAffiliation();
 
     Optional<Affiliation> deleteAffiliation(Affiliation affiliation);
+
+    List<Region> findAllRegions();
+
+    List<Zone> findAllZones();
 }

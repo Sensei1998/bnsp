@@ -61,7 +61,7 @@ public class MappingIntervention {
     public List<MessageResponse> mappingMessage(List<InterventionSheetToMessage> messages){
         List<MessageResponse> response = new ArrayList<>();
         for (InterventionSheetToMessage element: messages) {
-            response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getEquipe().getType().getEquipeType().name(), element.getEquipe().getDesignation(), element.getSentAt(), element.getMessage()));
+            response.add(new MessageResponse(element.getId(), element.getInterventionSheet().getKey().getIntervention().getId(), element.getInterventionSheet().getKey().getCaserne().getId(), element.getEquipe().getId(), element.getEquipe().getType().getEquipeType(), element.getEquipe().getDesignation(), element.getSentAt(), element.getMessage()));
         }
         return response;
     }
@@ -89,7 +89,7 @@ public class MappingIntervention {
                     for(DailyTeamMember member: team.getEquipe().getMembers()){
                         memberData.add(new InterventionTeamMemberData(member.getPrincipal().getId(), member.getPrincipal().getMatricule(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getSecondary().getId(), member.getSecondary().getMatricule(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getFonction().getRule().name()));
                     }
-                    teamData.add(new InterventionTeamData(team.getId(), team.getEquipe().getId(), team.getEquipe().getType().getEquipeType().name(), enginData, Optional.ofNullable(team.getPresentation()), Optional.ofNullable(team.getDeparture()), Optional.ofNullable(team.getAvailable()), Optional.ofNullable(team.getCheckIn()), team.getEquipe().isActive(), new ArrayList<>(memberData)));
+                    teamData.add(new InterventionTeamData(team.getId(), team.getEquipe().getId(), team.getEquipe().getType().getEquipeType(), enginData, Optional.ofNullable(team.getPresentation()), Optional.ofNullable(team.getDeparture()), Optional.ofNullable(team.getAvailable()), Optional.ofNullable(team.getCheckIn()), team.getEquipe().isActive(), new ArrayList<>(memberData)));
                     memberData.clear();
                 }
                 casernes.add(new InterventionCaserneData(element.getKey().getCaserne().getId(), element.getKey().getCaserne().getName(), element.getMessage(), new ArrayList<>(teamData)));

@@ -1,30 +1,29 @@
-package bf.bnsp.api.account.model;
+package bf.bnsp.api.caserne.model;
 
-import bf.bnsp.api.tools.dataType.EEquipeType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.List;
 
-/**
- * @author Berickal
- */
 @Data
-@NoArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "BNSP_TEAM_TYPE")
-public class EquipeType {
+@Table(name = "BNSP_REGION")
+public class Region {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
-    private String equipeType;
+    private String region;
 
     @NonNull
-    private int nbrMembers;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Zone> zones;
 }
