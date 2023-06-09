@@ -167,7 +167,8 @@ public enum ECategoryIncident {
     CODE_903("RECONNAISSANCES_OU_RECHERCHES", "Personne ne répondant pas aux appels"),
     CODE_904("RECONNAISSANCES_OU_RECHERCHES", "Fumée suspecte"),
     CODE_905("RECONNAISSANCES_OU_RECHERCHES", "Bruit suspect"),
-    CODE_906("RECONNAISSANCES_OU_RECHERCHES", "Lueur suspecte");
+    CODE_906("RECONNAISSANCES_OU_RECHERCHES", "Lueur suspecte"),
+    CODES_X01("AUTRE", "Autre(Compléter dans les commentaires)");
 
     private final String category;
 
