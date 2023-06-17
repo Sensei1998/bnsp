@@ -50,6 +50,9 @@ public class DBInit implements CommandLineRunner {
     private AffiliationRepository affiliationRepository;
 
     @Autowired
+    private AffiliationLinkRepository affiliationLinkRepository;
+
+    @Autowired
     private CategoryIncidentRepository categoryIncidentRepository;
 
     @Autowired
@@ -142,18 +145,28 @@ public class DBInit implements CommandLineRunner {
     }
 
     private void initCaserne(){
-        List<Caserne> casernes = new ArrayList<>();
+        List<Caserne> companies = new ArrayList<>();
         List<Agent> agents = new ArrayList<>();
+        List<AffiliationLink> affiliationLinks = new ArrayList<>();
         Agent tmpAgent;
+        Caserne brigade = new Caserne(this.caserneTypeRepository.findById(1).get(), "Brigade 1", this.zoneRepository.findById(107).get(), "Default", "+22600000000", "brigade1@bnsp.bf");
         for(int i = 0; i < 100; i++){
-            casernes.add(new Caserne(this.caserneTypeRepository.findById(1).get(), "Brigade " + (i+1), this.zoneRepository.findById(107).get(), "Default", "+22600000000", "brigade"+(i+1)+"@bnsp.bf"));
+            companies.add(new Caserne(this.caserneTypeRepository.findById(2).get(), "Compagnie " + (i+1), this.zoneRepository.findById(107).get(), "Default", "+22600000000", "compagnie"+(i+1)+"@bnsp.bf"));
         }
-        caserneRepository.saveAll(casernes);
-        for(int i = 0; i < 100; i++){
-            tmpAgent = new Agent("MT08062023" + String.format("%03d", i+1), "Agent" + String.format("%03d", i+1), "", encryption.encode("password"), "+22600000000", "agent"+(i+1)+"@bnsp.bf", this.caserneRepository.findById(i+1).get(), this.gradeRepository.findById(1).get());
-            tmpAgent.setDefaultFonction(this.ruleRepository.findById(4).get());
+        this.caserneRepository.save(brigade);
+        this.caserneRepository.saveAll(companies);
+        for (Caserne compagnie: companies) {
+            affiliationLinks.add(new AffiliationLink(this.affiliationRepository.findById(1).get(), brigade, compagnie));
+        }
+        this.affiliationLinkRepository.saveAll(affiliationLinks);
+        Agent bcot = new Agent("MT08002023000", "Agent000", "", encryption.encode("password"), "+22600000000", "agent0@bnsp.bf", this.caserneRepository.findById(1).get(), this.gradeRepository.findById(1).get());
+        bcot.setDefaultFonction(this.ruleRepository.findById(4).get());
+        for(int i = 1; i < 101; i++){
+            tmpAgent = new Agent("MT08062023" + String.format("%03d", i), "Agent" + String.format("%03d", i), "", encryption.encode("password"), "+22600000" + String.format("%03d", i), "agent"+(i)+"@bnsp.bf", this.caserneRepository.findById(i+1).get(), this.gradeRepository.findById(1).get());
+            tmpAgent.setDefaultFonction(this.ruleRepository.findById(3).get());
             agents.add(tmpAgent);
         }
+        this.agentRepository.save(bcot);
         this.agentRepository.saveAll(agents);
     }
 
