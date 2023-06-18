@@ -4,6 +4,7 @@ import bf.bnsp.api.caserne.dto.form.AffiliationCreateForm;
 import bf.bnsp.api.caserne.dto.form.AffiliationListForm;
 import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
+import bf.bnsp.api.caserne.dto.response.CaserneResponse;
 import bf.bnsp.api.caserne.model.*;
 import bf.bnsp.api.caserne.service.CaserneService;
 import org.springframework.http.HttpStatus;
@@ -68,7 +69,7 @@ public class CaserneController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getActiveBrigadeById(@PathVariable("id") int id){
-        Optional<Caserne> response = this.caserneService.findActiveCaserneById(id);
+        Optional<CaserneResponse> response = this.caserneService.findActiveCaserneResponseById(id);
         return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

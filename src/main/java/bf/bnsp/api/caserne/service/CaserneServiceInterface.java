@@ -4,6 +4,7 @@ import bf.bnsp.api.caserne.dto.form.AffiliationCreateForm;
 import bf.bnsp.api.caserne.dto.form.AffiliationListForm;
 import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
+import bf.bnsp.api.caserne.dto.response.CaserneResponse;
 import bf.bnsp.api.caserne.model.*;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public interface CaserneServiceInterface {
     Optional<AffiliationLink> deleteAffiliationLink(AffiliationLink link);
 
     Optional<Caserne> findActiveCaserneById(int id);
+
+    Optional<CaserneResponse> findActiveCaserneResponseById(int id);
 
     List<Caserne> findAllActiveCaserne();
 

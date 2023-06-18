@@ -8,6 +8,8 @@ import bf.bnsp.api.caserne.dto.form.CaserneCreationForm;
 import bf.bnsp.api.caserne.dto.form.CaserneUpdateForm;
 import bf.bnsp.api.caserne.dto.form.partialData.AffiliationList;
 import bf.bnsp.api.caserne.dto.form.partialData.AffiliationRulesData;
+import bf.bnsp.api.caserne.dto.response.CaserneResponse;
+import bf.bnsp.api.caserne.dto.response.partialData.CaserneParentResponse;
 import bf.bnsp.api.caserne.model.*;
 import bf.bnsp.api.caserne.repository.*;
 import bf.bnsp.api.tools.controleForm.ControlFormCaserne;
@@ -126,8 +128,8 @@ public class CaserneService implements CaserneServiceInterface {
         if(targetedAffiliation.isEmpty()) return new ArrayList<>();
         else{
             for (AffiliationList element : affiliationList.getLink()) {
-                parent = this.findActiveCaserneById(element.getCaserneParent());
-                child = this.findActiveCaserneById(element.getCaserneChild());
+                parent = this.caserneRepository.findByIdAndHiddenFalse(element.getCaserneParent());
+                child = this.caserneRepository.findByIdAndHiddenFalse(element.getCaserneChild());
                 if(parent.isEmpty() || child.isEmpty()) return new ArrayList<>();
                 else if(this.checkAffiliationRules(affiliationList.getAffiliationId(), parent.get().getCaserneType(), child.get().getCaserneType())){
                     tmpLink = this.affiliationLinkRepository.findByAffiliationTypeAndCaserneChild(targetedAffiliation.get(), child.get());
@@ -154,6 +156,19 @@ public class CaserneService implements CaserneServiceInterface {
     @Override
     public Optional<Caserne> findActiveCaserneById(int id) {
         return this.caserneRepository.findByIdAndHiddenFalse(id);
+    }
+
+    @Override
+    public Optional<CaserneResponse> findActiveCaserneResponseById(int id) {
+        Optional<Caserne> caserne = this.caserneRepository.findByIdAndHiddenFalse(id);
+        if(caserne.isEmpty()) return Optional.empty();
+        else{
+            Optional<Caserne> caserneParent = this.findParentAffiliationCaserne(Optional.empty(), caserne.get());
+            CaserneResponse response = new CaserneResponse(caserne.get().getId(), Optional.empty(), caserne.get().getCaserneType(), caserne.get().getName(),
+                    caserne.get().getCity(), caserne.get().getArea(), caserne.get().getPhoneNumber(), caserne.get().getEmail());
+            if(caserneParent.isPresent()) response.setCaserneParent(Optional.of(new CaserneParentResponse(caserneParent.get().getId(), caserneParent.get().getName())));
+            return Optional.of(response);
+        }
     }
 
     @Override
