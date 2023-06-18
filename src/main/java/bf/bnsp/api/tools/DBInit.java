@@ -21,6 +21,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,6 +143,9 @@ public class DBInit implements CommandLineRunner {
             incidentTypes.add(new IncidentType(element.getType()));
         }
         this.categoryIncidentRepository.saveAll(categoryIncidents);
+        CategoryIncident other = new CategoryIncident(ECategoryIncident.CODES_X01.getCategory());
+        other.setTypes(Arrays.asList(new IncidentType(ECategoryIncident.CODES_X01.getType())));
+        this.categoryIncidentRepository.save(other);
     }
 
     private void initCaserne(){
