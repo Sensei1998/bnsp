@@ -21,6 +21,7 @@ public enum EEquipeType {
     FOURGON("Fourgon", 8),
     PREMIER_SECOURS_RELEVABLE("Premier Secours Relevable", 4),
     INTERVENTION_DIVERSE("Intervention Diverse", 2),
+    DESINCARCERATION("Desincarceration", 2),
     ECHELLE("Echelle", 2),
     CANOT_SAUVETAGE_LEGER("Canot de Sauvetage Leger", 2),
     CITERNE("Citerne", 2);
