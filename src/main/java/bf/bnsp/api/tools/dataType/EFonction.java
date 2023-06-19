@@ -8,7 +8,7 @@ public enum EFonction {
     ROLE_ADMINISTRATEUR,
 
     ROLE_CCOT,
-    ROLE_BCTO,
+    ROLE_BCOT,
     ROLE_CAP,
     ROLE_SGT,
     ROLE_CA,

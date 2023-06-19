@@ -6,6 +6,7 @@ import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
 import bf.bnsp.api.intervention.dto.form.*;
+import bf.bnsp.api.intervention.dto.response.InterventionResponse;
 import bf.bnsp.api.intervention.model.*;
 import bf.bnsp.api.intervention.model.additional.InterventionFollowedKey;
 import bf.bnsp.api.intervention.service.InterventionService;
@@ -106,10 +107,14 @@ public class InterventionSheetController {
     @GetMapping("/caserne/{caserneId}")
     public ResponseEntity<?> findInterventionSheetByCaserne(@PathVariable("caserneId") int caserneId){
         Optional<Caserne> caserne = this.caserneService.findActiveCaserneById(caserneId);
+        List<Optional<InterventionResponse>> responses = new ArrayList<>();
         if(caserne.isEmpty()) return ResponseEntity.notFound().build();
         else{
-            List<InterventionSheet> response = this.interventionSheetService.findActiveInterventionSheetByCaserne(caserne.get());
-            return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            List<InterventionSheet> tmpSheets = this.interventionSheetService.findActiveInterventionSheetByCaserne(caserne.get());
+            for (InterventionSheet element: tmpSheets) {
+                responses.add(this.mappingIntervention.mappingIntervention(this.interventionSheetService.findActiveInterventionSheetByIntervention(element.getKey().getIntervention()), Optional.of(element.getKey().getIntervention())));
+            }
+            return responses.size() > 0 ? new ResponseEntity<>(responses, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
