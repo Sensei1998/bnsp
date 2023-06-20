@@ -110,6 +110,10 @@ export class AppService {
         localStorage.removeItem('fonction');
         localStorage.removeItem('Caserne');
         localStorage.removeItem('idCaserne');
-        this.router.navigate(['/login']);
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+          window.location.reload();
+        }, 2000);
+
     }
 }

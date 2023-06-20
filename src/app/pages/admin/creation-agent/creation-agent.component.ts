@@ -109,15 +109,32 @@ export class CreationAgentComponent implements OnInit{
 
   }
 
+
   get donneesPaginees() {
     if (this.listUser === null) {
       return [];
     }
+    const totalPages = Math.ceil(this.listUser.length / this.pageSize);
+    let startPage = Math.max(1, this.page - 1);
+    let endPage = Math.min(startPage + 2, totalPages);
 
-    const startIndex = (this.page - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.listUser.slice(startIndex, endIndex);
+    if (endPage - startPage < 2) {
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return this.listUser.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
+
+
+  // get donneesPaginees() {
+  //   if (this.listUser === null) {
+  //     return [];
+  //   }
+
+  //   const startIndex = (this.page - 1) * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //   return this.listUser.slice(startIndex, endIndex);
+  // }
 
 
   get number(): FormArray{

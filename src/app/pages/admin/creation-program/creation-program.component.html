@@ -119,12 +119,14 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-container" style="margin-left: 75%;">
-          <ngb-pagination
+        <div class="pagination-container" style="margin-left: 60%;">
+          <!-- <ngb-pagination
   [(page)]="page"
   [pageSize]="pageSize"
   [collectionSize]="collectionSize">
-</ngb-pagination>
+</ngb-pagination> -->
+<ngb-pagination [collectionSize]="listeProgram.length" [pageSize]="pageSize" [(page)]="page" [maxSize]="3"></ngb-pagination>
+
         </div>
       </div>
     </div>

@@ -90,7 +90,7 @@
             <tbody *ngFor="let c of donneesPaginees">
               <tr>
                 <td>{{c.name}}</td>
-                <td>{{c.city}}</td>
+                <td>{{c.city.zone}}</td>
                 <td> {{c.area}}</td>
                 <td>{{c.caserneType.caserneType}}</td>
                 <td>{{c.email}}</td>
@@ -104,12 +104,14 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-container" style="margin-left: 75%;">
-          <ngb-pagination
+        <div class="pagination-container" style="margin-left: 60%;" >
+          <!-- <ngb-pagination
   [(page)]="page"
   [pageSize]="pageSize"
   [collectionSize]="collectionSize">
-</ngb-pagination>
+</ngb-pagination> -->
+<ngb-pagination [collectionSize]="listCaserne.length" [pageSize]="pageSize" [(page)]="page" [maxSize]="3"></ngb-pagination>
+
         </div>
       </div>
     </div>
@@ -218,9 +220,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Ville</p>
+                <p class="col-sm-3 col-form-p">Secteur</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="city" />
+                  <input type="text" class="form-control" formControlName="area" />
                 </div>
               </div>
             </div>
@@ -234,19 +236,11 @@
             </div> -->
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Zone</p>
+                <p class="col-sm-3 col-form-p">Ville</p>
                 <div class="col-sm-9">
                   <!-- <input type="text" class="form-control" formControlName="area"/> -->
-                  <select  class="form-control" formControlName="area" >
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
+                  <select  class="form-control" formControlName="city" >
+                    <option *ngFor="let z of zone" value={{z.id}}>{{z.zone}}</option>
                   </select>
                 </div>
               </div>
@@ -309,7 +303,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Affiliation</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.affiliation.id" >
+                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.caserneParent.id" >
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
@@ -319,7 +313,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Affiliation</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" [(ngModel)]="edit.affiliation.id" >
+                  <select class="form-control" formControlName="idCaserneParent" (click)="sortByBrigarde()" [(ngModel)]="edit.caserneParent.id" >
                     <option *ngFor="let c of brigade" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
@@ -329,7 +323,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Affiliation</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.affiliation.id" >
+                  <select class="form-control" formControlName="idCaserneParent" [(ngModel)]="edit.caserneParent.id" >
                     <option *ngFor="let c of compagnie" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
@@ -374,9 +368,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Ville</p>
+                <p class="col-sm-3 col-form-p">Secteur</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" formControlName="city" [(ngModel)]="edit.city" />
+                  <input type="text" class="form-control" formControlName="area" />
                 </div>
               </div>
             </div>
@@ -390,19 +384,11 @@
             </div> -->
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Zone</p>
+                <p class="col-sm-3 col-form-p">Ville</p>
                 <div class="col-sm-9">
-                  <!-- <input type="text" class="form-control" formControlName="area" [(ngModel)]="edit.area"/> -->
-                  <select  class="form-control" formControlName="area" [(ngModel)]="edit.area">
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
-                    <option value="A">A</option>
+                  <!-- <input type="text" class="form-control" formControlName="area"/> -->
+                  <select  class="form-control" formControlName="city" >
+                    <option *ngFor="let z of zone" value={{z.id}}>{{z.zone}}</option>
                   </select>
                 </div>
               </div>
@@ -456,7 +442,7 @@
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Affiliation</p>
                 <div class="col-sm-9">
-                  <p class="form-control"  > {{edit.affiliation.name}} </p>
+                  <p class="form-control"  > {{edit.caserneParent.name}} </p>
 
                 </div>
               </div>
@@ -499,18 +485,18 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Ville</p>
+                <p class="col-sm-3 col-form-p">Secteur</p>
                 <div class="col-sm-9">
-                  <p type="text" class="form-control" formControlName="city"  > {{edit.city}} </p>
+                  <p type="text" class="form-control" formControlName="city"  > {{edit.area}} </p>
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Zone</p>
+                <p class="col-sm-3 col-form-p">Ville</p>
                 <div class="col-sm-9">
-                  <p type="text" class="form-control" formControlName="area" > {{edit.area}} </p>
+                  <p type="text" class="form-control" formControlName="area" > {{edit.city.zone}} </p>
                 </div>
               </div>
             </div>

@@ -55,15 +55,30 @@ export class CreationEnginComponent implements OnInit{
     }, 2000)
   }
 
+  // get donneesPaginees() {
+  //   if (this.listeEngin === null) {
+  //     return [];
+  //   }
+
+  //   const startIndex = (this.page - 1) * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //   return this.listeEngin.slice(startIndex, endIndex);
+  // }
   get donneesPaginees() {
     if (this.listeEngin === null) {
       return [];
     }
+    const totalPages = Math.ceil(this.listeEngin.length / this.pageSize);
+    let startPage = Math.max(1, this.page - 1);
+    let endPage = Math.min(startPage + 2, totalPages);
 
-    const startIndex = (this.page - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.listeEngin.slice(startIndex, endIndex);
+    if (endPage - startPage < 2) {
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return this.listeEngin.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
+
 
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(

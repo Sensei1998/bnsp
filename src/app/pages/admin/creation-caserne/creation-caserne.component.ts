@@ -48,6 +48,7 @@ export class CreationCaserneComponent implements OnInit {
   pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
   listCaserne:any[]=[];
+  zone;
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
@@ -58,19 +59,35 @@ export class CreationCaserneComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCaserne();
+    this.getZone();
     setTimeout(() => {
       this.collectionSize = this.listCaserne.length;
     }, 2000)
   }
 
+  // get donneesPaginees() {
+  //   if (this.listCaserne === null) {
+  //     return [];
+  //   }
+
+  //   const startIndex = (this.page - 1) * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //   return this.listCaserne.slice(startIndex, endIndex);
+  // }
+
   get donneesPaginees() {
     if (this.listCaserne === null) {
       return [];
     }
+    const totalPages = Math.ceil(this.listCaserne.length / this.pageSize);
+    let startPage = Math.max(1, this.page - 1);
+    let endPage = Math.min(startPage + 2, totalPages);
 
-    const startIndex = (this.page - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.listCaserne.slice(startIndex, endIndex);
+    if (endPage - startPage < 2) {
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return this.listCaserne.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
 
@@ -102,6 +119,13 @@ export class CreationCaserneComponent implements OnInit {
     return this.http.post<CaserneCreationForm>(this.url + "/casernes/create" , caserne).subscribe();
   }
 
+  getZone(){
+    return this.http.get("http://localhost:8081/bnsp/api/casernes/zones").subscribe(
+      zone => {
+        this.zone = zone;
+      }
+    )
+  }
   getCaserne(){
     return this.http.get(this.url + "/casernes").subscribe(
       caserne => {
@@ -130,12 +154,12 @@ export class CreationCaserneComponent implements OnInit {
   sortByBrigarde(){
     let temp = this.caserne.filter(element => element.caserneType.id === 1   );
     this.brigade = temp;
-    console.log(this.brigade);
+
   }
   sortByCompagnie(){
     let temp = this.caserne.filter(element => element.caserneType.id === 2   );
     this.compagnie = temp;
-    console.log(this.compagnie);
+
   }
 
   updateCaserne(caserne: CaserneUpdateForm){
@@ -145,6 +169,7 @@ export class CreationCaserneComponent implements OnInit {
   getCaserneById(id: number){
     return this.http.get(this.url + "/casernes/" + id).subscribe(
       edit =>{
+        console.log(edit)
         this.edit = edit;
         let split = this.edit.phoneNumber.split(';');
 

@@ -54,7 +54,7 @@ export class MenuSidebarComponent implements OnInit {
        this.isAdmin = false;
      ;
      }
-     if(this.role === "ROLE_BCTO"){
+     if(this.role === "ROLE_BCOT"){
       this.bcot = true;
 
    } else{

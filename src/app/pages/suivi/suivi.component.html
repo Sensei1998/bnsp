@@ -444,7 +444,7 @@
               <thead>
                 <tr>
                   <th>Choix</th>
-                  <th>Voiture</th>
+                  <th>Agrés</th>
                   <th>Nom</th>
                   <th>Disponibilité</th>
                   <!-- <th>Fonction</th>
@@ -456,7 +456,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let p of program,">
-                  <td ><input type="checkbox" [(ngModel)]="p.selected" [ngModelOptions]="{standalone: true}" *ngIf="p.available !== true && (p.teamType !== 'CAPORAL' && p.teamType !== 'SGT')"></td>
+                  <td ><input type="checkbox" [(ngModel)]="p.selected" [ngModelOptions]="{standalone: true}" *ngIf="p.available !== true && (p.teamType !== 'Caporal' && p.teamType !== 'Sgt')"></td>
                   <td >{{p.teamType}}</td>
                   <td >{{p.teamName}}</td>
                   <td>{{p.available ? 'Indisponible' : 'Disponible'}}</td>

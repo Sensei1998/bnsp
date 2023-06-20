@@ -58,10 +58,12 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.saveFonction(data.agent.currentFunction);
             this.saveCaserne(data.agent.caserneId);
             this.saveEmail(data.agent.email);
-
+            setTimeout(() => {
             this.router.navigate(['/']);
             this.toastr.success('Login success');
-            this.isAuthLoading = false; // Déplacer cette ligne ici
+            this.isAuthLoading = false;
+            }, 2000);
+
           },
           error => {
             this.toastr.error('Email ou mot de passe incorrect!');

@@ -116,6 +116,21 @@ export class CreationProgramComponent implements OnInit{
   }, 2000)
   }
 
+  // get donneesPaginees() {
+  //   if (this.listeProgram === null) {
+  //     return [];
+  //   }
+
+  //   const sortedList = this.listeProgram.sort((a, b) => {
+  //     // Tri par ordre décroissant en utilisant la propriété "date"
+  //     return new Date(b.date).getTime() - new Date(a.date).getTime();
+  //   });
+
+  //   const startIndex = (this.page - 1) * this.pageSize;
+  //   const endIndex = startIndex + this.pageSize;
+  //   return sortedList.slice(startIndex, endIndex);
+  // }
+
   get donneesPaginees() {
     if (this.listeProgram === null) {
       return [];
@@ -128,8 +143,20 @@ export class CreationProgramComponent implements OnInit{
 
     const startIndex = (this.page - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    return sortedList.slice(startIndex, endIndex);
+    const paginatedList = sortedList.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(sortedList.length / this.pageSize);
+    let startPage = Math.max(1, this.page - 1);
+    let endPage = Math.min(startPage + 2, totalPages);
+
+    if (endPage - startPage < 2) {
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return paginatedList;
   }
+
+
 
   get member(): FormArray{
     return this.addEquipe.get('members') as FormArray;
