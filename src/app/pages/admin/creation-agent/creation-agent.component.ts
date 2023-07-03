@@ -112,7 +112,7 @@ export class CreationAgentComponent implements OnInit{
 
   get donneesPaginees() {
     if (this.listUser === null) {
-      return [];
+      return this.listUser=[];
     }
     const totalPages = Math.ceil(this.listUser.length / this.pageSize);
     let startPage = Math.max(1, this.page - 1);

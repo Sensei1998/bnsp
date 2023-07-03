@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.saveCaserne(data.agent.caserneId);
             this.saveEmail(data.agent.email);
             setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/listes-des-interventions']);
             this.toastr.success('Login success');
             this.isAuthLoading = false;
             }, 2000);

@@ -113,7 +113,7 @@ export class AppService {
         setTimeout(() => {
           this.router.navigate(['/login']);
           window.location.reload();
-        }, 2000);
+        }, 1000);
 
     }
 }

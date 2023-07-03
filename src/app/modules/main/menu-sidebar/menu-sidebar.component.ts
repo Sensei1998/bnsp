@@ -66,11 +66,11 @@ export class MenuSidebarComponent implements OnInit {
 }
 
 export const MENU = [
-    {
-        name: 'Tableau de Bord',
-        iconClasses: 'fas fa-tachometer-alt',
-        path: ['/']
-    },
+    // {
+    //     name: 'Tableau de Bord',
+    //     iconClasses: 'fas fa-tachometer-alt',
+    //     path: ['/']
+    // },
     {
         name: 'Listes des fiches',
         iconClasses: 'fas fa-folder',
@@ -134,11 +134,11 @@ export const MENU = [
 
 
 export const MENU2 = [
-  {
-      name: 'Tableau de Bord',
-      iconClasses: 'fas fa-tachometer-alt',
-      path: ['/']
-  },
+  // {
+  //     name: 'Tableau de Bord',
+  //     iconClasses: 'fas fa-tachometer-alt',
+  //     path: ['/']
+  // },
   {
       name: 'Listes des fiches',
       iconClasses: 'fas fa-folder',
@@ -169,11 +169,11 @@ export const MENU2 = [
 
 
 export const MENU3 = [
-  {
-      name: 'Tableau de Bord',
-      iconClasses: 'fas fa-tachometer-alt',
-      path: ['/']
-  },
+  // {
+  //     name: 'Tableau de Bord',
+  //     iconClasses: 'fas fa-tachometer-alt',
+  //     path: ['/']
+  // },
   {
       name: 'Listes des fiches',
       iconClasses: 'fas fa-folder',
@@ -205,11 +205,11 @@ export const MENU3 = [
 
 
 export const MENU4 = [
-  {
-      name: 'Tableau de Bord',
-      iconClasses: 'fas fa-tachometer-alt',
-      path: ['/']
-  },
+  // {
+  //     name: 'Tableau de Bord',
+  //     iconClasses: 'fas fa-tachometer-alt',
+  //     path: ['/']
+  // },
   {
       name: 'Listes des fiches',
       iconClasses: 'fas fa-folder',

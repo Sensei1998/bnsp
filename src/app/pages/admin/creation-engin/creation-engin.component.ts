@@ -66,7 +66,7 @@ export class CreationEnginComponent implements OnInit{
   // }
   get donneesPaginees() {
     if (this.listeEngin === null) {
-      return [];
+      return this.listeEngin = [];
     }
     const totalPages = Math.ceil(this.listeEngin.length / this.pageSize);
     let startPage = Math.max(1, this.page - 1);

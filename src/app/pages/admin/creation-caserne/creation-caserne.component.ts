@@ -77,7 +77,7 @@ export class CreationCaserneComponent implements OnInit {
 
   get donneesPaginees() {
     if (this.listCaserne === null) {
-      return [];
+      return this.listCaserne = [];
     }
     const totalPages = Math.ceil(this.listCaserne.length / this.pageSize);
     let startPage = Math.max(1, this.page - 1);

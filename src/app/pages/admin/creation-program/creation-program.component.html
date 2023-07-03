@@ -35,7 +35,7 @@
               <div class="col-md-2" style="margin-left: 70%;">
                 <div class="form-group row">
                   <div >
-                    <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
+                    <pf-button *ngIf="sort !== 0" (click)="getTeam()">Triez</pf-button>
                     <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
                   </div>
 
@@ -49,10 +49,10 @@
               <div class="col-sm-6">
                 <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy"/>
               </div>
-              <div class="col-md-2" style="margin-left: 70%;">
+              <div class="col-md-2" style="margin-left: 64%;">
                 <div class="form-group row">
                   <div >
-                    <pf-button  (click)="getProgram(date)">Triez</pf-button>
+                    <pf-button  (click)="getProgram(date)" (click)="openRead(content2)" >Chercher</pf-button>
                     <!-- <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button> -->
                   </div>
 
@@ -104,22 +104,53 @@
                   <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
 
               </tr> -->
-              <tr *ngIf="program !== null">
+              <!-- <tr *ngIf="program !== null">
                 <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
                 <td> {{program.date }} </td>
                 <td *ngFor="let t of program.caporalTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}} </td>
                 <td *ngFor="let t of program.caporalTeam.agents "> {{t.secondFirstname}} {{t.secondLastname}}</td>
                 <td *ngFor="let t of program.sergentTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}}</td>
                 <td *ngFor="let t of program.sergentTeam.agents ">{{t.secondFirstname}} {{t.secondLastname}}</td>
-                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
-                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
-                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
+                <td [width]="120" style="align-items: center;text-align:center"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"  (click)="getProgram(program.date)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)" style="margin-left: 20%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i>
+                  </td>
 
-              </tr>
+              </tr> -->
+              <tr *ngIf="program !== null">
+  <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
+  <td> {{program.date}} </td>
+  <ng-container *ngIf="program.caporalTeam && program.caporalTeam.agents && program.caporalTeam.agents.length > 0">
+    <td *ngFor="let t of program.caporalTeam.agents">
+      {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+      {{t.principalLastname ? t.principalLastname : ''}}
+    </td>
+    <td *ngFor="let t of program.caporalTeam.agents">
+      {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+      {{t.secondLastname ? t.secondLastname : ''}}
+    </td>
+  </ng-container>
+  <ng-container *ngIf="program.sergentTeam && program.sergentTeam.agents && program.sergentTeam.agents.length > 0">
+    <td *ngFor="let t of program.sergentTeam.agents">
+      {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+      {{t.principalLastname ? t.principalLastname : ''}}
+    </td>
+    <td *ngFor="let t of program.sergentTeam.agents">
+      {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+      {{t.secondLastname ? t.secondLastname : ''}}
+    </td>
+  </ng-container>
+  <td [width]="120" style="align-items: center; text-align: center">
+    <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getProgram(program.date)"></i>
+    <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)" style="margin-left: 20%;"></i>
+    <!-- <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i> -->
+  </td>
+</tr>
+
             </tbody>
           </table>
         </div>
-        <div class="pagination-container" style="margin-left: 60%;">
+        <div class="pagination-container" style="display:flex; justify-content:center">
           <!-- <ngb-pagination
   [(page)]="page"
   [pageSize]="pageSize"
@@ -274,19 +305,19 @@
           <div class="row" >
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-label">Vehicule</p>
+                <p class="col-sm-3 col-form-label">Agrée</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="typeId"  >
-                    <option *ngFor="let v of vehicule" value="{{v.id}}">{{v.enginType.enginType}}</option>
+                  <select class="form-control" formControlName="typeId" (change)="addmembers2($event.target.selectedIndex)">
+                    <option *ngFor="let v of agree; let i = index" value="{{v.id}}">{{v.equipeType}}</option>
                   </select>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Description</p>
+                <p class="col-sm-3 col-form-p">Designation</p>
                 <div class="col-sm-9">
-                  <textarea type="text" class="form-control" formControlName="designation" ></textarea>
+                  <textarea type="text" class="form-control" formControlName="designation" placeholder="Obligatoire" ></textarea>
                 </div>
               </div>
             </div>
@@ -329,10 +360,10 @@
                       <option value=12>ROLE_SDA</option>
                     </select>
                   </div>
-                  <div class="row" style="margin-left:2%;">
+                  <!-- <div class="row" style="margin-left:2%;">
                     <i class="fa fa-plus" (click)="addmembers()" ></i>
                     <i class="fa fa-trash" *ngIf="member.length > 1" style="margin-left: 2%;" (click)="deletemembers(i)" ></i>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -353,98 +384,165 @@
 <section>
   <ng-template #content2 let-modal>
     <div class="modal-header">
-      <h3 class="modal-title">Engin</h3>
+      <h3 class="modal-title">Programme</h3>
     </div>
     <div class="modal-body">
       <div class="card-body">
-        <form class="form-sample" [formGroup]="enginUdapteForm" (ngSubmit)="onSubmit2()">
+
           <p class="card-description">
-            <strong>Caserne Et Véhicule</strong>
+            <strong>Date: {{edit.date}}</strong>
           </p>
           <div class="row" >
-            <div class="col-md-6" hidden="true">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Id</p>
-                <div class="col-sm-9" >
-                  <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
-                </div>
-              </div>
-            </div>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Agrée</th>
+                  <th>Principale</th>
+                  <th>Remplacant</th>
+                  <th>Fonction</th>
+                  <th></th>
+                </tr>
+              </thead>
+               <tbody>
+                <ng-container *ngFor="let groupedTeam of groupByTeamType() | keyvalue">
+                  <ng-container *ngFor="let team of groupedTeam.value; let firstRow = first">
+                    <tr *ngFor="let agent of team.agents; let firstCell = first">
+                      <td *ngIf="firstCell" [attr.rowspan]="team.agents.length">{{team.teamType}}</td>
+                      <td>{{agent.principalLastname}} {{agent.principalFirstname}}</td>
+                      <td>{{agent.secondLastname}} {{agent.secondFirstname}} </td>
+                      <td>{{agent.fonctionType}}</td>
+                      <td><i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="saveIdSupp(team.teamId, edit.date);openSupp(content4) " ></i></td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+              <!-- Dans cet exemple, nous utilisons deux directives ng-container imbriquées pour gérer l'affichage des lignes et des cellules du tableau. La directive *ngFor est utilisée pour itérer sur les équipes et les agents, respectivement.
+
+La variable firstRow est utilisée pour déterminer si la première ligne de chaque équipe est atteinte, tandis que firstCell est utilisée pour déterminer si la première cellule de chaque agent est atteinte. L'attribut [attr.rowspan] est utilisé pour attribuer dynamiquement la valeur du nombre d'agents dans chaque équipe à la première cellule correspondante.
+
+De cette manière, les éléments du même e.teamType seront affichés sur plusieurs lignes lorsque cela est nécessaire. -->
+            </table>
+
+
+
+          </div>
+
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="print()" class="btn btn-primary">Imprimer</button>
+      <button type="button"  style="margin-left: 1%;margin-right:2%"(click)="modal.close('Close click')"  class="btn btn-success">Ok</button>
+     </div>
+  </ng-template>
+</section>
+
+
+<section>
+  <ng-template #content3 let-modal>
+     <div class="modal-header">
+      <h3 class="modal-title">Formulaire de mise à jour d'Equipes</h3>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <form class="form-sample" [formGroup]="addEquipe" (ngSubmit)="onSubmitUpdate()">
+          <p class="card-description">
+            <strong>Equipe</strong>
+          </p>
+          <div class="row" >
             <div class="col-md-6">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Caserne</p>
-                <div class="col-sm-9" >
-                  <p class="form-control" [(ngModel)]="edit.caserne.id"> {{edit.caserne.name}} </p>
-                  <!-- <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
-                    <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
-                  </select> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row" >
-                <p class="col-sm-3 col-form-label">Vehicule</p>
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-label">Agrée</p>
                 <div class="col-sm-9">
-                  <p class="form-control" [(ngModel)]="edit.enginType.id"> {{edit.enginType.enginType}} </p>
-                  <!-- <select class="form-control" formControlName="enginTypeId"   [(ngModel)]="edit.enginType.id">
-                    <option value=1>PREMIER_SECOURS</option>
-                    <option value=2>FOURGON</option>
-                    <option value=3>PREMIER_SECOURS_RELEVABLE</option>
-                    <option value=4>INTERVENTION_DIVERSE</option>
-                    <option value=5>DESINCARCERATION</option>
-                    <option value=6>ECHELLE</option>
-                    <option value=7>CANOT_SAUVETAGE_LEGER</option>
-                    <option value=8>CITERNE</option>
-                  </select> -->
+                  <select class="form-control" formControlName="typeId" (change)="loadMembersByTeamId($event.target.value)">
+                    <option *ngFor="let v of edit.teams" [value]="v.teamId">{{v.teamType}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <p class="col-sm-3 col-form-p">Designation</p>
+                <div class="col-sm-9">
+                  <textarea type="text" class="form-control" formControlName="designation"  placeholder="Obligatoire" ></textarea>
                 </div>
               </div>
             </div>
           </div>
-          <p class="card-description ">
-            <strong>Information </strong>
+          <p class="card-description">
+            <strong>Membre</strong>
           </p>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Immatriculation</p>
-                <div class="col-sm-9">
-                  <p type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" > {{edit.immatriculation}} </p>
+          <div class="row" formArrayName="members">
+            <div style="margin-left: 2%;"  *ngFor="let m of member.controls; let i = index" >
+                <div class="form-group row"[formGroupName]="i">
+                  <p class="col-sm-2 col-form-p">Agent {{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;" >
+                    <!-- <input type="text" class="form-control" formControlName="principalId"  /> -->
+                    <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === true">
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                    <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === false">
+                      <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                  </div>
+                  <p class="col-sm-2 col-form-p">Remplacant {{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;">
+                    <!-- <input type="text" class="form-control" formControlName="remplacantId"  /> -->
+                    <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === true">
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                    <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === false">
+                      <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    </select>
+                  </div>
+                  <p class="col-sm-2 col-form-p">Fonction{{i + 1}}</p>
+                  <div class="col-sm-2" style="margin-left: -2%;">
+                    <!-- <input type="text" class="form-control" formControlName="fonctionId"  /> -->
+                    <select class="form-control" formControlName="fonctionId" >
+                      <option value="5">ROLE_CAP</option>
+                      <option value="6">ROLE_SGT</option>
+                      <option value=7>ROLE_CA</option>
+                      <option value=8>ROLE_CH</option>
+                      <option value=9>ROLE_SVT</option>
+                      <option value=10>ROLE_HDL</option>
+                      <option value=11>ROLE_CONDUCTEUR</option>
+                      <option value=12>ROLE_SDA</option>
+                    </select>
+                  </div>
+                  <!-- <div class="row" style="margin-left:2%;">
+                    <i class="fa fa-plus" (click)="addmembers()" ></i>
+                    <i class="fa fa-trash" *ngIf="member.length > 1" style="margin-left: 2%;" (click)="deletemembers(i)" ></i>
+                  </div> -->
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row">
-                <p class="col-sm-3 col-form-p">Description</p>
-                <div class="col-sm-9">
-                  <p type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"> {{edit.description}} </p>
-                </div>
-              </div>
-            </div>
+
+
           </div>
         </form>
 
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"  style="margin-right: 5%;" (click)="modal.close('Close click')">OK</pf-button>
-    </div>
+      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmitUpdate()"(click)="modal.close('Close click')"  class="btn btn-success">Mettre à jour</button>
+     </div>
   </ng-template>
 </section>
 
 
 
 <section>
-  <ng-template #content3 let-modal>
+  <ng-template #content4 let-modal>
     <div class="modal-header">
       <h3 class="modal-title" >Confirmer?</h3>
 
     </div>
     <div class="modal-body">
-      <h3>Voulez-vous vraiment supprimer ce véhicule?</h3>
+      <h3>Voulez-vous vraiment supprimer cet Equipe?</h3>
     </div>
     <div class="modal-footer">
       <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
-      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <button type="submit"  style="margin-left: 1%;margin-right:2%"  (click)="modal.close('Close click')" (click)=" supprimerTeam()" class="btn btn-danger">Supprimer</button>
     </div>
   </ng-template>
 </section>

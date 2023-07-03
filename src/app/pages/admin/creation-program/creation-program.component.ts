@@ -57,7 +57,8 @@ export class CreationProgramComponent implements OnInit{
   role = localStorage.getItem('fonction');
   isAdmin:boolean;
 
-  vehicule;
+  agree;
+  agree2;
 
   CaporalForm: FormGroup = this.formBuilder.group({
     principal: [[]],
@@ -74,14 +75,16 @@ export class CreationProgramComponent implements OnInit{
     typeId: [[], Validators.required],
     designation: [[], Validators.required],
     members: this.formBuilder.array([
-      this.formBuilder.group({
-        principalId: [],
-        remplacantId: [],
-        fonctionId: []
-      })
+      // this.formBuilder.group({
+      //   principalId: [],
+      //   remplacantId: [],
+      //   fonctionId: []
+      // })
     ])
   })
-
+  teamId;
+  idTeamSupp;
+  dateprogram;
   program2;
   listeProgram:any[]=[];
   page = 1; // Page actuelle
@@ -100,7 +103,7 @@ export class CreationProgramComponent implements OnInit{
 
   ngOnInit(): void {
     this.getAgent();
-    this.getEnginByCaserne(this.idCaserne);
+    this.getTeam();
     //this.getProgram(this.formatDate(this.date));
     this.getAgentByCaserne(this.idCaserne);
     this.getProgramByCaserne(this.idCaserne);
@@ -133,7 +136,7 @@ export class CreationProgramComponent implements OnInit{
 
   get donneesPaginees() {
     if (this.listeProgram === null) {
-      return [];
+      return this.listeProgram = [];
     }
 
     const sortedList = this.listeProgram.sort((a, b) => {
@@ -169,6 +172,23 @@ export class CreationProgramComponent implements OnInit{
       fonctionId: []
     }));
   }
+
+  addmembers2(selectedIndex: number) {
+    const v = this.agree[selectedIndex];
+    const nbrMembre = v.nbrMembers;
+
+    this.member.clear(); // Réinitialiser le tableau avant d'effectuer la boucle
+
+    let i;
+    for (i = 0; i < nbrMembre; i++) {
+      this.member.push(this.formBuilder.group({
+        principalId: [],
+        remplacantId: [],
+        fonctionId: []
+      }));
+    }
+  }
+
   deletemembers(index: number){
     this.member.removeAt(index);
     this.member.markAsDirty()
@@ -270,11 +290,15 @@ export class CreationProgramComponent implements OnInit{
     );
   }
 
-  getEnginByCaserne(id: number){
-    return this.http.get(this.url + "/engins/caserne/" + id).subscribe(
-      vehicule => {
-        this.vehicule = vehicule
-      });
+
+
+  getTeam() {
+    return this.http.get(this.url + "/programs/team/types").subscribe(
+      (agree: any) => {
+        this.agree = agree.filter(item => item.equipeType !== "Sgt" && item.equipeType !== "Caporal");
+        this.agree2 = agree;
+      }
+    );
   }
 
   getTeamName(type: string, role: string): [string, string] {
@@ -318,14 +342,7 @@ getProgram(date){
       (program:any) =>{
         console.log(program)
         try{
-          this.listeProgram = program;
-       // this.t = this.program.teams;
-        // for(const team of this.t){
-        //   for (const agent of team.agents) {
-        //     this.t = agent;
-        //     console.log(this.t);
-        //   }
-        // }
+          this.edit = program;
         } catch{
           this.toastr.error('Aucune fiche actuellement')
         }
@@ -333,12 +350,51 @@ getProgram(date){
     )
 }
 
+
+groupByTeamType() {
+  const groupedData = {};
+
+  this.edit.teams.forEach((team) => {
+    if (!groupedData[team.teamType]) {
+      groupedData[team.teamType] = [];
+    }
+
+    groupedData[team.teamType].push(team);
+  });
+
+  return groupedData;
+}
+
+
+
+loadMembersByTeamId(teamId) {
+  let members = this.edit.teams.find(team => team.teamId === Number(teamId));
+  const memberFormArray = this.addEquipe.get('members') as FormArray;
+  memberFormArray.clear(); // Supprime les membres existants du formArray
+  this.teamId = teamId;
+  members.agents.forEach((member) => {
+    const memberGroup = this.formBuilder.group({
+      principalId: [member.principalId],
+      remplacantId: [member.secondId],
+      fonctionId: [member.fonctionId]
+    });
+
+    memberFormArray.push(memberGroup); // Ajoute le membre au formArray
+  });
+}
+
+
+
 createProgram(program: DailyProgramCreationForm){
   return this.http.post<DailyProgramCreationForm>("http://localhost:8081/bnsp/api/programs/create", program).subscribe();
 }
 
 addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
   return this.http.put<DailyProgramAddEquipeForm>("http://localhost:8081/bnsp/api/programs/team/add" , equipe).subscribe()
+}
+
+UpdateEquipe(equipe){
+  return this.http.put("http://localhost:8081/bnsp/api/programs/team/update", equipe).subscribe()
 }
 
 
@@ -377,7 +433,7 @@ addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
       try {
         this.addEquipeOnFiche(equipe);
         window.location.reload();
-        this.toastr.success('Programme crée avec succès!');
+        this.toastr.success('Equipe crée avec succès!');
       } catch {
         this.toastr.error('Formulaire invalide!');
       }
@@ -389,22 +445,40 @@ addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
     console.log(id)
   }
 
-  onSubmit2(){
-    console.log(this.enginUdapteForm);
-    if(this.enginUdapteForm.valid){
-      let Engin:EnginUpdateForm = {
-        enginId: this.enginUdapteForm.get("enginId").value,
-        caserneId: this.enginUdapteForm.get("caserneId").value,
-        enginTypeId: this.enginUdapteForm.get("enginTypeId").value,
-        immatriculation: this.enginUdapteForm.get("immatriculation").value,
-        description: this.enginUdapteForm.get("description").value
+  onSubmitUpdate(){
+    if(this.addEquipe.valid){
+      let equipe: any = {
+        teamId : this.teamId,
+        typeId: this.addEquipe.get('typeId').value,
+        designation: this.addEquipe.get('designation').value,
+        members: this.addEquipe.getRawValue().members
       }
-      this.updateEngin(Engin);
-      window.location.reload();
-      this.toastr.success('Engin mise à jour avec succès!');
-    } else{
-      this.toastr.error('Formulaire invalide!');
+      try {
+        this.UpdateEquipe(equipe);
+        window.location.reload();
+        this.toastr.success('Equipe mis a jour avec succès!');
+      } catch {
+        this.toastr.error('Formulaire invalide!');
+      }
     }
+  }
+
+  saveIdSupp(id , date){
+    this.idTeamSupp = id;
+    this.dateprogram = date;
+    console.log(this.idTeamSupp, this.dateprogram);
+  }
+
+  supprimerTeam(){
+    this.http.delete("http://localhost:8081/bnsp/api/programs/team/"+ this.idTeamSupp).subscribe();
+    setTimeout(() => {
+      this.getProgram(this.dateprogram);
+    },1000)
+  }
+
+
+  print(){
+    window.print();
   }
 
   openCreate(content) {
@@ -415,7 +489,7 @@ addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
 	}
 
   openRead(content) {
-		this.modalService.open(content, { size: 'xl', centered: true, scrollable: true });
+		this.modalService.open(content, { size: 'xl', scrollable: true });
 	}
 
 
