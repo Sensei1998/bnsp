@@ -6,6 +6,7 @@ import bf.bnsp.api.account.dto.response.DailyProgramResponse;
 import bf.bnsp.api.account.model.DailyProgram;
 import bf.bnsp.api.account.model.DailyTeam;
 import bf.bnsp.api.account.model.EquipeType;
+import bf.bnsp.api.account.model.FonctionType;
 import bf.bnsp.api.account.service.DailyProgramService;
 import bf.bnsp.api.caserne.model.Caserne;
 import bf.bnsp.api.caserne.service.CaserneService;
@@ -151,6 +152,12 @@ public class ProgramController {
     @GetMapping(value = "/team/types")
     public ResponseEntity<?> getTeamType(){
         List<EquipeType> response = this.dailyProgramService.findAllTeamType();
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/team/roles")
+    public ResponseEntity<?> getTeamRole(){
+        List<FonctionType> response = this.dailyProgramService.findAllFonctionType();
         return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

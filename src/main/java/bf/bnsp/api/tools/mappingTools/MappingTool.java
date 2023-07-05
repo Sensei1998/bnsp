@@ -31,7 +31,7 @@ public class MappingTool {
         List<FonctionAgentResponse> agentList = new ArrayList<>();
         List<FonctionTeamResponse> teamList = new ArrayList<>();
         for (DailyTeam dailyTeam: dailyProgram.getTeams()) {
-            if(!dailyProgram.isHidden()){
+            if(!dailyTeam.isHidden()){
                 for(DailyTeamMember member : dailyTeam.getMembers()){
                     if(!member.isHidden()) agentList.add(new FonctionAgentResponse(member.getId(), member.getPrincipal().getId(), member.getPrincipal().getFirstname(), member.getPrincipal().getLastname(), member.getPrincipal().getGrade().getGrade().name(), member.getSecondary().getId(), member.getSecondary().getFirstname(), member.getSecondary().getLastname(), member.getSecondary().getGrade().getGrade().name(), member.getFonction().getRule().name()));
                 }

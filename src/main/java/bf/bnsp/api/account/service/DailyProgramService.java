@@ -295,6 +295,8 @@ public class DailyProgramService implements DailyProgramServiceInterface{
             dailyTeam.setHidden(true);
             this.dailyTeamRepository.save(dailyTeam);
         }
+        dailyTeam.setHidden(true);
+        this.dailyTeamRepository.save(dailyTeam);
         return Optional.of(dailyTeam);
     }
 
@@ -327,6 +329,11 @@ public class DailyProgramService implements DailyProgramServiceInterface{
     @Override
     public List<EquipeType> findAllTeamType() {
         return this.equipeTypeRepository.findAll();
+    }
+
+    @Override
+    public List<FonctionType> findAllFonctionType() {
+        return this.fonctionTypeRepository.findAll();
     }
 
     private Optional<DailyTeamMember> findActiveDailyMemberById(int dailyTeamMemberId){
