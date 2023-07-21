@@ -166,7 +166,7 @@ public class DBInit implements CommandLineRunner {
         Agent ccot = new Agent("MT08002023000", "Agent000", "", encryption.encode("password"), "+22600000000", "agent0@bnsp.bf", this.caserneRepository.findById(1).get(), this.gradeRepository.findById(1).get());
         ccot.setDefaultFonction(this.ruleRepository.findById(3).get());
         Agent supervisor = new Agent("MT08002023001", "Supervisor000", "", encryption.encode("password"), "+22600001000", "supervisor0@bnsp.bf", this.caserneRepository.findById(1).get(), this.gradeRepository.findById(1).get());
-        ccot.setDefaultFonction(this.ruleRepository.findById(1).get());
+        supervisor.setDefaultFonction(this.ruleRepository.findById(1).get());
         for(int i = 1; i < 101; i++){
             tmpAgent = new Agent("MT08062023" + String.format("%03d", i), "Agent" + String.format("%03d", i), "", encryption.encode("password"), "+22600000" + String.format("%03d", i), "agent"+(i)+"@bnsp.bf", this.caserneRepository.findById(i+1).get(), this.gradeRepository.findById(1).get());
             tmpAgent.setDefaultFonction(this.ruleRepository.findById(4).get());
@@ -178,6 +178,7 @@ public class DBInit implements CommandLineRunner {
             agents.add(tmpAgent);
         }
         this.agentRepository.save(ccot);
+        this.agentRepository.save(supervisor);
         this.agentRepository.saveAll(agents);
     }
 
