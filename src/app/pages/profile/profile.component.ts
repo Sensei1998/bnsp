@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { LoginComponent } from '@modules/login/login.component';
+import { ApiService } from '@services/api.service';
 
 @Component({
     selector: 'app-profile',
@@ -22,7 +23,7 @@ export class ProfileComponent implements OnInit {
     defaultFonction: [-1, Validators.required]
   });
   numero = this.formBuilder.array([]);
-  constructor( private formBuilder: FormBuilder,private http: HttpClient){}
+  constructor( private formBuilder: FormBuilder,private http: HttpClient, private service: ApiService){}
 
   ngOnInit(): void {
     this.getProfile();
@@ -42,7 +43,7 @@ export class ProfileComponent implements OnInit {
 
 
   getProfile(){
-    return this.http.get("http://localhost:8081/bnsp/api/users/profil").subscribe(
+    return this.service.getProfil().subscribe(
       data => {
         this.agent = data;
         let split = this.agent.phoneNumber.split(';');

@@ -11,7 +11,6 @@ import {DateTime} from 'luxon';
 export class UserComponent implements OnInit {
     email:string;
     id = Number(localStorage.getItem('id'));
-    url ="http://localhost:8081/bnsp/api";
     constructor(private appService: AppService, private http: HttpClient) {}
 
     ngOnInit(): void {

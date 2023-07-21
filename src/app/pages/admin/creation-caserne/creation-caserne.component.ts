@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from '@services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';
 
@@ -13,7 +14,6 @@ import { element } from 'protractor';
   styleUrls: ['./creation-caserne.component.scss']
 })
 export class CreationCaserneComponent implements OnInit {
-  url =" http://localhost:8081/bnsp/api";
 
   caserneForm:FormGroup = this.formBuilder.group({
     idCaserneType: [[], Validators.required],
@@ -50,6 +50,7 @@ export class CreationCaserneComponent implements OnInit {
   listCaserne:any[]=[];
   zone;
   constructor(private formBuilder: FormBuilder,
+    private service: ApiService,
     private toastr: ToastrService,
     private http: HttpClient,
     config: NgbModalConfig, private modalService: NgbModal){
@@ -116,18 +117,19 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   createCaserne(caserne: CaserneCreationForm){
-    return this.http.post<CaserneCreationForm>(this.url + "/casernes/create" , caserne).subscribe();
+    return this.service.createCaserne(caserne).subscribe();
   }
 
   getZone(){
-    return this.http.get("http://localhost:8081/bnsp/api/casernes/zones").subscribe(
+    return this.service.getZone().subscribe(
       zone => {
         this.zone = zone;
       }
     )
   }
+
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
         this.listCaserne.push(...this.caserne)
@@ -136,17 +138,19 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   getCaserneTypesById(id: number){
-    return this.http.get(this.url + "/casernes/types/" + id).subscribe(
+    return this.service.getCaserneTypesById(id).subscribe(
       caserne => {
-        this.caserne = caserne
+        this.caserne = caserne;
+        this.listCaserne.push(...this.caserne);
       }
     );
   }
 
   getCaserneAffliationById(id: number){
-    return this.http.get(this.url + "/casernes/affiliation/" + id).subscribe(
+    return this.service.getCaserneAffliationById(id).subscribe(
       caserne => {
-        this.caserne = caserne
+        this.caserne = caserne;
+        this.listCaserne.push(...this.caserne);
       }
     );
   }
@@ -163,13 +167,12 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   updateCaserne(caserne: CaserneUpdateForm){
-    return this.http.put<CaserneUpdateForm>(this.url + "/casernes/update" , caserne).subscribe();
+    return this.service.updateCaserne(caserne).subscribe();
   }
 
   getCaserneById(id: number){
-    return this.http.get(this.url + "/casernes/" + id).subscribe(
+    return this.service.getCaserneById(id).subscribe(
       edit =>{
-        console.log(edit)
         this.edit = edit;
         let split = this.edit.phoneNumber.split(';');
 
@@ -183,7 +186,7 @@ export class CreationCaserneComponent implements OnInit {
   }
 
   deleteCaserne(id: number){
-    return this.http.delete(this.url + "/casernes/" + id).subscribe(
+    return this.service.deleteCaserne(id).subscribe(
       del =>{
         this.toastr.success('Caserne supprimée avec succès!');
         window.location.reload();
@@ -203,7 +206,6 @@ export class CreationCaserneComponent implements OnInit {
         telephone: this.caserneForm.getRawValue().telephone,
         email: this.caserneForm.get("email").value,
       }
-      //console.log(Caserne);
       this.createCaserne(Caserne);
       window.location.reload();
       this.toastr.success('Caserne crée avec succès!');

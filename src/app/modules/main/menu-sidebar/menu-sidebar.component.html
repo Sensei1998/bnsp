@@ -48,19 +48,25 @@
             role="menu"
             data-accordion="false"
         >
-        <div *ngIf="isAdmin === true">
+        <div *ngIf=" supervisor === true">
              <app-menu-item
                 *ngFor="let item of menu"
                 [menuItem]="item"
             ></app-menu-item>
         </div>
-        <div *ngIf="isAdmin === false && bcot === false ">
+        <div *ngIf="isAdmin === true && supervisor === false && bcot === false">
+          <app-menu-item
+             *ngFor="let item of menu4"
+             [menuItem]="item"
+         ></app-menu-item>
+     </div>
+        <div *ngIf="isAdmin === false && bcot === false && supervisor === false ">
           <app-menu-item
              *ngFor="let item of menu2"
              [menuItem]="item"
          ></app-menu-item>
      </div>
-     <div *ngIf="bcot === true && isAdmin === false">
+     <div *ngIf="bcot === true && isAdmin === false && supervisor === false">
       <app-menu-item
          *ngFor="let item of menu3"
          [menuItem]="item"

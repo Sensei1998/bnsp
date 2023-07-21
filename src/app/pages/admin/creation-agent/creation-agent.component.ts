@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from '@services/api.service';
 import {ToastrService} from 'ngx-toastr';
 
 
@@ -28,9 +29,6 @@ export class CreationAgentComponent implements OnInit{
     defaultFonction: [-1, Validators.required]
   });
 
-
-
-  url ="http://localhost:8081/bnsp/api";
 
   caserne;
   grade;
@@ -58,10 +56,12 @@ export class CreationAgentComponent implements OnInit{
 
   compagnie;
   numero = this.formBuilder.array([]);
+  idCaserne = Number(localStorage.getItem('idCaserne'));
+  NomCaserne = localStorage.getItem('Caserne');
 
   role = localStorage.getItem('fonction');
-  isAdmin: boolean;
-  supervisor: boolean;
+  isAdmin = false;
+  supervisor= false;
   page = 1; // Page actuelle
   pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
@@ -69,7 +69,8 @@ export class CreationAgentComponent implements OnInit{
   constructor(private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
-    config: NgbModalConfig, private modalService: NgbModal) {
+    config: NgbModalConfig, private modalService: NgbModal,
+    private service: ApiService) {
     config.backdrop = 'static';
 		config.keyboard = false;
      }
@@ -91,7 +92,7 @@ export class CreationAgentComponent implements OnInit{
 
    } else{
      this.supervisor = false;
-   ;
+
    }
 
     if( this.role === "ROLE_ADMINISTRATEUR"){
@@ -174,7 +175,7 @@ export class CreationAgentComponent implements OnInit{
   }
 
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
       }
@@ -182,7 +183,7 @@ export class CreationAgentComponent implements OnInit{
   }
 
   getAgentByCaserne(id: number){
-      return this.http.get(this.url + "/users/caserne/" + id).subscribe(
+      return this.service.getAgentByCaserne(id).subscribe(
         (user: Agent) => {
           this.users = user
         }
@@ -194,25 +195,23 @@ export class CreationAgentComponent implements OnInit{
 
 
   getGrade(){
-   return this.http.get(this.url + "/users/grades").subscribe(
+   return this.service.getGrade().subscribe(
     grade => {
       this.grade = grade
     }
    );
   }
 
+
   createAgent(agent: AgentCreationForm){
-    return this.http.post<AgentCreationForm>(this.url + "/users/create", agent).subscribe();
+    return this.service.createAgent(agent).subscribe();
   }
 
   getAgent(){
-    return this.http.get(this.url + "/users/").subscribe(
+    return this.service.getAgent().subscribe(
       (user: Agent) =>{
         this.users = user;
         this.listUser.push(...this.users);
-
-        // let split = this.users.phoneNumber.split(';');
-        // this.users.phoneNumber = split;
       }
     );
   }
@@ -223,11 +222,11 @@ export class CreationAgentComponent implements OnInit{
   }
 
   updateAgent(agent: AgentUpdateForm){
-    return this.http.put<AgentUpdateForm>(this.url+"/users/update", agent).subscribe();
+    return this.service.updateAgent(agent).subscribe();
   }
 
   getAgentById(id: number){
-    return this.http.get(this.url + "/users/" + id).subscribe(
+    return this.service.getAgentById(id).subscribe(
       agent =>{
         this.agent = agent;
         let split = this.agent.phoneNumber.split(';');
@@ -236,13 +235,12 @@ export class CreationAgentComponent implements OnInit{
           this.numero.push(this.formBuilder.control(phoneNumber));
           this.agentEditForm.setControl('telephone', this.formBuilder.array(split));
         });
-        console.log(this.agent);;
       }
     );
   }
 
   deleteAgent(id: number){
-    return this.http.delete(this.url + "/users/" + id ).subscribe(
+    return this.service.deleteAgent(id).subscribe(
       supp => {
         this.toastr.success('Agent supprimé avec succès!');
         window.location.reload()
@@ -265,12 +263,10 @@ export class CreationAgentComponent implements OnInit{
           email: this.agentForm.get("email").value,
           defaultFonction: this.agentForm.get("defaultFonction").value,
         };
-        console.log(Agent);
         this.createAgent(Agent);
         this.toastr.success('Agent crée avec succès!');
         window.location.reload();
       }else if (this.agentForm.invalid){
-        console.log(this.agentForm);
         this.toastr.error('Formulaire invalide!');
       } else {
         this.toastr.error('Formulaire invalide!');
@@ -280,7 +276,6 @@ export class CreationAgentComponent implements OnInit{
   }
 
   onEdit(){
-    console.log(this.agentEditForm);
     if(this.agentEditForm.valid){
       let Agent:AgentUpdateForm = {
         id: this.agentEditForm.get("id").value,

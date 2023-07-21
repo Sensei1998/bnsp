@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from '@services/api.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./creation-engin.component.scss']
 })
 export class CreationEnginComponent implements OnInit{
-  url =" http://localhost:8081/bnsp/api";
 
   enginForm:FormGroup = this.formBuilder.group({
     caserneId:[[], Validators.required],
@@ -40,6 +40,7 @@ export class CreationEnginComponent implements OnInit{
 
 
   constructor(private formBuilder: FormBuilder,
+    private service: ApiService,
     private toastr: ToastrService,
     private http: HttpClient,
     config: NgbModalConfig, private modalService: NgbModal){
@@ -55,15 +56,6 @@ export class CreationEnginComponent implements OnInit{
     }, 2000)
   }
 
-  // get donneesPaginees() {
-  //   if (this.listeEngin === null) {
-  //     return [];
-  //   }
-
-  //   const startIndex = (this.page - 1) * this.pageSize;
-  //   const endIndex = startIndex + this.pageSize;
-  //   return this.listeEngin.slice(startIndex, endIndex);
-  // }
   get donneesPaginees() {
     if (this.listeEngin === null) {
       return this.listeEngin = [];
@@ -81,7 +73,7 @@ export class CreationEnginComponent implements OnInit{
 
 
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
       }
@@ -89,7 +81,7 @@ export class CreationEnginComponent implements OnInit{
   }
 
   getEngin(){
-    return this.http.get(this.url + "/engins").subscribe(
+    return this.service.getEngin().subscribe(
       engin => {
         this.engin = engin;
         this.listeEngin.push(...this.engin);
@@ -98,7 +90,7 @@ export class CreationEnginComponent implements OnInit{
   }
 
   getEnginByCaserne(id: number){
-    return this.http.get(this.url + "/engins/caserne/" + id).subscribe(
+    return this.getEnginByCaserne(id).subscribe(
       engin => {
         this.engin = engin;
       }
@@ -107,24 +99,23 @@ export class CreationEnginComponent implements OnInit{
 
 
   createEngins(engin: EnginCreationForm){
-    return this.http.post<EnginCreationForm>(this.url + "/engins/create", engin).subscribe();
+    return this.service.createEngins(engin).subscribe();
   }
 
   updateEngin(engin:  EnginUpdateForm){
-    return this.http.put<EnginUpdateForm>(this.url + "/engins/update", engin).subscribe();
+    return this.service.updateEngin(engin).subscribe();
   }
 
   getEnginById(id: number){
-    return this.http.get(this.url + "/engins/" + id).subscribe(
+    return this.service.getEnginById(id).subscribe(
       edit =>{
         this.edit = edit;
-        console.log(this.edit.id);
       }
     );
   }
 
   deleteEngin(id: number){
-    return this.http.delete(this.url + "/engins/" + id).subscribe(
+    return this.service.deleteEngin(id).subscribe(
       del => {
         this.toastr.success('Engin supprimé avec succès!');
         window.location.reload();
@@ -151,7 +142,6 @@ export class CreationEnginComponent implements OnInit{
   }
 
   onSubmit2(){
-    console.log(this.enginUdapteForm);
     if(this.enginUdapteForm.valid){
       let Engin:EnginUpdateForm = {
         enginId: this.enginUdapteForm.get("enginId").value,

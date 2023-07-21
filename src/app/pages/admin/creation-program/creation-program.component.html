@@ -22,9 +22,9 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Fiche</h4>
-        <div class="row" >
-          <div class="col-md-6">
-            <div class="form-group row">
+        <div class="row" *ngIf="isAdmin === true">
+          <div class="col-md-6" >
+            <div class="form-group row" >
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-6">
                 <select class="form-control" [(ngModel)]="sort" >
@@ -61,6 +61,32 @@
             </div>
           </div>
           <div class="button-container" style="margin-left: -7%;" >
+            <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
+            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des Equipes</button>
+          </div>
+
+
+
+        </div>
+        <div class="row" *ngIf="isAdmin === false">
+          <div class="col-md-6" style="margin-left: 25%;">
+            <div class="form-group row">
+              <p class="col-sm-4 col-form-p">Chercher par date</p>
+              <div class="col-sm-6">
+                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy"/>
+              </div>
+              <div class="col-md-2" style="margin-left: 64%;">
+                <div class="form-group row">
+                  <div >
+                    <pf-button  (click)="getProgram(date)" (click)="openRead(content2)" >Chercher</pf-button>
+                    <!-- <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button> -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="button-container" style="margin-left: 5%;" >
             <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
             <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des Equipes</button>
           </div>

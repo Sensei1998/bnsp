@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
+import { ApiService } from '@services/api.service';
 @Component({
     selector: 'app-notifications',
     templateUrl: './notifications.component.html',
@@ -11,7 +12,7 @@ export class NotificationsComponent implements OnInit{
   role = localStorage.getItem('fonction');
   Caserne = Number(localStorage.getItem('idCaserne'));
   interventions : any[] ;
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private service: ApiService){}
 
   ngOnInit(): void {
       setInterval(()=> {
@@ -50,7 +51,7 @@ export class NotificationsComponent implements OnInit{
   }
 
   getIntervention(){
-    return this.http.get("http://localhost:8081/bnsp/api/intervention").subscribe(
+    return this.service.getIntervention().subscribe(
       (data : any) =>{
         if(data === null){
           this.count = 0;
@@ -64,7 +65,7 @@ export class NotificationsComponent implements OnInit{
   }
 
   getInterventionCCot() {
-    return this.http.get("http://localhost:8081/bnsp/api/intervention").subscribe(
+    return this.service.getIntervention().subscribe(
       (data: any) => {
         if (data === null) {
           this.count = 0;
@@ -80,7 +81,7 @@ export class NotificationsComponent implements OnInit{
   }
 
   getInterventionBCot() {
-    return this.http.get(`http://localhost:8081/bnsp/api/intervention/sheet/caserne/${this.Caserne}`).subscribe(
+    return this.service.getInterventionBCot(this.Caserne).subscribe(
       (data: any) => {
         if (data === null) {
           this.count = 0;

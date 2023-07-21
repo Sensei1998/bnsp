@@ -12,7 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BlankComponent implements OnInit {
   listeIntervention;
-  url = "http://localhost:8081/bnsp/api/"
   idCaserne = Number(localStorage.getItem('idCaserne'));
   intervention;
   incident;
@@ -164,8 +163,7 @@ export class BlankComponent implements OnInit {
   //   )
   // }
   getInterventionByCaserne(){
-    const url =`${this.url}intervention/sheet/caserne/${this.idCaserne}`;
-    return this.http.get(url).subscribe(
+    return this.service.getInterventionByCaserne(this.idCaserne).subscribe(
       (data : any) =>{
         if(data !== null){
           this.listeIntervention = data;
@@ -180,7 +178,7 @@ export class BlankComponent implements OnInit {
   }
 
   getIntervention(){
-    return this.http.get("http://localhost:8081/bnsp/api/intervention").subscribe(
+    return this.service.getIntervention().subscribe(
       (data : any) =>{
         if(data !== null){
           this.listeIntervention = data;
@@ -195,7 +193,7 @@ export class BlankComponent implements OnInit {
   }
 
   getInterventionDetailsById(id: number){
-    return this.http.get("http://localhost:8081/bnsp/api/intervention?id="+id).subscribe(
+    return this.service.getInterventionDetailsById(id).subscribe(
       (data : any) =>{
         if(data !== null){
           this.service.formData = data;
@@ -211,7 +209,7 @@ export class BlankComponent implements OnInit {
   }
 
   closeIntervention(id: number) {
-    return this.http.put("http://localhost:8081/bnsp/api/intervention/update/close/" + id, '').subscribe(
+    return this.service.closeIntervention(id).subscribe(
       (data: any) => {
         window.location.reload();
       },

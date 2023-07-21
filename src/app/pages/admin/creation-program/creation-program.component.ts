@@ -11,6 +11,7 @@ import {DateTime} from 'luxon';
 import { ActivatedRoute } from '@angular/router';
 import { error } from 'protractor';
 import { DailyProgramAddEquipeForm } from '@/model/DailyProgramAddEquipeForm.model';
+import { ApiService } from '@services/api.service';
 
 @Component({
   selector: 'app-creation-program',
@@ -19,7 +20,7 @@ import { DailyProgramAddEquipeForm } from '@/model/DailyProgramAddEquipeForm.mod
 })
 export class CreationProgramComponent implements OnInit{
 
-  url ="http://localhost:8081/bnsp/api";
+
 
   ficheForm: FormGroup = this.formBuilder.group({
     date: [[], Validators.required],
@@ -55,7 +56,7 @@ export class CreationProgramComponent implements OnInit{
 
   idCaserne = Number(localStorage.getItem('idCaserne'));
   role = localStorage.getItem('fonction');
-  isAdmin:boolean;
+  isAdmin = false;
 
   agree;
   agree2;
@@ -75,11 +76,7 @@ export class CreationProgramComponent implements OnInit{
     typeId: [[], Validators.required],
     designation: [[], Validators.required],
     members: this.formBuilder.array([
-      // this.formBuilder.group({
-      //   principalId: [],
-      //   remplacantId: [],
-      //   fonctionId: []
-      // })
+
     ])
   })
   teamId;
@@ -93,6 +90,7 @@ export class CreationProgramComponent implements OnInit{
   idprogram = 0;
 
   constructor(private formBuilder: FormBuilder,
+    private service: ApiService,
     private toastr: ToastrService,
     private http: HttpClient,
     config: NgbModalConfig, private modalService: NgbModal,
@@ -104,7 +102,6 @@ export class CreationProgramComponent implements OnInit{
   ngOnInit(): void {
     this.getAgent();
     this.getTeam();
-    //this.getProgram(this.formatDate(this.date));
     this.getAgentByCaserne(this.idCaserne);
     this.getProgramByCaserne(this.idCaserne);
 
@@ -119,20 +116,6 @@ export class CreationProgramComponent implements OnInit{
   }, 2000)
   }
 
-  // get donneesPaginees() {
-  //   if (this.listeProgram === null) {
-  //     return [];
-  //   }
-
-  //   const sortedList = this.listeProgram.sort((a, b) => {
-  //     // Tri par ordre décroissant en utilisant la propriété "date"
-  //     return new Date(b.date).getTime() - new Date(a.date).getTime();
-  //   });
-
-  //   const startIndex = (this.page - 1) * this.pageSize;
-  //   const endIndex = startIndex + this.pageSize;
-  //   return sortedList.slice(startIndex, endIndex);
-  // }
 
   get donneesPaginees() {
     if (this.listeProgram === null) {
@@ -199,39 +182,8 @@ export class CreationProgramComponent implements OnInit{
     return DateTime.fromISO(date).toFormat('dd-MM-yyyy');
   }
 
-  // get members(): FormArray{
-  //   return this.equipesForm.get('members') as FormArray;
-  // }e
-
-  // addMembers(){
-  //  return this.members.push((this.formBuilder.group({
-  //   agentId: [[], Validators.required],
-  //   fonctionId: [[], Validators.required],
-  //   })));
-  // }
-  // deleteMembers(index: number){
-  //   this.members.removeAt(index);
-  //   this.members.removeAt(index-1);
-  //   this.members.markAsDirty();
-  // }
-
-
-
-  // get fonctionId(): FormArray{
-  //   return this.membersForm.get('fonctionId') as FormArray;
-  // }
-
-  // addFonction(){
-  //   this.fonctionId.push(this.formBuilder.control(''));
-  // }
-  // deleteFonction(index: number){
-  //   this.fonctionId.removeAt(index);
-  //   this.fonctionId.markAsDirty()
-  // }
-
-
   getAgent(){
-    return this.http.get(this.url + "/users/").subscribe(
+    return this.service.getAgent().subscribe(
       user =>{
         this.users = user;
       }
@@ -239,7 +191,7 @@ export class CreationProgramComponent implements OnInit{
   }
 
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
       }
@@ -247,7 +199,7 @@ export class CreationProgramComponent implements OnInit{
   }
 
   getEngin(){
-    return this.http.get(this.url + "/engins").subscribe(
+    return this.service.getEngin().subscribe(
       engin => {
         this.engin = engin;
       }
@@ -257,43 +209,16 @@ export class CreationProgramComponent implements OnInit{
 
 
   getAgentByCaserne(id: number){
-    return this.http.get(this.url + "/users/caserne/" + id).subscribe(
+    return this.service.getAgentByCaserne(id).subscribe(
       user =>{
         this.usersCaserne = user
       }
     );
   }
 
-  createEngins(engin: EnginCreationForm){
-    return this.http.post<EnginCreationForm>(this.url + "/engins/create", engin).subscribe();
-  }
-
-  updateEngin(engin:  EnginUpdateForm){
-    return this.http.put<EnginUpdateForm>(this.url + "/engins/update", engin).subscribe();
-  }
-
-  getEnginById(id: number){
-    return this.http.get(this.url + "/engins/" + id).subscribe(
-      edit =>{
-        this.edit = edit;
-        console.log(this.edit.id);
-      }
-    );
-  }
-
-  deleteEngin(id: number){
-    return this.http.delete(this.url + "/engins/" + id).subscribe(
-      del => {
-        this.toastr.success('Engin supprimé avec succès!');
-        window.location.reload();
-      }
-    );
-  }
-
-
 
   getTeam() {
-    return this.http.get(this.url + "/programs/team/types").subscribe(
+    return this.service.getTeam().subscribe(
       (agree: any) => {
         this.agree = agree.filter(item => item.equipeType !== "Sgt" && item.equipeType !== "Caporal");
         this.agree2 = agree;
@@ -317,9 +242,8 @@ export class CreationProgramComponent implements OnInit{
   }
 
   getProgramByCaserne(id:number){
-    return this.http.get("http://localhost:8081/bnsp/api/programs/caserne/"+id).subscribe(
+    return this.service.getProgramByCaserne(id).subscribe(
       (program:any) =>{
-        console.log(program);
         try{
           this.program2 = program;
           this.listeProgram = program
@@ -330,18 +254,9 @@ export class CreationProgramComponent implements OnInit{
   }
 
 getProgram(date){
-  const dateObj = new Date(date);
-  const jour = dateObj.getDate();
-  const mois = dateObj.getMonth() + 1; // Les mois sont indexés à partir de 0, donc on ajoute 1
-  const annee = dateObj.getFullYear();
-
-  // Formater la date avec le format "dd-MM-yyyy"
-  const dateFormatee = `${jour.toString().padStart(2, '0')}-${mois.toString().padStart(2, '0')}-${annee}`;
-
-    return this.http.get("http://localhost:8081/bnsp/api/programs/search?date=" +dateFormatee).subscribe(
+    return this.service.getProgram(date).subscribe(
       (program:any) =>{
-        console.log(program)
-        try{
+       try{
           this.edit = program;
         } catch{
           this.toastr.error('Aucune fiche actuellement')
@@ -386,21 +301,19 @@ loadMembersByTeamId(teamId) {
 
 
 createProgram(program: DailyProgramCreationForm){
-  return this.http.post<DailyProgramCreationForm>("http://localhost:8081/bnsp/api/programs/create", program).subscribe();
+  return this.service.createProgram(program).subscribe();
 }
 
 addEquipeOnFiche(equipe: DailyProgramAddEquipeForm){
-  return this.http.put<DailyProgramAddEquipeForm>("http://localhost:8081/bnsp/api/programs/team/add" , equipe).subscribe()
+  return this.service.addEquipeOnFiche(equipe).subscribe();
 }
 
 UpdateEquipe(equipe){
-  return this.http.put("http://localhost:8081/bnsp/api/programs/team/update", equipe).subscribe()
+  return this.service.UpdateEquipeProgram(equipe).subscribe();
 }
 
 
   onSubmit(){
-
-
     if(this.ficheForm.valid){
       let program: DailyProgramCreationForm = {
         date: this.ficheForm.get('date').value,
@@ -413,8 +326,7 @@ UpdateEquipe(equipe){
           remplacant: this.sergentForm.get('remplacant').value
         }
         }
-        //console.log(program)
-        this.createProgram(program);
+      this.createProgram(program);
       window.location.reload();
       this.toastr.success('Programme crée avec succès!');
     } else{
@@ -442,7 +354,6 @@ UpdateEquipe(equipe){
 
   changeidprogram(id: number){
     this.idprogram = id
-    console.log(id)
   }
 
   onSubmitUpdate(){
@@ -466,11 +377,10 @@ UpdateEquipe(equipe){
   saveIdSupp(id , date){
     this.idTeamSupp = id;
     this.dateprogram = date;
-    console.log(this.idTeamSupp, this.dateprogram);
   }
 
   supprimerTeam(){
-    this.http.delete("http://localhost:8081/bnsp/api/programs/team/"+ this.idTeamSupp).subscribe();
+    this.service.supprimerTeam(this.idTeamSupp).subscribe();
     setTimeout(() => {
       this.getProgram(this.dateprogram);
     },1000)

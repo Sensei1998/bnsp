@@ -20,7 +20,6 @@ export class AjoutCompagnieComponent implements OnInit {
 
 
 
-  url ="http://localhost:8081/bnsp/api";
   caserne;
   category;
   libelle;
@@ -40,12 +39,6 @@ export class AjoutCompagnieComponent implements OnInit {
 
   this.getCaserne();
   this.getCategory();
-  // let split = this.service.formData.casernes;
-  // console.log(split)
-  // split.forEach(compagnie => {
-  //   this.numero.push(this.fb.control(compagnie));
-  //   this.CompagnieForm.setControl('compagnie', this.fb.array(split));
-  // });
   const casernes = this.service.formData.casernes;
 const compagnieArray = this.CompagnieForm.get('compagnie') as FormArray;
 
@@ -67,7 +60,7 @@ if (casernes.length === 0) {
   }
 
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
       }
@@ -92,9 +85,9 @@ if (casernes.length === 0) {
 formatHeure(heure) {
   return DateTime.fromISO(heure).toFormat('hh : mm');
 }
+
 getLibelleBycategory(id: number){
-  const url = `http://localhost:8081/bnsp/api/intervention/types?category=${id}`;
-  return this.http.get(url).subscribe(
+  return this.service.getLibelleBycategory(id).subscribe(
     data => {
       this.libelle = data;
       this.libelle = this.libelle.find(lib => lib.id == this.service.formData.incident.incidentTypeId);
@@ -103,7 +96,7 @@ getLibelleBycategory(id: number){
 }
 
 getCategory(){
-  return this.http.get("http://localhost:8081/bnsp/api/intervention/types/category").subscribe(
+  return this.service.getCategory().subscribe(
     data => {
       this.category = data;
       this.category = this.category.find(category => category.id == this.service.formData.incident.categoryId)
@@ -112,9 +105,7 @@ getCategory(){
 }
 
 addCaserneIntervention(Caserne: interventionCaserne){
-  return this.http.put<interventionCaserne>("http://localhost:8081/bnsp/api/intervention/update/info", Caserne).subscribe(
-    data => console.log(data)
-  )
+  return this.service.addCaserneIntervention(Caserne).subscribe();
 }
 
 onSubmit(){

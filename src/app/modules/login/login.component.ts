@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { Login } from '@/model/login.model';
 import { Router } from '@angular/router';
 import { Caserne } from '@/model/Caserne.model';
+import { ApiService } from '@services/api.service';
 
 @Component({
     selector: 'app-login',
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         private renderer: Renderer2,
         private toastr: ToastrService,
         private appService: AppService,
+        private service: ApiService,
         private http: HttpClient,
         private router: Router
     ) {}
@@ -52,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           identifier: this.loginForm.get('email').value,
           password: this.loginForm.get('password').value
         };
-        this.http.post("http://localhost:8081/bnsp/api/users/login", login).subscribe(
+        this.service.login(login).subscribe(
           (data: Login) => {
             this.saveToken(data.token);
             this.saveFonction(data.agent.currentFunction);
@@ -98,7 +100,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     async saveCaserne(id: number){
-      this.http.get("http://localhost:8081/bnsp/api" + "/casernes/" + id).subscribe(
+      return this.service.saveCaserne(id).subscribe(
         (data: Caserne) => {
           localStorage.setItem('Caserne', data.name);
           localStorage.setItem('idCaserne', (data.id).toString());

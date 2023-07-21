@@ -27,7 +27,6 @@ interface Time {
 export class SuiviComponent implements OnInit {
   date = DateTime.now();
   time = null;
-  url = "http://localhost:8081/bnsp/api/"
   category;
   caserne;
   libelle;
@@ -123,7 +122,7 @@ export class SuiviComponent implements OnInit {
   }
 
   updateEquipe(equipe: interventionSheet){
-    return this.http.put<interventionSheet>("http://localhost:8081/bnsp/api/intervention/sheet/update/team", equipe).subscribe(
+    return this.service.updateEquipIntervention(equipe).subscribe(
       data => window.location.reload()
     );
   }
@@ -228,10 +227,6 @@ if (departure === null) {
     available:  interventionSheet.available,
     checkIn:  interventionSheet.checkIn,
   };
-
-
-
-  console.log(equipe);
   this.updateEquipe(equipe);
 }else {
       this.toastr.error('Veuillez renseigner tous les champs obligatoires !');
@@ -249,7 +244,6 @@ if (departure === null) {
 
   teamMessage(team){
     this.Team = team;
-    console.log(team)
   }
 
   open(content) {
@@ -261,12 +255,12 @@ if (departure === null) {
 	}
 
   getInterventionDetailsById(id: number){
-    return this.http.get("http://localhost:8081/bnsp/api/intervention?id="+id).subscribe(
+    return this.service.getInterventionDetailsById(id).subscribe(
       (data : any) =>{
         if(data !== null){
           this.service.formData = data;
           // this.router.navigate(['/suivi']);
-          console.log(data);
+
         }
       }
     )
@@ -276,12 +270,11 @@ if (departure === null) {
   if (timeString !== null) {
     const formattedDate = this.datePipe.transform(timeString, 'dd-MM-yyyyTHH:mm:ss');
     // can i have an exemple of usage of Datepipe?
-   // console.log(formattedDate);
-    console.log(timeString)
+
     return new Date(formattedDate);
   } else {
     // Gérez le cas où timeString est null
-    console.log('timeString is null');
+
     return null;
   }
 }
@@ -298,7 +291,6 @@ if (departure === null) {
     const formattedDate = new Date();
     formattedDate.setHours(hours, minutes, seconds);
     const formattedTime = formattedDate.toISOString().substr(11, 8);
-    //console.log('formatTime returns:', formattedTime);
     return formattedTime;
   }
   timeToString(time: Time): string {
@@ -322,10 +314,10 @@ if (departure === null) {
   }
 
   getProgram(date){
-    return this.http.get("http://localhost:8081/bnsp/api/programs/search?date=" +date).subscribe(
+    return this.service.getProgramConsulter(date).subscribe(
       (program:any) =>{
         if(program === null){
-          this.http.post("http://localhost:8081/bnsp/api/programs/create/default", '').subscribe(
+          this.service.createDefaultProgram().subscribe(
             (program:any) => {
               this.program = program.teams;
 
@@ -333,7 +325,6 @@ if (departure === null) {
           )
         } else{
           this.program = program.teams;
-          console.log(program);
         }
       }
     )
@@ -346,7 +337,7 @@ transferSelectedItems() {
     caserneId: this.id,
     teamId: selectedItems.map(item =>  item.teamId ),
   }
-  return this.http.put("http://localhost:8081/bnsp/api/intervention/sheet/update", update).subscribe(
+  return this.service.transferSelectedItems(update).subscribe(
     data =>{
       window.location.reload();
   }
@@ -354,7 +345,7 @@ transferSelectedItems() {
 }
 
 deleteEquipe(id: number){
-  return this.http.delete("http://localhost:8081/bnsp/api/intervention/sheet/delete/team/"+ id).subscribe(
+  return this.service.deleteEquipeIntervention(id).subscribe(
     data => {
       window.location.reload();
     }
@@ -366,16 +357,15 @@ enginsupp(id: number){
 }
 
 createMessage(message: Message){
-  return this.http.post<Message>("http://localhost:8081/bnsp/api/intervention/sheet/message", message).subscribe(
+  return this.service.createMessage(message).subscribe(
     data => window.location.reload()
   )
 }
 
 getMessage(idIntervention: number, idCaserne: number){
-  return this.http.get(`http://localhost:8081/bnsp/api/intervention/sheet/message/intervention/${idIntervention}/caserne/${idCaserne}`).subscribe(
+  return this.service.getMessage(idIntervention,idCaserne).subscribe(
   data => {
     this.message = data;
-    console.log(data)
   }
   )
 }
@@ -400,7 +390,7 @@ affetcIdmessage(id:number){
 }
 
 deleteMessage(id:number){
-  return this.http.delete("http://localhost:8081/bnsp/api/intervention/sheet/message/"+ id).subscribe(
+  return this.service.deleteMessage(id).subscribe(
     data => {
       window.location.reload();
     }
@@ -410,3 +400,4 @@ deleteMessage(id:number){
 
 
 }
+

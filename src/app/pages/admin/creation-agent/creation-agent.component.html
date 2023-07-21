@@ -140,12 +140,22 @@
             <strong>Caserne et Grade</strong>
           </p>
           <div class="row" >
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="supervisor === true && isAdmin === false">
               <div class="form-group row" >
                 <p class="col-sm-3 col-form-label">Caserne</p>
                 <div class="col-sm-9" >
                   <select class="form-control" formControlName="caserneId">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="supervisor === false && isAdmin === true">
+              <div class="form-group row" >
+                <p class="col-sm-3 col-form-label">Caserne</p>
+                <div class="col-sm-9" >
+                  <select class="form-control" formControlName="caserneId" >
+                    <option  [value]=idCaserne selected="true">{{NomCaserne}}</option>
                   </select>
                 </div>
               </div>
@@ -312,7 +322,7 @@
       <div class="card-body">
         <h4 class="card-title">Liste des agents</h4>
         <div class="row" style="margin-left: 20%;">
-          <div class="col-md-6" *ngIf="isAdmin === true">
+          <div class="col-md-6" >
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-8">
@@ -333,7 +343,7 @@
             </div>
           </div>
 
-          <pf-button *ngIf="isAdmin === true" (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
+          <pf-button  (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
             <i class="fa fa-plus"></i>
           </pf-button>
         </div>
@@ -361,7 +371,12 @@
                 <td> {{u.phoneNumber}} </td>
                 <td> {{u.defaultFonction.rule}} </td>
                 <td>{{u.grade.grade}}</td>
-                <td [width]="120" *ngIf="isAdmin === true || supervisor === true">
+                <td [width]="120" *ngIf="supervisor === true && isAdmin === false">
+                  <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>
+                </td>
+                <td [width]="120" *ngIf="isAdmin === true && u.caserne.id === idCaserne && supervisor === false">
                   <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getAgentById(u.id)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getAgentById(u.id)" style="margin-left: 10%;"></i>
                   <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getAgentById(u.id)" (click)="openSupp(content3)"></i>

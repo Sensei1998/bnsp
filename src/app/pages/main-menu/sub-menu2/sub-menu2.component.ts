@@ -27,7 +27,6 @@ export class SubMenu2Component implements OnInit {
 
 
 
-  url ="http://localhost:8081/bnsp/api";
   caserne;
   category;
   libelle;
@@ -56,7 +55,7 @@ export class SubMenu2Component implements OnInit {
   }
 
   getCaserne(){
-    return this.http.get(this.url + "/casernes").subscribe(
+    return this.service.getCaserne().subscribe(
       caserne => {
         this.caserne = caserne;
       }
@@ -83,8 +82,7 @@ formatHeure(heure) {
   return DateTime.fromISO(heure).toFormat('hh : mm');
 }
 getLibelleBycategory(id: number){
-  const url = `http://localhost:8081/bnsp/api/intervention/types?category=${id}`;
-  return this.http.get(url).subscribe(
+  return this.service.getLibelleBycategory(id).subscribe(
     data => {
       this.libelle = data;
       this.libelle = this.libelle.find(lib => lib.id == this.service.formData.incident.incidentTypeId);
@@ -93,7 +91,7 @@ getLibelleBycategory(id: number){
 }
 
 getCategory(){
-  return this.http.get("http://localhost:8081/bnsp/api/intervention/types/category").subscribe(
+  return this.service.getCategory().subscribe(
     data => {
       this.category = data;
       this.category = this.category.find(category => category.id == this.service.formData.incident.categoryId)
@@ -102,7 +100,7 @@ getCategory(){
 }
 
 addCaserneIntervention(Caserne: interventionCaserne){
-  return this.http.put<interventionCaserne>("http://localhost:8081/bnsp/api/intervention/update/info", Caserne).subscribe()
+  return this.service.addCaserneIntervention(Caserne).subscribe()
 }
 
 onSubmit(){

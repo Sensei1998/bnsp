@@ -47,16 +47,11 @@ export class SubMenuComponent implements OnInit {
     this.getProfil();
     this.route.paramMap.subscribe(param =>{
       this.numTel = param.get('numtel')!;
-      console.log(this.numTel)
-      // if(param.get('numtel')){
-
-
-      // }
     });
   }
 
   getCategory(){
-    return this.http.get("http://localhost:8081/bnsp/api/intervention/types/category").subscribe(
+    return this.service.getCategory().subscribe(
       data => {
         this.category = data;
       }
@@ -64,8 +59,7 @@ export class SubMenuComponent implements OnInit {
   }
 
   getLibelleBycategory(id: number){
-    const url = `http://localhost:8081/bnsp/api/intervention/types?category=${id}`;
-    return this.http.get(url).subscribe(
+    return this.service.getLibelleBycategory(id).subscribe(
       data => {
         this.libelle = data;
       }
@@ -81,7 +75,7 @@ export class SubMenuComponent implements OnInit {
   }
 
   getProfil(){
-    return this.http.get("http://localhost:8081/bnsp/api/users/profil").subscribe(
+    return this.service.getProfil().subscribe(
       data => {
         this.profil = data;
       }
@@ -89,7 +83,7 @@ export class SubMenuComponent implements OnInit {
   }
 
   createPartialIntervention(Incident : IncidentPartial){
-    return this.http.post<IncidentPartial>("http://localhost:8081/bnsp/api/intervention/create/partial", Incident).subscribe(
+    return this.service.createPartialIntervention(Incident).subscribe(
       (data: any) => {
         this.service.id = data.id;
       }
