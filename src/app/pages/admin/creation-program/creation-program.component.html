@@ -16,25 +16,24 @@
   <!-- /.container-fluid -->
 </section>
 
-
 <section class="content">
   <div class="grid-margin stretch-card container-fluid">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Fiche</h4>
         <div class="row" *ngIf="isAdmin === true">
-          <div class="col-md-6" >
-            <div class="form-group row" >
+          <div class="col-md-6">
+            <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-6">
-                <select class="form-control" [(ngModel)]="sort" >
-                  <option [ngValue]="0" >Tous les Vehicule</option>
-                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                <select class="form-control" [(ngModel)]="sort">
+                  <option [ngValue]="0">Tous les Vehicule</option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id">{{c.name}}</option>
                 </select>
               </div>
               <div class="col-md-2" style="margin-left: 70%;">
                 <div class="form-group row">
-                  <div >
+                  <div>
                     <pf-button *ngIf="sort !== 0" (click)="getTeam()">Triez</pf-button>
                     <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
                   </div>
@@ -47,12 +46,12 @@
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Chercher par date</p>
               <div class="col-sm-6">
-                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy"/>
+                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy" />
               </div>
               <div class="col-md-2" style="margin-left: 64%;">
                 <div class="form-group row">
-                  <div >
-                    <pf-button  (click)="getProgram(date)" (click)="openRead(content2)" >Chercher</pf-button>
+                  <div>
+                    <pf-button (click)="getProgram(date)" (click)="openRead(content2)">Chercher</pf-button>
                     <!-- <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button> -->
                   </div>
 
@@ -60,9 +59,10 @@
               </div>
             </div>
           </div>
-          <div class="button-container" style="margin-left: -7%;" >
-            <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
-            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des Equipes</button>
+          <div class="button-container" style="margin-left: -7%;">
+            <button class="btn btn-primary prog" (click)="openCreate(content)">Créer un Programme</button>
+            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des
+              Equipes</button>
           </div>
 
 
@@ -73,12 +73,12 @@
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Chercher par date</p>
               <div class="col-sm-6">
-                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy"/>
+                <input type="date" class="form-control" [(ngModel)]="date" placeholder="dd-mm-yyy" />
               </div>
               <div class="col-md-2" style="margin-left: 64%;">
                 <div class="form-group row">
-                  <div >
-                    <pf-button  (click)="getProgram(date)" (click)="openRead(content2)" >Chercher</pf-button>
+                  <div>
+                    <pf-button (click)="getProgram(date)" (click)="openRead(content2)">Chercher</pf-button>
                     <!-- <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button> -->
                   </div>
 
@@ -86,16 +86,108 @@
               </div>
             </div>
           </div>
-          <div class="button-container" style="margin-left: 5%;" >
-            <button class="btn btn-primary prog" (click)="openCreate(content)" >Créer un Programme</button>
-            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des Equipes</button>
+          <div class="button-container" style="margin-left: 5%;">
+            <button class="btn btn-primary prog" (click)="openCreate(content)">Créer un Programme</button>
+            <button class="btn btn-secondary prog" (click)="openCreate(content1)" *ngIf="idprogram !==0">Ajouter des
+              Equipes</button>
           </div>
 
 
 
         </div>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover" >
+        <div class="table-responsive" *ngIf="isAdmin === true">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Choix</th>
+                <th>Compagnie</th>
+                <th>Date</th>
+                <th>CAP Principale du jour</th>
+                <th>CAP Remplacant du jour</th>
+                <th>SGT Principale du jour</th>
+                <th>SGT Remplacant du jour</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let program of donneesPaginees2">
+              <tr *ngIf="program === null">
+                <td> </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <!-- <tr *ngIf="program !== null" >
+                <td> {{program.date }} </td>
+                <td>{{ getTeamName('CAPORAL', 'PRINCIPAL')[0]  }}</td>
+                <td>{{ getTeamName('CAPORAL', 'REMPLACANT')[1]  }}</td>
+                <td>{{ getTeamName('SGT', 'PRINCIPAL')[0] }}</td>
+                <td>{{ getTeamName('SGT', 'REMPLACANT')[1]}}</td>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
+
+              </tr> -->
+              <!-- <tr *ngIf="program !== null">
+                <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
+                <td> {{program.date }} </td>
+                <td *ngFor="let t of program.caporalTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}} </td>
+                <td *ngFor="let t of program.caporalTeam.agents "> {{t.secondFirstname}} {{t.secondLastname}}</td>
+                <td *ngFor="let t of program.sergentTeam.agents ">{{t.principalFirstname}} {{t.principalLastname}}</td>
+                <td *ngFor="let t of program.sergentTeam.agents ">{{t.secondFirstname}} {{t.secondLastname}}</td>
+                <td [width]="120" style="align-items: center;text-align:center"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"  (click)="getProgram(program.date)" ></i>
+                  <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)" style="margin-left: 20%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i>
+                  </td>
+
+              </tr> -->
+              <tr *ngIf="program !== null">
+                <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
+                <td>{{ program.caserneName}}</td>
+                <td> {{program.date}} </td>
+                <ng-container
+                  *ngIf="program.caporalTeam && program.caporalTeam.agents && program.caporalTeam.agents.length > 0">
+                  <td *ngFor="let t of program.caporalTeam.agents">
+                    {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+                    {{t.principalLastname ? t.principalLastname : ''}}
+                  </td>
+                  <td *ngFor="let t of program.caporalTeam.agents">
+                    {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+                    {{t.secondLastname ? t.secondLastname : ''}}
+                  </td>
+                </ng-container>
+                <ng-container
+                  *ngIf="program.sergentTeam && program.sergentTeam.agents && program.sergentTeam.agents.length > 0">
+                  <td *ngFor="let t of program.sergentTeam.agents">
+                    {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+                    {{t.principalLastname ? t.principalLastname : ''}}
+                  </td>
+                  <td *ngFor="let t of program.sergentTeam.agents">
+                    {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+                    {{t.secondLastname ? t.secondLastname : ''}}
+                  </td>
+                </ng-container>
+                <td [width]="120" style="align-items: center; text-align: center">
+                  <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"
+                    (click)="getProgram(program.date)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)"
+                    style="margin-left: 20%;"></i>
+                  <!-- <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i> -->
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+        <div class="table-responsive" *ngIf="isAdmin === false">
+          <table class="table table-bordered table-hover">
             <thead>
               <tr>
                 <th>Choix</th>
@@ -107,16 +199,17 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody  *ngFor="let program of donneesPaginees">
+            <tbody *ngFor="let program of donneesPaginees">
               <tr *ngIf="program === null">
                 <td> </td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" ></i>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"></i>
                   <i class="fa fa-edit" (click)="openEdit(content1)" style="margin-left: 10%;"></i>
-                  <i class="fa fa-trash" style="color: red; margin-left: 10%"  (click)="openSupp(content3)"></i></td>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i>
+                </td>
 
               </tr>
               <!-- <tr *ngIf="program !== null" >
@@ -144,45 +237,61 @@
 
               </tr> -->
               <tr *ngIf="program !== null">
-  <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
-  <td> {{program.date}} </td>
-  <ng-container *ngIf="program.caporalTeam && program.caporalTeam.agents && program.caporalTeam.agents.length > 0">
-    <td *ngFor="let t of program.caporalTeam.agents">
-      {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
-      {{t.principalLastname ? t.principalLastname : ''}}
-    </td>
-    <td *ngFor="let t of program.caporalTeam.agents">
-      {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
-      {{t.secondLastname ? t.secondLastname : ''}}
-    </td>
-  </ng-container>
-  <ng-container *ngIf="program.sergentTeam && program.sergentTeam.agents && program.sergentTeam.agents.length > 0">
-    <td *ngFor="let t of program.sergentTeam.agents">
-      {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
-      {{t.principalLastname ? t.principalLastname : ''}}
-    </td>
-    <td *ngFor="let t of program.sergentTeam.agents">
-      {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
-      {{t.secondLastname ? t.secondLastname : ''}}
-    </td>
-  </ng-container>
-  <td [width]="120" style="align-items: center; text-align: center">
-    <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getProgram(program.date)"></i>
-    <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)" style="margin-left: 20%;"></i>
-    <!-- <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i> -->
-  </td>
-</tr>
+                <td><input type="radio" name="choixId" id="choixId" (click)="changeidprogram(program.id)"></td>
+                <td> {{program.date}} </td>
+                <ng-container
+                  *ngIf="program.caporalTeam && program.caporalTeam.agents && program.caporalTeam.agents.length > 0">
+                  <td *ngFor="let t of program.caporalTeam.agents">
+                    {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+                    {{t.principalLastname ? t.principalLastname : ''}}
+                  </td>
+                  <td *ngFor="let t of program.caporalTeam.agents">
+                    {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+                    {{t.secondLastname ? t.secondLastname : ''}}
+                  </td>
+                </ng-container>
+                <ng-container
+                  *ngIf="program.sergentTeam && program.sergentTeam.agents && program.sergentTeam.agents.length > 0">
+                  <td *ngFor="let t of program.sergentTeam.agents">
+                    {{t.principalFirstname ? t.principalFirstname + ' ' : ''}}
+                    {{t.principalLastname ? t.principalLastname : ''}}
+                  </td>
+                  <td *ngFor="let t of program.sergentTeam.agents">
+                    {{t.secondFirstname ? t.secondFirstname + ' ' : ''}}
+                    {{t.secondLastname ? t.secondLastname : ''}}
+                  </td>
+                </ng-container>
+                <td [width]="120" style="align-items: center; text-align: center">
+                  <i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"
+                    (click)="getProgram(program.date)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content3)" (click)="getProgram(program.date)"
+                    style="margin-left: 20%;"></i>
+                  <!-- <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="openSupp(content3)"></i> -->
+                </td>
+              </tr>
 
             </tbody>
           </table>
+
         </div>
-        <div class="pagination-container" style="display:flex; justify-content:center">
+        <div class="pagination-container" style="display:flex; justify-content:center" *ngIf="isAdmin === true">
           <!-- <ngb-pagination
   [(page)]="page"
   [pageSize]="pageSize"
   [collectionSize]="collectionSize">
 </ngb-pagination> -->
-<ngb-pagination [collectionSize]="listeProgram.length" [pageSize]="pageSize" [(page)]="page" [maxSize]="3"></ngb-pagination>
+          <ngb-pagination [collectionSize]="listeProgram2.length" [pageSize]="pageSize" [(page)]="page"
+            [maxSize]="3"></ngb-pagination>
+
+        </div>
+        <div class="pagination-container" style="display:flex; justify-content:center" *ngIf="isAdmin === false">
+          <!-- <ngb-pagination
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="collectionSize">
+</ngb-pagination> -->
+          <ngb-pagination [collectionSize]="listeProgram.length" [pageSize]="pageSize" [(page)]="page"
+            [maxSize]="3"></ngb-pagination>
 
         </div>
       </div>
@@ -231,7 +340,7 @@
                 <div class="col-sm-9" >
                   <!-- <input class="form-control" type="text" id="caporal-principal" formControlName="principal"> -->
                   <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === true">
-                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
                   </select>
                   <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === false">
                     <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
@@ -250,7 +359,7 @@
                 <div class="col-sm-9" >
                   <!-- <input class="form-control" type="text" id="caporal-remplacant" formControlName="remplacant"> -->
                   <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === true">
-                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
                   </select>
                   <select class="form-control" id="caporal-principal" formControlName="remplacant" *ngIf="isAdmin === false">
                     <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
@@ -276,7 +385,7 @@
                 <div class="col-sm-9" >
                   <!-- <input class="form-control" type="text" id="sergent-principal" formControlName="principal"> -->
                   <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === true">
-                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                    <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
                   </select>
                   <select class="form-control" id="caporal-principal" formControlName="principal" *ngIf="isAdmin === false">
                     <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
@@ -358,7 +467,7 @@
                   <div class="col-sm-2" style="margin-left: -2%;" >
                     <!-- <input type="text" class="form-control" formControlName="principalId"  /> -->
                     <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === true">
-                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
                     </select>
                     <select class="form-control" id="caporal-principal" formControlName="principalId" *ngIf="isAdmin === false">
                       <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
@@ -368,7 +477,7 @@
                   <div class="col-sm-2" style="margin-left: -2%;">
                     <!-- <input type="text" class="form-control" formControlName="remplacantId"  /> -->
                     <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === true">
-                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>
+                      <option *ngFor="let u of users" value={{u.id}}>{{u.firstname}} {{u.lastname}} {{u.caserne.name}}</option>
                     </select>
                     <select class="form-control" id="caporal-principal" formControlName="remplacantId" *ngIf="isAdmin === false">
                       <option *ngFor="let u of usersCaserne" value={{u.id}}>{{u.firstname}} {{u.lastname}}</option>

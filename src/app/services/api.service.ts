@@ -167,6 +167,10 @@ export class ApiService {
       return this.http.get(this.url + "/programs/team/types");
     }
 
+    getAllProgram(){
+      return this.http.get(this.url + "/programs");
+    }
+
     getProgramByCaserne(id:number){
       return this.http.get(this.url + "/programs/caserne/"+id);
     }

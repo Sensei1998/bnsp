@@ -449,7 +449,7 @@
                     <p formControlName="presentation" type="dateTime-local" class="form-control" step="1" [ngModel]="presentation" >{{(presentation | date: 'dd/MM/yyyy HH:mm:ss')}} </p>
                   </td>
                   <td>
-                    <p formControlName="available" type="dateTime-local" class="form-control" step="1" [ngModel]="available"  >{{(available | date: 'dd/MM/yyyy HH:mm:ss')}} </p>
+                    <input formControlName="available" class="form-control" type="dateTime-local" step="1" [ngModel]="available">
                   </td>
                   <td>
                     <input formControlName="checkIn" class="form-control" type="dateTime-local" step="1" [ngModel]="checkIn">

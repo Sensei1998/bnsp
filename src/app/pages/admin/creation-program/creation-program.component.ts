@@ -53,10 +53,11 @@ export class CreationProgramComponent implements OnInit{
   program: any;
   date = DateTime.now();
   t;
+  program3: any;
 
   idCaserne = Number(localStorage.getItem('idCaserne'));
   role = localStorage.getItem('fonction');
-  isAdmin = false;
+  isAdmin;
 
   agree;
   agree2;
@@ -84,6 +85,7 @@ export class CreationProgramComponent implements OnInit{
   dateprogram;
   program2;
   listeProgram:any[]=[];
+  listeProgram2:any[]=[];
   page = 1; // Page actuelle
   pageSize = 5; // Nombre d'éléments par page
   collectionSize: number; // Taille totale de la collection
@@ -104,6 +106,7 @@ export class CreationProgramComponent implements OnInit{
     this.getTeam();
     this.getAgentByCaserne(this.idCaserne);
     this.getProgramByCaserne(this.idCaserne);
+    this.getAllProgram();
 
     if(this.role === "ROLE_SUPERVISOR"){
       this.isAdmin = true;
@@ -123,6 +126,31 @@ export class CreationProgramComponent implements OnInit{
     }
 
     const sortedList = this.listeProgram.sort((a, b) => {
+      // Tri par ordre décroissant en utilisant la propriété "date"
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    const paginatedList = sortedList.slice(startIndex, endIndex);
+
+    const totalPages = Math.ceil(sortedList.length / this.pageSize);
+    let startPage = Math.max(1, this.page - 1);
+    let endPage = Math.min(startPage + 2, totalPages);
+
+    if (endPage - startPage < 2) {
+      startPage = Math.max(1, endPage - 2);
+    }
+
+    return paginatedList;
+  }
+
+  get donneesPaginees2() {
+    if (this.listeProgram2 === null) {
+      return this.listeProgram2 = [];
+    }
+
+    const sortedList = this.listeProgram2.sort((a, b) => {
       // Tri par ordre décroissant en utilisant la propriété "date"
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
@@ -263,6 +291,19 @@ getProgram(date){
         }
       }
     )
+}
+
+getAllProgram(){
+  return this.service.getAllProgram().subscribe(
+    (program: any) =>{
+      try{
+        this.program3 = program;
+        this.listeProgram2 = program
+      } catch {
+        this.toastr.error('Aucune fiche actuellement')
+      }
+    }
+  )
 }
 
 
