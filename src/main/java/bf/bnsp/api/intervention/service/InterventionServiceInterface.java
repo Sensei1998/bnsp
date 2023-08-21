@@ -9,7 +9,9 @@ import bf.bnsp.api.intervention.model.CategoryIncident;
 import bf.bnsp.api.intervention.model.IncidentType;
 import bf.bnsp.api.intervention.model.Intervention;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,6 +32,12 @@ public interface InterventionServiceInterface {
     Optional<Intervention> findActiveInterventionById(int id);
 
     List<Intervention> findAllActiveIntervention();
+
+    Map<String, Long> countInterventionByStatus(boolean currentDate);
+
+    Map<String, Long> countInterventionByInterval(LocalDate startDate, LocalDate endDate);
+
+    long countAllInterventionByDate(LocalDate date);
 
     List<CategoryIncident> findAllCategoryIncident();
 

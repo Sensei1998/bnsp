@@ -2,30 +2,34 @@ version: "3.7"
 
 services:
   postgres:
-    image: postgres:13-alpine
+    image: "postgres:13-alpine"
+    container_name: postgres
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: P@ssw0rd23
-      POSTGRES_DB: BNSPDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P@ssw0rd23
+      - POSTGRES_DB=BNSPDB
     networks:
       - springapipostgres-net
     ports:
-      - "5433:5433"
+      - 5432:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
   app:
     build: .
+    restart: always
+    container_name: app
     ports:
-      - "8082:8082"
+      - 8082:8082
     depends_on:
       - postgres
     networks:
       - springapipostgres-net
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5433/BNSPDB
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: P@ssw0rd23
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/BNSPDB
+      - spring.datasource.username=postgres
+      - spring.datasource.password=P@ssw0rd23
 
 volumes:
   postgres-data:

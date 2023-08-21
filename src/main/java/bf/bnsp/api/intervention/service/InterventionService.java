@@ -17,8 +17,11 @@ import bf.bnsp.api.intervention.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Berickal
@@ -171,6 +174,40 @@ public class InterventionService implements InterventionServiceInterface{
     @Override
     public List<Intervention> findAllActiveIntervention() {
         return this.interventionRepository.findAll();
+    }
+
+    @Override
+    public Map<String, Long> countInterventionByStatus(boolean currentDate) {
+        List<String> status = Arrays.asList("Non attribué", "En cours", "Termine");
+        Map<String, Long> response = new HashMap<>();
+        if(currentDate){
+            for (String element: status) response.put(element, this.interventionRepository.countByStatusAndDateBetweenAndHiddenFalse(element, LocalDate.now().atStartOfDay(), LocalDate.now().atTime(LocalTime.MAX)));
+        }
+        else {
+            for (String element: status) response.put(element, this.interventionRepository.countByStatusAndHiddenFalse(element));
+        }
+        return response;
+    }
+
+    @Override
+    public Map<String, Long> countInterventionByInterval(LocalDate startDate, LocalDate endDate) {
+        List<LocalDate> dates = startDate.datesUntil(endDate).collect(Collectors.toList());
+        Map<String, Long> response = new HashMap<>();
+        long total = 0;
+        long tmpCount = 0;
+
+        for (LocalDate element: dates) {
+            tmpCount = this.interventionRepository.countByDateBetweenAndHiddenFalse(element.atStartOfDay(), element.atTime(LocalTime.MAX));
+            response.put(element.toString(), tmpCount);
+            total += tmpCount;
+        }
+        response.put("all", total);
+        return response;
+    }
+
+    @Override
+    public long countAllInterventionByDate(LocalDate date) {
+        return this.interventionRepository.countByDateBetweenAndHiddenFalse(date.atStartOfDay(), date.atTime(LocalTime.MAX));
     }
 
     @Override

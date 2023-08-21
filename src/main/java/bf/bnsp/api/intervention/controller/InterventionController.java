@@ -15,12 +15,15 @@ import bf.bnsp.api.intervention.service.InterventionService;
 import bf.bnsp.api.intervention.service.InterventionSheetService;
 import bf.bnsp.api.tools.controleForm.TokenUtils;
 import bf.bnsp.api.tools.mappingTools.MappingIntervention;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -99,6 +102,24 @@ public class InterventionController {
             response = this.interventionService.closeIntervention(response.get());
             return response.isPresent() ? new ResponseEntity<>(response.get(), HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @GetMapping(value = "/count/status")
+    public ResponseEntity<?> countByStatus(@RequestParam("current") Optional<Boolean> currentDate){
+        Map<String, Long> response = this.interventionService.countInterventionByStatus(currentDate.isPresent());
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/count/interval")
+    public ResponseEntity<?> countByInterval(@RequestParam("start") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate startDate, @RequestParam("end") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate endDate){
+        Map<String, Long> response = this.interventionService.countInterventionByInterval(startDate, endDate);
+        return response.size() > 0 ? new ResponseEntity<>(response, HttpStatus.OK) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/count/date")
+    public ResponseEntity<?> countByInterval(@RequestParam("date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date){
+        long response = this.interventionService.countAllInterventionByDate(date);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/types/category")

@@ -72,15 +72,15 @@ public class DBInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        this.initRules();;
-//        this.initCaserneType();
-//        this.initEnginType();
-//        this.initGrade();
-//        this.initEquipeType();
-//        this.initData();
-//        this.initIncident();
-//        this.initZone();
-//        this.initCaserne();
+        this.initRules();;
+        this.initCaserneType();
+        this.initEnginType();
+        this.initGrade();
+        this.initEquipeType();
+        this.initData();
+        this.initIncident();
+        this.initZone();
+        this.initCaserne();
     }
 
     private void initRules(){
