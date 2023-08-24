@@ -23,6 +23,7 @@ import { Message } from '@/model/message.model';
 })
 export class ApiService {
     url= "http://localhost:8081/bnsp/api";
+    //url = "http://192.168.2.52:8081/bnsp/api";
     formData: any = {};
     id:number;
     constructor(private http: HttpClient) {}
@@ -30,6 +31,7 @@ export class ApiService {
     getGrade(){
       return this.http.get(this.url + "/users/grades");
     }
+
 
     getZone(){
       return this.http.get(this.url + "/casernes/zones");
@@ -284,7 +286,7 @@ getInterventionBCot(id: number) {
 }
 
 login(login){
-  return this.http.post("http://localhost:8081/bnsp/api/users/login", login);
+  return this.http.post(this.url + "/users/login", login);
 }
 
 saveCaserne(id){

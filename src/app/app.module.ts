@@ -49,6 +49,8 @@ import { CreationProgramComponent } from './pages/admin/creation-program/creatio
 import { TokenInterceptorProvider } from '@guards/token.interceptor';
 import { AjoutCompagnieComponent } from './pages/main-menu/ajout-compagnie/ajout-compagnie.component';
 import { ConsulterComponent } from './pages/main-menu/consulter/consulter.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+
 
 
 
@@ -108,7 +110,7 @@ registerLocaleData(localeEn, 'en-EN');
         NgSelectModule,
         NgbModule,
         NgbModule,
-
+        HighchartsChartModule
     ],
     providers: [NgbModalConfig, NgbModal, TokenInterceptorProvider, DatePipe,NgbPaginationConfig],
     bootstrap: [AppComponent]

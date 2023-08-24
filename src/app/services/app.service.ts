@@ -112,8 +112,21 @@ export class AppService {
         localStorage.removeItem('idCaserne');
         setTimeout(() => {
           this.router.navigate(['/login']);
-          window.location.reload();
+         // window.location.reload();
         }, 1000);
 
     }
+
+    logoutToken() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('email');
+      localStorage.removeItem('fonction');
+      localStorage.removeItem('Caserne');
+      localStorage.removeItem('idCaserne');
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+        this.toastr.error('La session a expiré. Veuillez vous reconnecter!!!!!!')
+      }, 1000);
+
+  }
 }

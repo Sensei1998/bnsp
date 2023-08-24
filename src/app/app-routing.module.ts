@@ -22,6 +22,7 @@ import { CreationProgramComponent } from '@pages/admin/creation-program/creation
 import { LoginGuard } from '@guards/login.guard';
 import { AjoutCompagnieComponent } from '@pages/main-menu/ajout-compagnie/ajout-compagnie.component';
 import { ConsulterComponent } from '@pages/main-menu/consulter/consulter.component';
+import { CanDesactivateGuard } from '@guards/can-desactivate.guard';
 
 const routes: Routes = [
     {
@@ -40,11 +41,13 @@ const routes: Routes = [
             },
             {
                 path: 'crée-une-intervention',
-                component: SubMenuComponent
+                component: SubMenuComponent,
+                canDeactivate: [CanDesactivateGuard]
             },
             {
               path: 'crée-une-intervention/:numtel',
-              component: SubMenuComponent
+              component: SubMenuComponent,
+              canDeactivate: [CanDesactivateGuard]
             },
             {
                 path: 'listes-des-interventions',

@@ -19,7 +19,7 @@
 <!-- Main content -->
 <section class="content">
     <!-- Default box -->
-    <form [formGroup]="interventionForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="interventionForm" (ngSubmit)="onSubmit()" >
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
@@ -35,7 +35,7 @@
                   <tr >
                     <td>
                       <h3 class="card-title">Numéro Appelant:</h3>
-                      <input type="text" class="card-title" formControlName="phoneNumber" [ngModel]="numTel" style="margin-left: 2%;" minlength="8" maxlength="8"><br><br>
+                      <input type="text" class="card-title" formControlName="phoneNumber" [ngModel]="numTel" style="margin-left: 2%;" minlength="8" ><br><br>
                       <div
                         *ngIf="interventionForm.get('phoneNumber').invalid && (interventionForm.get('phoneNumber').dirty || interventionForm.get('phoneNumber').touched)"
                         class="text-danger">
@@ -155,17 +155,17 @@
                         <div class="row row-sm mg-b-20 " >
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Longitude</p>
-                            <input type="number" formControlName="longitude" class="form-control" />
+                            <input type="number" formControlName="longitude" class="form-control" [(ngModel)]="longitude" />
                           </div>
 
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Latitude</p>
-                            <input type="number" formControlName="latitude" class="form-control" />
+                            <input type="number" formControlName="latitude" class="form-control" [(ngModel)]="latitude"/>
                           </div>
 
                           <div class="col-lg-6 form-group ">
                             <p class="mg-b-10">Precision</p>
-                            <input type="text" formControlName="precision" class="form-control" />
+                            <input type="text" formControlName="precision" class="form-control" [(ngModel)]="precision" />
                           </div>
                         </div>
 

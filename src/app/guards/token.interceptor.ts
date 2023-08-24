@@ -6,14 +6,15 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { AppService } from '@services/app.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private service: AppService) {}
+  constructor(private service: AppService, private toastr: ToastrService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.service.getToken();
@@ -22,7 +23,15 @@ export class TokenInterceptor implements HttpInterceptor {
       let clone = request.clone({
         headers:  request.headers.set('Authorization', 'Bearer ' + token)
       })
-      return next.handle(clone)
+      return next.handle(clone).pipe(
+        catchError(error =>{
+          console.log(error);
+          if(error.status === 500){
+            this.service.logoutToken();
+          }
+          return throwError('La session a expiré. Veuillez vous reconnecter!!!!!!')
+        })
+      )
     }
 
     return next.handle(request);

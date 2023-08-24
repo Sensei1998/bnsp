@@ -67,11 +67,11 @@ export class MenuSidebarComponent implements OnInit {
 }
 
 export const MENU = [
-    // {
-    //     name: 'Tableau de Bord',
-    //     iconClasses: 'fas fa-tachometer-alt',
-    //     path: ['/']
-    // },
+    {
+        name: 'Tableau de Bord',
+        iconClasses: 'fas fa-tachometer-alt',
+        path: ['/']
+    },
     {
         name: 'Listes des fiches',
         iconClasses: 'fas fa-folder',

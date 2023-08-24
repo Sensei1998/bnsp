@@ -1,7 +1,4 @@
-import { Agent } from '@/model/Agent.model';
 import { DailyProgramCreationForm } from '@/model/DailyProgramCreationForm.model';
-import { EnginCreationForm } from '@/model/EnginCreationForm.model';
-import { EnginUpdateForm } from '@/model/EnginUpdateForm.model';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
@@ -9,7 +6,6 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {DateTime} from 'luxon';
 import { ActivatedRoute } from '@angular/router';
-import { error } from 'protractor';
 import { DailyProgramAddEquipeForm } from '@/model/DailyProgramAddEquipeForm.model';
 import { ApiService } from '@services/api.service';
 

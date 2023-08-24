@@ -1,4 +1,5 @@
 import { IncidentPartial } from '@/model/IncidentPartial.model';
+import { CanDeactivateComponent } from '@/model/can-deactivate.interface';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import {DateTime} from 'luxon';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -13,13 +15,16 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './sub-menu.component.html',
   styleUrls: ['./sub-menu.component.scss']
 })
-export class SubMenuComponent implements OnInit {
+export class SubMenuComponent implements OnInit, CanDeactivateComponent {
   date = DateTime.now();
   model = 1;
   date2 = this.formatDate(this.date);
   heure = this.formatHeure(this.date);
 
-
+  urlCarto="http://192.168.2.30:8000/carto/appelant/";
+  longitude=0;
+  latitude=0;
+  precision = 'AML';
   interventionForm: FormGroup = this.form.group({
     date: [[''], Validators.required],
     time:[[''], Validators.required],
@@ -27,9 +32,9 @@ export class SubMenuComponent implements OnInit {
     phoneNumber : [[''], [Validators.required, Validators.minLength(8)]],
     name : [[''], Validators.required],
     address : [['']],
-    longitude: [0],
-    latitude: [0],
-    precision: ['AML'],
+    longitude: [],
+    latitude: [],
+    precision: [],
     categoryId:[[''], Validators.required],
     incidentTypeId:[[''], Validators.required],
     comments:[['']]
@@ -48,6 +53,24 @@ export class SubMenuComponent implements OnInit {
     this.route.paramMap.subscribe(param =>{
       this.numTel = param.get('numtel')!;
     });
+    setTimeout(()=> {
+      this.getCoordonnee();
+    },2000)
+  }
+
+  getCoordonnee(){
+    return this.http.get(this.urlCarto + this.numTel).subscribe(
+      (result: any) => {
+        if(result.sms_longitude !== null && result.sms_latitude !== null) {
+         this.longitude = result.sms_longitude;
+        this.latitude = result.sms_latitude;
+        } else {
+          this.longitude=0;
+          this.latitude = 0;
+        }
+
+      }
+    )
   }
 
   getCategory(){
@@ -90,6 +113,18 @@ export class SubMenuComponent implements OnInit {
     );
   }
 
+  canDeactivate(): boolean | Observable<boolean> {
+    if (this.interventionForm.valid) {
+      return true;
+    } else {
+      // Si le formulaire n'est pas valide, affichez un message à l'utilisateur si nécessaire.
+      // Vous pouvez également vérifier s'il y a des données non sauvegardées ici.
+      const confirmExit = window.confirm(
+        'Des données non sauvegardées existent. Êtes-vous sûr de vouloir quitter la page ?'
+      );
+      return confirmExit;
+    }
+  }
   onSubmit(){
      if(this.interventionForm.valid){
       let intervention: IncidentPartial ={
@@ -109,13 +144,14 @@ export class SubMenuComponent implements OnInit {
           comments: this.interventionForm.get('comments').value,
         }
       }
+      console.log(intervention)
       this.service.formData = intervention;
       this.createPartialIntervention(intervention);
       this.toastr.success('Information Enregistrer avec succès!');
       this.router.navigate(['/affecter-companie']);
     } else {
-        this.toastr.error('Erreur lors de la création de l \'intervention Formulaire invalide ou incomplet');
-    }
+         this.toastr.error('Erreur lors de la création de l \'intervention Formulaire invalide ou incomplet');
+     }
   }
 
 
