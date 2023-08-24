@@ -178,7 +178,7 @@ public class InterventionService implements InterventionServiceInterface{
 
     @Override
     public Map<String, Long> countInterventionByStatus(boolean currentDate) {
-        List<String> status = Arrays.asList("Non attribué", "En cours", "Termine");
+        List<String> status = Arrays.asList("Non attribué", "En attente", "En cours", "Termine");
         Map<String, Long> response = new HashMap<>();
         if(currentDate){
             for (String element: status) response.put(element, this.interventionRepository.countByStatusAndDateBetweenAndHiddenFalse(element, LocalDate.now().atStartOfDay(), LocalDate.now().atTime(LocalTime.MAX)));
