@@ -22,7 +22,7 @@ import { Message } from '@/model/message.model';
     providedIn: 'root'
 })
 export class ApiService {
-    url= "http://localhost:8081/bnsp/api";
+    url= "http://localhost:8082/bnsp/api";
     //url = "http://192.168.2.52:8081/bnsp/api";
     formData: any = {};
     id:number;
@@ -291,6 +291,18 @@ login(login){
 
 saveCaserne(id){
  return this.http.get(this.url + "/casernes/" + id);
+}
+
+getStatToday(){
+  return this.http.get(this.url + "/intervention/count/status?current=true");
+}
+
+getStatByDate(date){
+  return this.http.get(this.url + "/intervention/count/date?date=" + date);
+}
+
+getStatByPeriod(start,end){
+  return this.http.get(this.url + "/intervention/count/interval?start=" + start + "&end=" + end)
 }
 
 }

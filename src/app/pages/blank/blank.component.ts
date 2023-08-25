@@ -19,6 +19,7 @@ export class BlankComponent implements OnInit {
   message;
   role = localStorage.getItem('fonction');
   isAdmin: boolean;
+  supervisor:boolean;
   bcot: boolean;
   ccot:boolean;
   page = 1; // Page actuelle
@@ -40,8 +41,15 @@ export class BlankComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    if (this.role === "ROLE_SUPERVISOR" ) {
+      this.supervisor = true;
 
-    if (this.role === "ROLE_SUPERVISOR" || this.role === "ROLE_ADMINISTRATEUR") {
+    } else {
+      this.supervisor = false;
+
+    }
+
+    if ( this.role === "ROLE_ADMINISTRATEUR") {
       this.isAdmin = true;
 
     } else {

@@ -117,9 +117,24 @@
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Fonction</p>
-                <div class="col-sm-9">
+                <div class="col-sm-9" *ngIf="supervisor === true && isAdmin === false">
                   <select class="form-control" formControlName="defaultFonction"  >
                     <option value=1>ROLE_SUPERVISOR</option>
+                    <option value=2>ROLE_ADMINISTRATEUR</option>
+                    <option value=3>ROLE_CCOT</option>
+                    <option value=4>ROLE_BCTO</option>
+                    <option value=5>ROLE_CAP</option>
+                    <option value=6>ROLE_SGT</option>
+                    <option value=7>ROLE_CA</option>
+                    <option value=8>ROLE_CH</option>
+                    <option value=9>ROLE_SVT</option>
+                    <option value=10>ROLE_HDL</option>
+                    <option value=11>ROLE_CONDUCTEUR</option>
+                    <option value=12>ROLE_SDA</option>
+                  </select>
+                </div>
+                <div class="col-sm-9" *ngIf="supervisor === false && isAdmin === true">
+                  <select class="form-control" formControlName="defaultFonction"  >
                     <option value=2>ROLE_ADMINISTRATEUR</option>
                     <option value=3>ROLE_CCOT</option>
                     <option value=4>ROLE_BCTO</option>
@@ -259,9 +274,24 @@
             <div class="col-md-6">
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Fonction</p>
-                <div class="col-sm-9">
+                <div class="col-sm-9" *ngIf="supervisor === true && isAdmin === false">
                   <select class="form-control" formControlName="defaultFonction" [(ngModel)]="agent.defaultFonction.id" >
                     <option value=1>ROLE_SUPERVISOR</option>
+                    <option value=2>ROLE_ADMINISTRATEUR</option>
+                    <option value=3>ROLE_CCOT</option>
+                    <option value=4>ROLE_BCTO</option>
+                    <option value=5>ROLE_CAP</option>
+                    <option value=6>ROLE_SGT</option>
+                    <option value=7>ROLE_CA</option>
+                    <option value=8>ROLE_CH</option>
+                    <option value=9>ROLE_SVT</option>
+                    <option value=10>ROLE_HDL</option>
+                    <option value=11>ROLE_CONDUCTEUR</option>
+                    <option value=12>ROLE_SDA</option>
+                  </select>
+                </div>
+                <div class="col-sm-9" *ngIf="supervisor === false && isAdmin === true">
+                  <select class="form-control" formControlName="defaultFonction" [(ngModel)]="agent.defaultFonction.id" >
                     <option value=2>ROLE_ADMINISTRATEUR</option>
                     <option value=3>ROLE_CCOT</option>
                     <option value=4>ROLE_BCTO</option>
@@ -322,7 +352,7 @@
       <div class="card-body">
         <h4 class="card-title">Liste des agents</h4>
         <div class="row" style="margin-left: 20%;">
-          <div class="col-md-6" >
+         <!--  <div class="col-md-6" >
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-8">
@@ -341,9 +371,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <pf-button  (click)="openCreate(content)" class="card-title" style="margin-left: 40%;" >
+          <pf-button  (click)="openCreate(content)" class="card-title" style="margin-left: 90%;" >
             <i class="fa fa-plus"></i>
           </pf-button>
         </div>

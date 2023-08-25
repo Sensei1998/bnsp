@@ -324,15 +324,54 @@ loadMembersByTeamId(teamId) {
   const memberFormArray = this.addEquipe.get('members') as FormArray;
   memberFormArray.clear(); // Supprime les membres existants du formArray
   this.teamId = teamId;
-  members.agents.forEach((member) => {
-    const memberGroup = this.formBuilder.group({
-      principalId: [member.principalId],
-      remplacantId: [member.secondId],
-      fonctionId: [member.fonctionId]
-    });
 
-    memberFormArray.push(memberGroup); // Ajoute le membre au formArray
-  });
+  if(members.agents.length === 0){
+    let numberOfElementsToLoad = 2; // Par défaut, charge 2 éléments
+
+    switch (members.teamType) {
+      case 'Fourgon':
+        numberOfElementsToLoad = 8;
+        break;
+      case 'Premier Secours':
+        numberOfElementsToLoad = 5;
+        break;
+      case 'Premier Secours Relevable':
+        numberOfElementsToLoad = 4;
+        break;
+      case 'Caporal':
+      case 'Sgt':
+      case 'Garde remise':
+      case 'Planton':
+        numberOfElementsToLoad = 1;
+        break;
+      default:
+        numberOfElementsToLoad = 2;
+        break;
+    }
+    for (let i = 0; i < numberOfElementsToLoad; i++) {
+
+        const memberGroup = this.formBuilder.group({
+          principalId: [],
+          remplacantId: [],
+          fonctionId: []
+        });
+        memberFormArray.push(memberGroup); // Ajoute le membre au formArray
+      }
+
+
+  }else {
+    members.agents.forEach((member) => {
+      const memberGroup = this.formBuilder.group({
+        principalId: [member.principalId],
+        remplacantId: [member.secondId],
+        fonctionId: [member.fonctionId]
+      });
+
+      memberFormArray.push(memberGroup); // Ajoute le membre au formArray
+    });
+  }
+
+
 }
 
 

@@ -1,4 +1,7 @@
+import { DatePipe } from '@angular/common';
 import {Component, OnInit} from '@angular/core';
+import { ApiService } from '@services/api.service';
+import { map } from 'rxjs/operators';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -11,72 +14,90 @@ export class DashboardComponent implements OnInit{
   CharLine:{};
   joursDuMois = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
 
-  constructor() { }
+  //pour la journée d'aujourd'hui
+  total = 0;
+  nonattribuer = 0;
+  enattente = 0;
+  encours = 0;
+  terminer = 0;
+
+  //pour une période précise
+  total1 = 0;
+  nonattribuer1 = 0;
+  enattente1 = 0;
+  encours1 = 0;
+  terminer1 = 0;
+  dateDebut;
+  dateFin;
+  tableauDeDonnees: any[] = [];
+
+
+  constructor(private datePipe: DatePipe, private service: ApiService) { }
 
   ngOnInit() {
-    this.chartOptions = {
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: 'Exemple de graphique en barres'
-      },
-      xAxis: {
-        categories: this.joursDuMois,
-      crosshair: true
-      },
-      yAxis: {
-        title: {
-          text: 'Valeurs'
-        }
-      },
-      series: [{
-        name: 'Série 1',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,194.1, 95.6, 54.4,48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0,
-          83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,106.6, 92.3]
-      }]
-    };
+    setInterval(() =>{
+      this.getTodayStat();
+    },1000);
 
-    Highcharts.chart('container', this.chartOptions);
-
-    this.CharLine = {
-      chart: {
-        type: 'line'
-      },
-      title: {
-        text: 'Exemple de graphique en barres'
-      },
-      xAxis: {
-        categories: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec'
-      ],
-      crosshair: true
-      },
-      yAxis: {
-        title: {
-          text: 'Valeurs'
-        }
-      },
-      series: [{
-        name: 'Série 1',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,194.1, 95.6, 54.4]
-      }]
-    };
-
-    Highcharts.chart('container2', this.CharLine);
   }
 
+  getTodayStat() {
+    return this.service.getStatToday().subscribe(
+      (result: any) => {
+        this.nonattribuer = result["Non attribué"];
+        this.enattente = result["En attente"];
+        this.encours = result["En cours"];
+        this.terminer = result["Termine"];
+        this.total = (this.nonattribuer+this.enattente+this.encours+this.terminer);
+      }
+    )
+  }
+
+  getPeriodStat(start,end){
+    start = this.datePipe.transform(start, 'dd-MM-yyyy');
+    end = this.datePipe.transform(end, 'dd-MM-yyyy');
+    return this.service.getStatByPeriod(start, end).pipe(
+      map(data => {
+        // Convertir la réponse JSON en tableau d'objets
+        return Object.entries(data)
+          .map(([date, valeur]) => ({ date, valeur }))
+          .filter(item => item.date !== 'all'); // Filtrer la date 'all'
+      })
+    ).subscribe(tableauDeDonnees => {
+      // Trier les dates par ordre croissant
+      tableauDeDonnees.sort((a, b) => a.date.localeCompare(b.date));
+
+      // Remplacez le contenu du tableau par le nouveau tableau
+      setTimeout(()=>{
+        this.chartOptions = {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: `Total d\'intervention pour la période du ${start} au ${end}`
+          },
+          xAxis: {
+            categories: tableauDeDonnees.map(item => item.date),
+            crosshair: true
+          },
+          yAxis: {
+            title: {
+              text: 'Nombre d\'Intervention'
+            }
+          },
+          series: [{
+            name: 'Nombre Total d\'Intervention',
+            data: tableauDeDonnees.map(item => item.valeur),
+          }]
+        };
+
+        Highcharts.chart('container', this.chartOptions);
+      }, 2000)
+
+    });
+
+
+  }
 
 
 }

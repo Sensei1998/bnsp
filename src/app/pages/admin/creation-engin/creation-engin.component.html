@@ -1,17 +1,17 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
-      <div class="row mb-2">
-          <div class="col-sm-6">
-              <h1>Engin</h1>
-          </div>
-          <!-- <div class="col-sm-6">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Engin</h1>
+      </div>
+      <!-- <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item active">Blank Page</li>
               </ol>
           </div> -->
-      </div>
+    </div>
   </div>
   <!-- /.container-fluid -->
 </section>
@@ -22,19 +22,19 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Liste des Engins</h4>
-        <div class="row" >
-          <div class="col-md-4">
+        <div class="row">
+         <!--  <div class="col-md-4">
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par caserne</p>
               <div class="col-sm-6">
-                <select class="form-control" [(ngModel)]="sort" >
-                  <option [ngValue]="0" >Tous </option>
-                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                <select class="form-control" [(ngModel)]="sort">
+                  <option [ngValue]="0">Tous </option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id">{{c.name}}</option>
                 </select>
               </div>
               <div class="col-md-2" style="margin-left: 60%;">
                 <div class="form-group row">
-                  <div >
+                  <div>
                     <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
                     <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
                   </div>
@@ -46,14 +46,14 @@
             <div class="form-group row">
               <p class="col-sm-4 col-form-p">Trier par type</p>
               <div class="col-sm-6">
-                <select class="form-control" [(ngModel)]="sort" >
-                  <option [ngValue]="0" >Tous </option>
-                  <option *ngFor="let c of caserne" [ngValue]="c.id" >{{c.name}}</option>
+                <select class="form-control" [(ngModel)]="sort">
+                  <option [ngValue]="0">Tous </option>
+                  <option *ngFor="let c of caserne" [ngValue]="c.id">{{c.name}}</option>
                 </select>
               </div>
               <div class="col-md-2" style="margin-left: 60%;">
                 <div class="form-group row">
-                  <div >
+                  <div>
                     <pf-button *ngIf="sort !== 0" (click)="getEnginByCaserne(sort)">Triez</pf-button>
                     <pf-button *ngIf="sort === 0" (click)="getEngin()">Triez</pf-button>
                   </div>
@@ -61,7 +61,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4"  style="margin-left: -5%;">
+          <div class="col-md-4" style="margin-left: -5%;">
             <div class="form-group row">
               <p class="col-sm-6 col-form-p">Trier par Immatriculation</p>
               <div class="col-sm-6">
@@ -69,15 +69,15 @@
               </div>
 
             </div>
-          </div>
+          </div> -->
 
 
-            <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 5%;" >
-              <i class="fa fa-plus"></i>
-            </pf-button>
+          <pf-button (click)="openCreate(content)" class="card-title" style="margin-left: 90%;">
+            <i class="fa fa-plus"></i>
+          </pf-button>
         </div>
         <div class="table-responsive">
-          <table class="table table-bordered table-hover" >
+          <table class="table table-bordered table-hover">
             <thead>
               <tr>
                 <th>Vehicule</th>
@@ -91,21 +91,26 @@
                 <td>{{e.enginType.enginType}}</td>
                 <td>{{e.immatriculation}}</td>
                 <td> {{e.description}}</td>
-                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)" (click)="getEnginById(e.id)"></i>
-                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getEnginById(e.id)" style="margin-left: 10%;"></i>
-                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getEnginById(e.id)" (click)="openSupp(content3)"></i></td>
+                <td [width]="120"><i class="fa fa-eye" style="color: rgb(9, 255, 0);" (click)="openRead(content2)"
+                    (click)="getEnginById(e.id)"></i>
+                  <i class="fa fa-edit" (click)="openEdit(content1)" (click)="getEnginById(e.id)"
+                    style="margin-left: 10%;"></i>
+                  <i class="fa fa-trash" style="color: red; margin-left: 10%" (click)="getEnginById(e.id)"
+                    (click)="openSupp(content3)"></i>
+                </td>
 
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="pagination-container"style="display:flex; justify-content:center">
+        <div class="pagination-container" style="display:flex; justify-content:center">
           <!-- <ngb-pagination
   [(page)]="page"
   [pageSize]="pageSize"
   [collectionSize]="collectionSize">
 </ngb-pagination> -->
-<ngb-pagination [collectionSize]="listeEngin.length" [pageSize]="pageSize" [(page)]="page" [maxSize]="3"></ngb-pagination>
+          <ngb-pagination [collectionSize]="listeEngin.length" [pageSize]="pageSize" [(page)]="page"
+            [maxSize]="3"></ngb-pagination>
 
         </div>
       </div>
@@ -125,22 +130,22 @@
           <p class="card-description">
             <strong>Caserne Et Véhicule</strong>
           </p>
-          <div class="row" >
+          <div class="row">
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Caserne</p>
-                <div class="col-sm-9" >
-                  <select class="form-control" formControlName="caserneId" >
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="caserneId">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Vehicule</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="enginTypeId" >
+                  <select class="form-control" formControlName="enginTypeId">
                     <option value=1>PREMIER_SECOURS</option>
                     <option value=2>FOURGON</option>
                     <option value=3>PREMIER_SECOURS_RELEVABLE</option>
@@ -162,7 +167,7 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Immatriculation</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control"formControlName="immatriculation" />
+                  <input type="text" class="form-control" formControlName="immatriculation" />
                 </div>
               </div>
             </div>
@@ -180,8 +185,9 @@
       </div>
     </div>
     <div class="modal-footer">
-      <pf-button type="button"  (click)="modal.close('Close click')">Annuler</pf-button>
-      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <pf-button type="button" (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit" style="margin-left: 1%;margin-right:2%" (click)="onSubmit()"
+        (click)="modal.close('Close click')" class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>
@@ -198,30 +204,30 @@
           <p class="card-description">
             <strong>Caserne Et Véhicule</strong>
           </p>
-          <div class="row" >
+          <div class="row">
             <div class="col-md-6" hidden="true">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Id</p>
-                <div class="col-sm-9" >
+                <div class="col-sm-9">
                   <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Caserne</p>
-                <div class="col-sm-9" >
-                  <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="caserneId" [(ngModel)]="edit.caserne.id">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
                   </select>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Vehicule</p>
                 <div class="col-sm-9">
-                  <select class="form-control" formControlName="enginTypeId"   [(ngModel)]="edit.enginType.id">
+                  <select class="form-control" formControlName="enginTypeId" [(ngModel)]="edit.enginType.id">
                     <option value=1>PREMIER_SECOURS</option>
                     <option value=2>FOURGON</option>
                     <option value=3>PREMIER_SECOURS_RELEVABLE</option>
@@ -243,7 +249,8 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Immatriculation</p>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" />
+                  <input type="text" class="form-control" formControlName="immatriculation"
+                    [(ngModel)]="edit.immatriculation" />
                 </div>
               </div>
             </div>
@@ -251,7 +258,8 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Description</p>
                 <div class="col-sm-9">
-                  <textarea type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"></textarea>
+                  <textarea type="text" class="form-control" formControlName="description"
+                    [(ngModel)]="edit.description"></textarea>
                 </div>
               </div>
             </div>
@@ -261,8 +269,9 @@
       </div>
     </div>
     <div class="modal-footer">
-      <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
-      <button type="submit"  style="margin-left: 1%;margin-right:2%" (click)="onSubmit2()" (click)="modal.close('Close click')"  class="btn btn-success">Enregistrer</button>
+      <pf-button type="button" (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit" style="margin-left: 1%;margin-right:2%" (click)="onSubmit2()"
+        (click)="modal.close('Close click')" class="btn btn-success">Enregistrer</button>
     </div>
   </ng-template>
 </section>
@@ -279,19 +288,19 @@
           <p class="card-description">
             <strong>Caserne Et Véhicule</strong>
           </p>
-          <div class="row" >
+          <div class="row">
             <div class="col-md-6" hidden="true">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Id</p>
-                <div class="col-sm-9" >
+                <div class="col-sm-9">
                   <input type="text" class="form-control" formControlName="enginId" [(ngModel)]="edit.id" />
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Caserne</p>
-                <div class="col-sm-9" >
+                <div class="col-sm-9">
                   <p class="form-control" [(ngModel)]="edit.caserne.id"> {{edit.caserne.name}} </p>
                   <!-- <select class="form-control" formControlName="caserneId"   [(ngModel)]="edit.caserne.id">
                     <option *ngFor="let c of caserne" value="{{c.id}}">{{c.name}}</option>
@@ -300,7 +309,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group row" >
+              <div class="form-group row">
                 <p class="col-sm-3 col-form-label">Vehicule</p>
                 <div class="col-sm-9">
                   <p class="form-control" [(ngModel)]="edit.enginType.id"> {{edit.enginType.enginType}} </p>
@@ -326,7 +335,8 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Immatriculation</p>
                 <div class="col-sm-9">
-                  <p type="text" class="form-control"formControlName="immatriculation"  [(ngModel)]="edit.immatriculation" > {{edit.immatriculation}} </p>
+                  <p type="text" class="form-control" formControlName="immatriculation"
+                    [(ngModel)]="edit.immatriculation"> {{edit.immatriculation}} </p>
                 </div>
               </div>
             </div>
@@ -334,7 +344,8 @@
               <div class="form-group row">
                 <p class="col-sm-3 col-form-p">Description</p>
                 <div class="col-sm-9">
-                  <p type="text" class="form-control" formControlName="description"  [(ngModel)]="edit.description"> {{edit.description}} </p>
+                  <p type="text" class="form-control" formControlName="description" [(ngModel)]="edit.description">
+                    {{edit.description}} </p>
                 </div>
               </div>
             </div>
@@ -344,7 +355,7 @@
       </div>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"  style="margin-right:2%" (click)="modal.close('Close click')">OK</pf-button>
+      <pf-button type="button" style="margin-right:2%" (click)="modal.close('Close click')">OK</pf-button>
     </div>
   </ng-template>
 </section>
@@ -354,16 +365,16 @@
 <section>
   <ng-template #content3 let-modal>
     <div class="modal-header">
-      <h3 class="modal-title" >Confirmer?</h3>
+      <h3 class="modal-title">Confirmer?</h3>
 
     </div>
     <div class="modal-body">
       <h3>Voulez-vous vraiment supprimer ce véhicule?</h3>
     </div>
     <div class="modal-footer">
-     <pf-button type="button"   (click)="modal.close('Close click')">Annuler</pf-button>
-     <button type="submit" style="margin-left: 1%;margin-right:2%"  (click)="deleteEngin(engin.id)" (click)="modal.close('Close click')"  class="btn btn-danger">Supprimer</button>
+      <pf-button type="button" (click)="modal.close('Close click')">Annuler</pf-button>
+      <button type="submit" style="margin-left: 1%;margin-right:2%" (click)="deleteEngin(engin.id)"
+        (click)="modal.close('Close click')" class="btn btn-danger">Supprimer</button>
     </div>
   </ng-template>
 </section>
-

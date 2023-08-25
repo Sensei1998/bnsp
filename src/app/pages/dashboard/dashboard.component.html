@@ -33,7 +33,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{total}}</h3>
 
                 <p>Total Requete aujourd'hui</p>
               </div>
@@ -50,7 +50,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{nonattribuer}}</h3>
 
                 <p>Total Requete Non Attribuer</p>
               </div>
@@ -67,7 +67,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{enattente}}</h3>
 
                 <p>Total Requete en attente</p>
               </div>
@@ -86,7 +86,7 @@
             <!-- small box -->
             <div class="small-box bg-yellow">
               <div class="inner">
-                <h3>53</h3>
+                <h3>{{encours}}</h3>
 
                 <p>Total Requete en cours</p>
               </div>
@@ -103,7 +103,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{terminer}}</h3>
 
                 <p>Total Requete Terminer</p>
               </div>
@@ -124,13 +124,22 @@
   </div>
 </section>
 
-
 <section class="content">
   <!-- Default box -->
   <div class="container-fluid">
     <div class="card">
-      <div class="card-header">
-        <h2> Total d'intervention par Mois </h2>
+      <div class="card-header row">
+        <h2> Total d'intervention pour une période </h2>
+      </div>
+      <div class="card-header row">
+        <h4 class="card-header" style="margin-left: 20%;">Date de début :</h4>
+        <input type="date" [(ngModel)]="dateDebut">
+
+        <h4 class="card-header" style="margin-left: 2%;">Date de fin :</h4>
+        <input type="date" [(ngModel)]="dateFin">
+
+        <button type="submit" class="btn btn-success" style="margin-left: 2%;border-radius: 100px" (click)="getPeriodStat(dateDebut,dateFin)">Charger</button>
+
       </div>
       <div class="card-body">
 
@@ -145,22 +154,3 @@
   </div>
 </section>
 
-
-<section class="content">
-  <!-- Default box -->
-  <div class="container-fluid">
-    <div class="card">
-      <div class="card-header">
-        <h2> Total d'intervention par An </h2>
-      </div>
-      <div class="card-body">
-
-          <div id="container2" >
-            <highcharts-chart [Highcharts]="CharLine"></highcharts-chart>
-          </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
