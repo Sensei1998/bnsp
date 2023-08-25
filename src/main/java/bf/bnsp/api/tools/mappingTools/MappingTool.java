@@ -45,8 +45,8 @@ public class MappingTool {
     public DailyProgramMinResponse mappingDailyProgramMin(DailyProgram dailyProgram){
         Optional<EquipeType> caporal = this.equipeTypeRepository.findById(3);
         Optional<EquipeType> sgt = this.equipeTypeRepository.findById(4);
-        Optional<DailyTeam> caporalTeam = this.dailyTeamRepository.findByDateAndTypeAndHiddenFalse(dailyProgram.getDate(), caporal.get());
-        Optional<DailyTeam> sgtTeam = this.dailyTeamRepository.findByDateAndTypeAndHiddenFalse(dailyProgram.getDate(), sgt.get());
+        Optional<DailyTeam> caporalTeam = dailyProgram.getTeams().isEmpty() ? Optional.empty() : Optional.of(dailyProgram.getTeams().get(0));
+        Optional<DailyTeam> sgtTeam = dailyProgram.getTeams().isEmpty() ? Optional.empty() : Optional.of(dailyProgram.getTeams().get(1));
         Optional<FonctionTeamResponse> caporalTeamResponse = Optional.empty();
         Optional<FonctionTeamResponse> sgtTeamResponse = Optional.empty();
         List<FonctionAgentResponse> agentList = new ArrayList<>();
