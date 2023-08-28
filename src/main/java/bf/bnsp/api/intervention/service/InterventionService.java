@@ -211,6 +211,33 @@ public class InterventionService implements InterventionServiceInterface{
     }
 
     @Override
+    public long countByCategoryIncident(int categoryId) {
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(categoryId);
+        if(categoryIncident.isPresent()){
+            return this.interventionRepository.countByIncidentCategory(categoryIncident.get().getCategory());
+        }
+        return 0;
+    }
+
+    @Override
+    public Map<String, Long>  countByCategoryIncidentAndInterval(int categoryId, LocalDate startDate, LocalDate endDate) {
+        Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(categoryId);
+        List<LocalDate> dates = startDate.datesUntil(endDate).collect(Collectors.toList());
+        Map<String, Long> response = new HashMap<>();
+        if(categoryIncident.isPresent()){
+            long total = 0;
+            long tmpCount = 0;
+            for (LocalDate element: dates) {
+                tmpCount = this.interventionRepository.countByIncidentCategoryAndDateBetween(categoryIncident.get().getCategory(), element.atStartOfDay(), element.atTime(LocalTime.MAX));
+                response.put(element.toString(), tmpCount);
+                total += tmpCount;
+            }
+            response.put("all", total);
+        }
+        return response;
+    }
+
+    @Override
     public List<CategoryIncident> findAllCategoryIncident() {
         return this.categoryIncidentRepository.findAll();
     }

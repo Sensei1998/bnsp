@@ -122,6 +122,17 @@ public class InterventionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/count/category")
+    public ResponseEntity<?> countByCategory(@RequestParam("category") int categoryId, @RequestParam("start") @DateTimeFormat(pattern = "dd-MM-yyyy") Optional<LocalDate> startDate, @RequestParam("end") @DateTimeFormat(pattern = "dd-MM-yyyy") Optional<LocalDate> endDate){
+        if(startDate.isPresent() && endDate.isPresent()){
+            return new ResponseEntity<>(this.interventionService.countByCategoryIncidentAndInterval(categoryId, startDate.get(), endDate.get()), HttpStatus.OK);
+        }
+        else {
+            long response = this.interventionService.countByCategoryIncident(categoryId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
     @GetMapping(value = "/types/category")
     public ResponseEntity<?> getCategoriesIncident(){
         List<CategoryIncident> response = this.interventionService.findAllCategoryIncident();

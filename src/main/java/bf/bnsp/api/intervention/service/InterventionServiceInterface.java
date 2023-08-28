@@ -39,6 +39,10 @@ public interface InterventionServiceInterface {
 
     long countAllInterventionByDate(LocalDate date);
 
+    long countByCategoryIncident(int categoryId);
+
+    Map<String, Long>  countByCategoryIncidentAndInterval(int categoryId, LocalDate startDate, LocalDate endDate);
+
     List<CategoryIncident> findAllCategoryIncident();
 
     List<IncidentType> findAllIncidentType();
