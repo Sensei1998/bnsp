@@ -128,7 +128,7 @@ public class InterventionController {
             return new ResponseEntity<>(this.interventionService.countByCategoryIncidentAndInterval(categoryId, startDate.get(), endDate.get()), HttpStatus.OK);
         }
         else {
-            long response = this.interventionService.countByCategoryIncident(categoryId);
+            Map<String, Long> response = this.interventionService.countByCategoryIncident(categoryId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

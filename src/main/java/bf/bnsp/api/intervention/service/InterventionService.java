@@ -211,12 +211,14 @@ public class InterventionService implements InterventionServiceInterface{
     }
 
     @Override
-    public long countByCategoryIncident(int categoryId) {
+    public Map<String, Long> countByCategoryIncident(int categoryId) {
+        List<String> status = Arrays.asList("Non attribué", "En attente", "En cours", "Termine");
+        Map<String, Long> response = new HashMap<>();
         Optional<CategoryIncident> categoryIncident = this.categoryIncidentRepository.findById(categoryId);
         if(categoryIncident.isPresent()){
-            return this.interventionRepository.countByIncidentCategory(categoryIncident.get().getCategory());
+            for (String element: status) response.put(element, this.interventionRepository.countByIncidentCategoryAndStatus(categoryIncident.get().getCategory(), element));
         }
-        return 0;
+        return response;
     }
 
     @Override

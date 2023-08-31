@@ -22,8 +22,8 @@ public interface InterventionRepository extends JpaRepository<Intervention, Inte
     @Transactional
     long countByStatusAndDateBetweenAndHiddenFalse(String status, LocalDateTime startTime, LocalDateTime endTime);
 
-    @Query("SELECT COUNT(*) FROM Intervention int WHERE int.incident.category = ?1")
-    long countByIncidentCategory(String category);
+    @Query("SELECT COUNT(*) FROM Intervention int WHERE int.incident.category = ?1 AND int.status = ?2")
+    long countByIncidentCategoryAndStatus(String category, String status);
 
     @Query("SELECT COUNT(*) FROM Intervention int WHERE int.incident.category = ?1 AND int.date >= ?2 AND int.date <= ?3")
     long countByIncidentCategoryAndDateBetween(String category, LocalDateTime startTime, LocalDateTime endTime);
