@@ -87,6 +87,8 @@ export class CreationProgramComponent implements OnInit{
   collectionSize: number; // Taille totale de la collection
   idprogram = 0;
 
+
+
   constructor(private formBuilder: FormBuilder,
     private service: ApiService,
     private toastr: ToastrService,
@@ -101,13 +103,15 @@ export class CreationProgramComponent implements OnInit{
     this.getAgent();
     this.getTeam();
     this.getAgentByCaserne(this.idCaserne);
-    this.getProgramByCaserne(this.idCaserne);
-    this.getAllProgram();
+
+
 
     if(this.role === "ROLE_SUPERVISOR"){
       this.isAdmin = true;
+      this.getAllProgram();
    } else{
      this.isAdmin = false;
+     this.getProgramByCaserne(this.idCaserne);
    }
 
    setTimeout(() => {

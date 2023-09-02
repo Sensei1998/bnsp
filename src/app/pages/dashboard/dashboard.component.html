@@ -25,17 +25,17 @@
   <div class="container-fluid">
     <div class="card">
       <div class="card-header">
-        <h2> Total d'intervention du Jour </h2>
+        <h2> Etat des interventions du jour :  {{date2}}</h2>
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-lg-6 col-6">
+          <div class="col-lg-12 col-12">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>{{total}}</h3>
 
-                <p>Total Requete aujourd'hui</p>
+                <p>Total Incident du jour</p>
               </div>
               <div class="icon">
                 <i class="ion ion-home"></i>
@@ -45,14 +45,15 @@
                   ></a> -->
             </div>
           </div>
-
+        </div>
+        <div class="row">
           <div class="col-lg-6 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>{{nonattribuer}}</h3>
 
-                <p>Total Requete Non Attribuer</p>
+                <p>Total Incident Non Attribué </p>
               </div>
               <div class="icon">
                 <i class="ion ion-close"></i>
@@ -65,11 +66,11 @@
 
           <div class="col-lg-6 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box" style="background-color: rgb(255, 72, 72); color:white">
               <div class="inner">
                 <h3>{{enattente}}</h3>
 
-                <p>Total Requete en attente</p>
+                <p>Total Incident  en attente</p>
               </div>
               <div class="icon">
                 <i class="ion ion-clock"></i>
@@ -88,7 +89,7 @@
               <div class="inner">
                 <h3>{{encours}}</h3>
 
-                <p>Total Requete en cours</p>
+                <p>Total Incident  en cours</p>
               </div>
               <div class="icon">
                 <i class="ion ion-play"></i>
@@ -105,7 +106,117 @@
               <div class="inner">
                 <h3>{{terminer}}</h3>
 
-                <p>Total Requete Terminer</p>
+                <p>Total Incident Terminé </p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-star"></i>
+              </div>
+              <!-- <a href="#" class="small-box-footer"
+                  >More info <i class="fas fa-arrow-circle-right"></i
+              ></a> -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header row">
+        <h2> Etat Général des interventions pour la categorie :  </h2>
+        <select    style="margin-left: 2%;" (change)="chargeCategorieTotal($event.target.value)">
+          <option *ngFor="let c of categorie" value={{c.id}} >{{c.category}}</option>
+        </select>
+        <button type="submit" class="btn btn-success" style="margin-left: 2%;border-radius: 100px" (click)="getStatByCategorie(categorieTotal)">Charger</button>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{total1}}</h3>
+
+                <p>Total Incident</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-home"></i>
+              </div>
+              <!-- <a href="#" class="small-box-footer"
+                      >More info <i class="fas fa-arrow-circle-right"></i
+                  ></a> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{nonattribuer1}}</h3>
+
+                <p>Total Incident Non Attribué </p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-close"></i>
+              </div>
+              <!-- <a href="#" class="small-box-footer"
+                >More info <i class="fas fa-arrow-circle-right"></i
+            ></a> -->
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-6">
+            <!-- small box -->
+            <div class="small-box" style="background-color: rgb(255, 72, 72); color:white">
+              <div class="inner">
+                <h3>{{enattente1}}</h3>
+
+                <p>Total Incident  en attente</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-clock"></i>
+              </div>
+              <!-- <a href="#" class="small-box-footer"
+                    >More info <i class="fas fa-arrow-circle-right"></i
+                ></a> -->
+            </div>
+          </div>
+
+
+          <!-- ./col -->
+          <div class="col-lg-6 col-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <h3>{{encours1}}</h3>
+
+                <p>Total Incident  en cours</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-play"></i>
+              </div>
+              <!-- <a href="#" class="small-box-footer"
+                      >More info <i class="fas fa-arrow-circle-right"></i
+                  ></a> -->
+            </div>
+          </div>
+
+         <div class="col-lg-6 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{terminer1}}</h3>
+
+                <p>Total Incident Terminé </p>
               </div>
               <div class="icon">
                 <i class="ion ion-star"></i>
@@ -130,8 +241,10 @@
     <div class="card">
       <div class="card-header row">
         <h2> Total d'intervention pour une période </h2>
+        <input type="checkbox" style="margin-left: 20%;"  (change)="changeperiodecategorie()">
+        <h2>Rechercher par catégorie</h2>
       </div>
-      <div class="card-header row">
+      <div class="card-header row" *ngIf="periodecategorie === false">
         <h4 class="card-header" style="margin-left: 20%;">Date de début :</h4>
         <input type="date" [(ngModel)]="dateDebut">
 
@@ -139,6 +252,20 @@
         <input type="date" [(ngModel)]="dateFin">
 
         <button type="submit" class="btn btn-success" style="margin-left: 2%;border-radius: 100px" (click)="getPeriodStat(dateDebut,dateFin)">Charger</button>
+
+      </div>
+      <div class="card-header row" *ngIf="periodecategorie === true">
+        <h4 class="card-header" >Date de début :</h4>
+        <input type="date" [(ngModel)]="dateDebut">
+
+        <h4 class="card-header" style="margin-left: 2%;">Date de fin :</h4>
+        <input type="date" [(ngModel)]="dateFin">
+
+        <select    style="margin-left: 2%;" (change)="chargeCategorie($event.target.value)">
+          <option *ngFor="let c of categorie" value={{c.id}} >{{c.category}}</option>
+        </select>
+
+        <button type="submit" class="btn btn-success" style="margin-left: 2%;border-radius: 100px" (click)="getPeriodStatWithFiltre(categorietableau,dateDebut,dateFin)">Charger</button>
 
       </div>
       <div class="card-body">

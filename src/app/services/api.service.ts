@@ -301,8 +301,17 @@ getStatByDate(date){
   return this.http.get(this.url + "/intervention/count/date?date=" + date);
 }
 
+getStatByCategorie(id:number){
+  return this.http.get(this.url + "/intervention/count/category?category=" + id)
+}
+
+
 getStatByPeriod(start,end){
   return this.http.get(this.url + "/intervention/count/interval?start=" + start + "&end=" + end)
+}
+
+getStatByPeriodAndCategories(categorie,start,end){
+  return this.http.get(this.url + "/intervention/count/category?category=" + categorie + "&start=" + start + "&end=" + end)
 }
 
 }
